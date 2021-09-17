@@ -34,18 +34,18 @@ import org.entur.gbfs.v2_2.vehicle_types.GBFSVehicleTypes;
 
 import java.util.function.Consumer;
 
-public class GBFSSubscriber {
-    private final GBFSLoaderOptions loaderOptions;
-    private final Consumer<GBFSFeedDelivery> consumer;
-    private GbfsFeedLoader feedLoader;
+public class GbfsLoaderSubscription {
+    private final GbfsLoaderOptions loaderOptions;
+    private final Consumer<GbfsDelivery> consumer;
+    private GbfsLoader feedLoader;
 
-    public GBFSSubscriber(GBFSLoaderOptions loaderOptions, Consumer<GBFSFeedDelivery> consumer) {
+    public GbfsLoaderSubscription(GbfsLoaderOptions loaderOptions, Consumer<GbfsDelivery> consumer) {
         this.loaderOptions = loaderOptions;
         this.consumer = consumer;
     }
 
     public void start() {
-        feedLoader = new GbfsFeedLoader(
+        feedLoader = new GbfsLoader(
                 loaderOptions.discoveryURI.toString(),
                 loaderOptions.headers,
                 loaderOptions.languageCode
@@ -54,7 +54,7 @@ public class GBFSSubscriber {
 
     public void update() {
         if (feedLoader.update()) {
-            var delivery = new GBFSFeedDelivery();
+            var delivery = new GbfsDelivery();
             delivery.setDiscovery(feedLoader.getFeed(GBFS.class));
             delivery.setVersion(feedLoader.getFeed(GBFSGbfsVersions.class));
             delivery.setSystemInformation(feedLoader.getFeed(GBFSSystemInformation.class));

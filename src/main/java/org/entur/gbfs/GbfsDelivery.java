@@ -32,7 +32,7 @@ import org.entur.gbfs.v2_2.system_pricing_plans.GBFSSystemPricingPlans;
 import org.entur.gbfs.v2_2.system_regions.GBFSSystemRegions;
 import org.entur.gbfs.v2_2.vehicle_types.GBFSVehicleTypes;
 
-public class GBFSFeedDelivery {
+public class GbfsDelivery {
     private GBFS discovery;
     private GBFSGbfsVersions version;
     private GBFSSystemInformation systemInformation;

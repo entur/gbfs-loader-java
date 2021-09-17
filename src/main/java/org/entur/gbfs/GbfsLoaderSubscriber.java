@@ -23,8 +23,8 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.function.Consumer;
 
-public class GBFSLoader {
-    private final Map<String, GBFSSubscriber> subscribers = new HashMap<>();
+public class GbfsLoaderSubscriber {
+    private final Map<String, GbfsLoaderSubscription> subscriptions = new HashMap<>();
 
     /**
      * Start a subscription on a GBFS feed delivery
@@ -33,24 +33,24 @@ public class GBFSLoader {
      * @param consumer A consumer that will handle receiving updates from the loader
      * @return A string identifier
      */
-    public String register(GBFSLoaderOptions options, Consumer<GBFSFeedDelivery> consumer) {
+    public String subscribe(GbfsLoaderOptions options, Consumer<GbfsDelivery> consumer) {
         String id = UUID.randomUUID().toString();
-        var subscriber = new GBFSSubscriber(options, consumer);
-        subscribers.put(id, subscriber);
-        subscriber.start();
+        var subscription = new GbfsLoaderSubscription(options, consumer);
+        subscriptions.put(id, subscription);
+        subscription.start();
         return id;
     }
 
     public void update() {
-        subscribers.values().forEach(GBFSSubscriber::update);
+        subscriptions.values().forEach(GbfsLoaderSubscription::update);
     }
 
     /**
      * Stop a subscription on a GBFS feed delivery
      *
-     * @param identifier An identifier returned by register method.
+     * @param identifier An identifier returned by subscribe method.
      */
-    public void deregister(String identifier) {
-        subscribers.remove(identifier);
+    public void unsubscribe(String identifier) {
+        subscriptions.remove(identifier);
     }
 }

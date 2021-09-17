@@ -21,8 +21,8 @@ import java.util.Map;
  * Class for managing the state and loading of complete GBFS datasets, and updating them according to individual feed's
  * TTL rules.
  */
-public class GbfsFeedLoader {
-    private static final Logger LOG = LoggerFactory.getLogger(GbfsFeedLoader.class);
+public class GbfsLoader {
+    private static final Logger LOG = LoggerFactory.getLogger(GbfsLoader.class);
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
@@ -31,7 +31,7 @@ public class GbfsFeedLoader {
 
     private final Map<String, String> httpHeaders;
 
-    public GbfsFeedLoader(String url, Map<String, String> httpHeaders, String languageCode) {
+    public GbfsLoader(String url, Map<String, String> httpHeaders, String languageCode) {
         this.httpHeaders = httpHeaders;
         URI uri;
         try {
@@ -143,7 +143,7 @@ public class GbfsFeedLoader {
         }
 
         private void fetchData() {
-            T newData = GbfsFeedLoader.fetchFeed(url, httpHeaders, implementingClass);
+            T newData = GbfsLoader.fetchFeed(url, httpHeaders, implementingClass);
             if (newData == null) {
                 LOG.error("Invalid data for {}", url);
                 nextUpdate = getCurrentTimeSeconds();
