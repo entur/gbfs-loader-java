@@ -1,5 +1,5 @@
-import org.entur.gbfs.GbfsLoaderSubscriber;
-import org.entur.gbfs.GbfsLoaderOptions;
+import org.entur.gbfs.GbfsSubscriptionManager;
+import org.entur.gbfs.GbfsSubscriptionOptions;
 import org.junit.jupiter.api.Test;
 
 import java.net.URI;
@@ -9,8 +9,8 @@ public class GBFSLoaderTest {
 
     @Test
     void testLoader() throws URISyntaxException, InterruptedException {
-        var loader = new GbfsLoaderSubscriber();
-        var options = new GbfsLoaderOptions();
+        var loader = new GbfsSubscriptionManager();
+        var options = new GbfsSubscriptionOptions();
         options.setDiscoveryURI(new URI("https://api.dev.entur.io/mobility/v2/gbfs/limeoslo/gbfs.json"));
         options.setLanguageCode("nb");
         var subscriber = loader.subscribe(options, delivery -> {

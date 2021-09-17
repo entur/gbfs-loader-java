@@ -21,7 +21,7 @@ package org.entur.gbfs;
 import java.net.URI;
 import java.util.Map;
 
-public class GbfsLoaderOptions {
+public class GbfsSubscriptionOptions {
     URI discoveryURI;
     String languageCode;
     long minimumTtl;
