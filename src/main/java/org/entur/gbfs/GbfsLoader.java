@@ -1,6 +1,7 @@
 package org.entur.gbfs;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.entur.gbfs.v2_2.gbfs.GBFS;
 import org.entur.gbfs.v2_2.gbfs.GBFSFeed;
@@ -26,6 +27,10 @@ public class GbfsLoader {
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
+    static {
+        objectMapper.configure(DeserializationFeature.READ_UNKNOWN_ENUM_VALUES_AS_NULL, true);
+    }
+
     /** One updater per feed type(?)*/
     private final Map<GBFSFeedName, GBFSFeedUpdater<?>> feedUpdaters = new HashMap<>();
 
@@ -38,6 +43,10 @@ public class GbfsLoader {
             uri = new URI(url);
         } catch (URISyntaxException e) {
             throw new RuntimeException("Invalid url " + url);
+        }
+
+        if (!url.endsWith("gbfs.json")) {
+            LOG.warn("GBFS autoconfiguration url {} does not end with gbfs.json. Make sure it follows the specification, if you get any errors using it.", url);
         }
 
         // Fetch autoconfiguration file
@@ -63,7 +72,12 @@ public class GbfsLoader {
                         "Urls: " + feed.getUrl() + ", " + feedUpdaters.get(feedName).url
                 );
             }
-            feedUpdaters.put(feedName, new GBFSFeedUpdater<>(feed));
+
+            // name is null, if the file is of unknown type, skip those
+            if (feed.getName() != null) {
+                feedUpdaters.put(feedName, new GBFSFeedUpdater<>(feed));
+            }
+
         }
     }
 
@@ -113,13 +127,13 @@ public class GbfsLoader {
             is.close();
             return data;
         } catch (IllegalArgumentException e) {
-            LOG.warn("Error parsing GBFS feed from " + uri, e);
+            LOG.warn("Error parsing GBFS feed from {}", uri, e);
             return null;
         } catch (JsonProcessingException e) {
-            LOG.warn("Error parsing GBFS feed from " + uri + "(bad JSON of some sort)", e);
+            LOG.warn("Error parsing (bad JSON) GBFS feed from {}", uri, e);
             return null;
         } catch (IOException e) {
-            LOG.warn("Error reading GBFS feed from " + uri, e);
+            LOG.warn("Error (bad connection) reading GBFS feed from {}", uri, e);
             return null;
         }
     }
@@ -127,7 +141,11 @@ public class GbfsLoader {
     /* private static classes */
 
     private class GBFSFeedUpdater<T> {
+
+        /** URL for the individual GBFS file */
         private final URI url;
+
+        /** To which class should the file be deserialized to */
         private final Class<T> implementingClass;
 
         private int nextUpdate;
@@ -149,11 +167,19 @@ public class GbfsLoader {
                 nextUpdate = getCurrentTimeSeconds();
                 return;
             }
+
+            data = newData;
+
             try {
+                // Fetch lastUpdated and ttl from the resulting class. Due to type erasure we don't know the actual
+                // class, and have to use introspection to get the method references, as they do not share a supertype.
                 Integer lastUpdated = (Integer) implementingClass.getMethod("getLastUpdated").invoke(newData);
                 Integer ttl = (Integer) implementingClass.getMethod("getTtl").invoke(newData);
-                nextUpdate = lastUpdated + ttl;
-                data = newData;
+                if (lastUpdated == null || ttl == null) {
+                    nextUpdate = getCurrentTimeSeconds();
+                } else {
+                    nextUpdate = lastUpdated + ttl;
+                }
             } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException | ClassCastException e) {
                 LOG.error("Invalid data for {}", url);
                 nextUpdate = getCurrentTimeSeconds();
