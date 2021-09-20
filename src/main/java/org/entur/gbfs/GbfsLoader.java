@@ -151,6 +151,7 @@ public class GbfsLoader {
         private int nextUpdate;
         private T data;
 
+        @SuppressWarnings("unchecked")
         private GBFSFeedUpdater(GBFSFeed feed) {
             url = feed.getUrl();
             implementingClass = (Class<T>) feed.getName().implementingClass();

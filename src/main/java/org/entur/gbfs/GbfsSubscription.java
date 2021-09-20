@@ -64,7 +64,7 @@ public class GbfsSubscription {
      */
     public void update() {
         if (loader.update()) {
-            var delivery = new GbfsDelivery();
+            GbfsDelivery delivery = new GbfsDelivery();
             delivery.setDiscovery(loader.getFeed(GBFS.class));
             delivery.setVersion(loader.getFeed(GBFSGbfsVersions.class));
             delivery.setSystemInformation(loader.getFeed(GBFSSystemInformation.class));

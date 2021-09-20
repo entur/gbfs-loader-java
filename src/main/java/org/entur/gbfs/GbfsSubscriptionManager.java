@@ -35,7 +35,7 @@ public class GbfsSubscriptionManager {
      */
     public String subscribe(GbfsSubscriptionOptions options, Consumer<GbfsDelivery> consumer) {
         String id = UUID.randomUUID().toString();
-        var subscription = new GbfsSubscription(options, consumer);
+        GbfsSubscription subscription = new GbfsSubscription(options, consumer);
         subscriptions.put(id, subscription);
         subscription.init();
         return id;
