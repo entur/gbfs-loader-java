@@ -6,11 +6,47 @@
 
     <groupId>org.entur.gbfs</groupId>
     <artifactId>gbfs-loader-java</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0.0-SNAPSHOT</version>
+
+    <name>gbfs-loader-java</name>
+    <description>Manage loading of GBFS feeds</description>
+    <url>https://github.com/entur/gbfs-java-model</url>
+    <organization>
+        <name>Entur AS</name>
+        <url>http://www.entur.org/</url>
+    </organization>
+    <licenses>
+        <license>
+            <name>EUPL-1.2 with modifications</name>
+            <url>https://joinup.ec.europa.eu/software/page/eupl</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+    <developers>
+        <developer>
+            <name>Tom Erik Støwer</name>
+            <email>tom.erik.stower@entur.org</email>
+            <organization>Entur</organization>
+            <organizationUrl>http://www.entur.org</organizationUrl>
+        </developer>
+    </developers>
+    <scm>
+        <connection>scm:git:ssh://git@github.com/entur/gbfs-loader-java.git</connection>
+        <developerConnection>scm:git:ssh://git@github.com/entur/gbfs-loader-java.git</developerConnection>
+        <url>https://github.com/entur/gbfs-loader-java/tree/master</url>
+        <tag>HEAD</tag>
+    </scm>
+    <distributionManagement>
+        <snapshotRepository>
+            <id>snapshots</id>
+            <name>entur2-snapshots</name>
+            <url>https://entur2.jfrog.io/entur2/libs-snapshot-local</url>
+        </snapshotRepository>
+    </distributionManagement>
 
     <properties>
-        <maven.compiler.source>15</maven.compiler.source>
-        <maven.compiler.target>15</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <jdk.version>1.8</jdk.version>
 
         <gbfs-java-model.version>2.2.3</gbfs-java-model.version>
         <jackson-databind.version>2.12.5</jackson-databind.version>
