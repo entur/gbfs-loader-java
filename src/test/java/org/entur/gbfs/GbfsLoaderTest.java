@@ -43,7 +43,7 @@ public class GbfsLoaderTest {
     void getV22FeedWithExplicitLanguage() {
         GbfsLoader loader = new GbfsLoader(
                 "file:src/test/resources/gbfs/lillestrombysykkel/gbfs.json",
-                Map.of(),
+                null,
                 LANGUAGE_NB
         );
 
@@ -54,7 +54,7 @@ public class GbfsLoaderTest {
     void getV22FeedWithNoLanguage() {
         GbfsLoader loader = new GbfsLoader(
                 "file:src/test/resources/gbfs/lillestrombysykkel/gbfs.json",
-                Map.of(),
+                null,
                 null
         );
 
@@ -65,7 +65,7 @@ public class GbfsLoaderTest {
     void getV22FeedWithWrongLanguage() {
         assertThrows(RuntimeException.class, () -> new GbfsLoader(
                 "file:src/test/resources/gbfs/lillestrombysykkel/gbfs.json",
-                Map.of(),
+                null,
                 LANGUAGE_EN
         ));
     }
@@ -74,7 +74,7 @@ public class GbfsLoaderTest {
     void getV10FeedWithExplicitLanguage() {
         GbfsLoader loader = new GbfsLoader(
                 "file:src/test/resources/gbfs/helsinki/gbfs.json",
-                Map.of(),
+                null,
                 LANGUAGE_EN
         );
 
@@ -92,7 +92,7 @@ public class GbfsLoaderTest {
         while (reader.readRecord()) {
             try {
                 String url = reader.get("Auto-Discovery URL");
-                new GbfsLoader(url, Map.of(), null).update();
+                new GbfsLoader(url, null, null).update();
             } catch (Exception e) {
                 exceptions.add(e);
             }
@@ -104,7 +104,7 @@ public class GbfsLoaderTest {
     @Test
     @Disabled
     void testSpin() {
-        new GbfsLoader("https://gbfs.spin.pm/api/gbfs/v2_2/edmonton/gbfs", Map.of(), null).update();
+        new GbfsLoader("https://gbfs.spin.pm/api/gbfs/v2_2/edmonton/gbfs", null, null).update();
     }
 
     private void validateV22Feed(GbfsLoader loader) {
