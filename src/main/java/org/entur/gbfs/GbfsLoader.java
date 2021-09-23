@@ -36,6 +36,8 @@ public class GbfsLoader {
 
     private final Map<String, String> httpHeaders;
 
+    private GBFS disoveryFileData;
+
     /**
      * Create a new GbfsLoader
      *
@@ -57,15 +59,15 @@ public class GbfsLoader {
         }
 
         // Fetch autoconfiguration file
-        GBFS data = fetchFeed(uri, httpHeaders, GBFS.class);
-        if (data == null) {
+        disoveryFileData = fetchFeed(uri, httpHeaders, GBFS.class);
+        if (disoveryFileData == null) {
             throw new RuntimeException("Could not fetch the feed auto-configuration file from " + uri);
         }
 
         // Pick first language if none defined
         GBFSFeeds feeds = languageCode == null
-                ? data.getFeedsData().values().iterator().next()
-                : data.getFeedsData().get(languageCode);
+                ? disoveryFileData.getFeedsData().values().iterator().next()
+                : disoveryFileData.getFeedsData().get(languageCode);
         if (feeds == null) {
             throw new RuntimeException("Language " + languageCode + " does not exist in feed " + uri);
         }
@@ -102,6 +104,10 @@ public class GbfsLoader {
         }
 
         return didUpdate;
+    }
+
+    public GBFS getDiscoveryFeed() {
+        return disoveryFileData;
     }
 
     /**
