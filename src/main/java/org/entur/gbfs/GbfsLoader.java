@@ -36,6 +36,13 @@ public class GbfsLoader {
 
     private final Map<String, String> httpHeaders;
 
+    /**
+     * Create a new GbfsLoader
+     *
+     * @param url The URL to the GBFS discovery file
+     * @param httpHeaders Additional HTTP headers to be used in requests (e.g. auth headers)
+     * @param languageCode The language code to be used to look up feeds in the discovery file
+     */
     public GbfsLoader(String url, Map<String, String> httpHeaders, String languageCode) {
         this.httpHeaders = httpHeaders;
         URI uri;

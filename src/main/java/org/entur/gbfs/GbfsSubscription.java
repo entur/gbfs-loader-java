@@ -52,9 +52,9 @@ public class GbfsSubscription {
      */
     public void init() {
         loader = new GbfsLoader(
-                subscriptionOptions.discoveryURI.toString(),
-                subscriptionOptions.headers,
-                subscriptionOptions.languageCode
+                subscriptionOptions.getDiscoveryURI().toString(),
+                subscriptionOptions.getHeaders(),
+                subscriptionOptions.getLanguageCode()
         );
     }
 

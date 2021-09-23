@@ -23,6 +23,9 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.function.Consumer;
 
+/**
+ * Manage a set of subscriptions (for different GBFS feeds)
+ */
 public class GbfsSubscriptionManager {
     private final Map<String, GbfsSubscription> subscriptions = new HashMap<>();
 

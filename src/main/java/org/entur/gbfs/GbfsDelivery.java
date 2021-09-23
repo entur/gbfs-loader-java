@@ -32,6 +32,9 @@ import org.entur.gbfs.v2_2.system_pricing_plans.GBFSSystemPricingPlans;
 import org.entur.gbfs.v2_2.system_regions.GBFSSystemRegions;
 import org.entur.gbfs.v2_2.vehicle_types.GBFSVehicleTypes;
 
+/**
+ * This class holds the data for all the GBFS files
+ */
 public class GbfsDelivery {
     private GBFS discovery;
     private GBFSGbfsVersions version;

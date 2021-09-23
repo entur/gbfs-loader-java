@@ -21,11 +21,14 @@ package org.entur.gbfs;
 import java.net.URI;
 import java.util.Map;
 
+/**
+ * Options for a Gbfs Subscription
+ */
 public class GbfsSubscriptionOptions {
-    URI discoveryURI;
-    String languageCode;
-    long minimumTtl;
-    Map<String, String> headers;
+    private URI discoveryURI;
+    private String languageCode;
+    private long minimumTtl;
+    private Map<String, String> headers;
 
     public URI getDiscoveryURI() {
         return discoveryURI;
