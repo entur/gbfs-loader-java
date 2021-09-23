@@ -65,7 +65,7 @@ public class GbfsSubscription {
     public void update() {
         if (loader.update()) {
             GbfsDelivery delivery = new GbfsDelivery();
-            delivery.setDiscovery(loader.getFeed(GBFS.class));
+            delivery.setDiscovery(loader.getDiscoveryFeed());
             delivery.setVersion(loader.getFeed(GBFSGbfsVersions.class));
             delivery.setSystemInformation(loader.getFeed(GBFSSystemInformation.class));
             delivery.setVehicleTypes(loader.getFeed(GBFSVehicleTypes.class));
