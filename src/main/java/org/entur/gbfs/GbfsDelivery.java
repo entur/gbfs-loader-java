@@ -50,10 +50,8 @@ public class GbfsDelivery {
     private GBFSSystemAlerts systemAlerts;
     private GBFSGeofencingZones geofencingZones;
 
-    public void setFeed(Object feed) {
-        if (feed instanceof GBFS) {
-            setDiscovery((GBFS) feed);
-        }
+    public void setFeed(GBFS feed) {
+        setDiscovery((GBFS) feed);
     }
 
     public GBFS getDiscovery() {
