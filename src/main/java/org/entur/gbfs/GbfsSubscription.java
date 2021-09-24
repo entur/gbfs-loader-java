@@ -19,7 +19,6 @@
 package org.entur.gbfs;
 
 import org.entur.gbfs.v2_2.free_bike_status.GBFSFreeBikeStatus;
-import org.entur.gbfs.v2_2.gbfs.GBFS;
 import org.entur.gbfs.v2_2.gbfs_versions.GBFSGbfsVersions;
 import org.entur.gbfs.v2_2.geofencing_zones.GBFSGeofencingZones;
 import org.entur.gbfs.v2_2.station_information.GBFSStationInformation;

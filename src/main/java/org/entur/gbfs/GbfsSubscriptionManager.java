@@ -20,7 +20,9 @@ package org.entur.gbfs;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.ForkJoinPool;
 import java.util.function.Consumer;
 
 /**
@@ -28,6 +30,14 @@ import java.util.function.Consumer;
  */
 public class GbfsSubscriptionManager {
     private final Map<String, GbfsSubscription> subscriptions = new HashMap<>();
+
+    private ForkJoinPool customThreadPool;
+
+    public GbfsSubscriptionManager() {}
+
+    public GbfsSubscriptionManager(ForkJoinPool customThreadPool) {
+        this.customThreadPool = customThreadPool;
+    }
 
     /**
      * Start a subscription on a GBFS feed delivery
@@ -48,7 +58,8 @@ public class GbfsSubscriptionManager {
      * Update all subscriptions
      */
     public void update() {
-        subscriptions.values().forEach(GbfsSubscription::update);
+        Optional.ofNullable(customThreadPool).orElse(ForkJoinPool.commonPool())
+                .submit(() -> subscriptions.values().parallelStream().forEach(GbfsSubscription::update));
     }
 
     /**
