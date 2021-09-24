@@ -1,5 +1,6 @@
 package org.entur.gbfs;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.net.URI;
@@ -38,6 +39,7 @@ public class GBFSSubscriptionTest {
 
     Consumer<GbfsDelivery> getTestConsumer() {
         return delivery -> {
+            Assertions.assertNotNull(delivery);
             waiter.countDown();
         };
     }
