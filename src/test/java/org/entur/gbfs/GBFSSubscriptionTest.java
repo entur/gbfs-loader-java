@@ -33,6 +33,7 @@ public class GBFSSubscriptionTest {
         waiter.await();
         loader.unsubscribe(id1);
         loader.unsubscribe(id2);
+        customThreadPool.shutdown();
     }
 
     Consumer<GbfsDelivery> getTestConsumer() {
