@@ -17,6 +17,8 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * Class for managing the state and loading of complete GBFS datasets, and updating them according to individual feed's
@@ -37,6 +39,8 @@ public class GbfsLoader {
     private final Map<String, String> httpHeaders;
 
     private GBFS disoveryFileData;
+
+    private final Lock updateLock = new ReentrantLock();
 
     /**
      * Create a new GbfsLoader
@@ -95,14 +99,15 @@ public class GbfsLoader {
      */
     public boolean update() {
         boolean didUpdate = false;
-
-        for (GBFSFeedUpdater<?> updater : feedUpdaters.values()) {
-            if (updater.shouldUpdate()) {
-                updater.fetchData();
-                didUpdate = true;
+        if (updateLock.tryLock()) {
+            for (GBFSFeedUpdater<?> updater : feedUpdaters.values()) {
+                if (updater.shouldUpdate()) {
+                    updater.fetchData();
+                    didUpdate = true;
+                }
             }
+            updateLock.unlock();
         }
-
         return didUpdate;
     }
 
