@@ -99,30 +99,16 @@ public class GbfsLoader {
      * Checks if any of the feeds should be updated base on the TTL and fetches. Returns true, if any feeds were updated.
      */
     public boolean update() {
-        try {
-            boolean canUpdate = updateLock.tryLock(5, TimeUnit.SECONDS);
-            if (canUpdate) {
-                boolean didUpdate = updateFeeds();
-                updateLock.unlock();
-                return didUpdate;
-            }
-        } catch (InterruptedException e) {
-            updateLock.unlock();
-            Thread.currentThread().interrupt();
-        }
-        return false;
-    }
-
-    private boolean updateFeeds() {
         boolean didUpdate = false;
-
-        for (GBFSFeedUpdater<?> updater : feedUpdaters.values()) {
-            if (updater.shouldUpdate()) {
-                updater.fetchData();
-                didUpdate = true;
+        if (updateLock.tryLock()) {
+            for (GBFSFeedUpdater<?> updater : feedUpdaters.values()) {
+                if (updater.shouldUpdate()) {
+                    updater.fetchData();
+                    didUpdate = true;
+                }
             }
+            updateLock.unlock();
         }
-
         return didUpdate;
     }
 
