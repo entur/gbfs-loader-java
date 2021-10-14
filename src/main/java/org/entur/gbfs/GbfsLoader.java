@@ -182,7 +182,7 @@ public class GbfsLoader {
         private void fetchData() {
             T newData = GbfsLoader.fetchFeed(url, httpHeaders, implementingClass);
             if (newData == null) {
-                LOG.error("Invalid data for {}", url);
+                LOG.warn("Invalid data for {}", url);
                 nextUpdate = getCurrentTimeSeconds();
                 return;
             }
@@ -200,7 +200,7 @@ public class GbfsLoader {
                     nextUpdate = lastUpdated + ttl;
                 }
             } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException | ClassCastException e) {
-                LOG.error("Invalid data for {}", url);
+                LOG.warn("Invalid data for {}", url);
                 nextUpdate = getCurrentTimeSeconds();
             }
         }
