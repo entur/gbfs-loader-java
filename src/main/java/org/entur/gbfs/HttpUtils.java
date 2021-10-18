@@ -8,6 +8,8 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpHead;
 import org.apache.http.config.SocketConfig;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -17,7 +19,7 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 public class HttpUtils {
-    
+    private static final Logger LOG = LoggerFactory.getLogger(HttpUtils.class);
     private static final long TIMEOUT_CONNECTION = 5000;
     private static final int TIMEOUT_SOCKET = 5000;
 
@@ -45,6 +47,7 @@ public class HttpUtils {
         HttpClient httpclient = getClient(timeout, timeout);
         HttpResponse response = httpclient.execute(httpget);
         if(response.getStatusLine().getStatusCode() != 200) {
+            LOG.warn("Got non-200 status code: {}", response.getStatusLine().getStatusCode());
             return null;
         }
 
