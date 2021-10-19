@@ -49,7 +49,7 @@
         <gbfs-java-model.version>2.2.3</gbfs-java-model.version>
         <jackson-databind.version>2.12.5</jackson-databind.version>
         <slf4j.version>1.7.32</slf4j.version>
-        <httpclient-version>4.5.5</httpclient-version>
+        <httpclient-version>4.5.13</httpclient-version>
 
         <nexus-staging-maven-plugin.version>1.6.8</nexus-staging-maven-plugin.version>
         <maven-exec-plugin.version>1.6.0</maven-exec-plugin.version>
