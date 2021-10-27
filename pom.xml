@@ -4,7 +4,7 @@
 
     <groupId>org.entur.gbfs</groupId>
     <artifactId>gbfs-loader-java</artifactId>
-    <version>1.0.1</version>
+    <version>1.0.2-SNAPSHOT</version>
 
     <name>gbfs-loader-java</name>
     <description>Manage loading of GBFS feeds</description>
@@ -32,7 +32,7 @@
         <connection>scm:git:ssh://git@github.com/entur/gbfs-loader-java.git</connection>
         <developerConnection>scm:git:ssh://git@github.com/entur/gbfs-loader-java.git</developerConnection>
         <url>https://github.com/entur/gbfs-loader-java/tree/master</url>
-        <tag>gbfs-loader-java-1.0.1</tag>
+        <tag>HEAD</tag>
     </scm>
     <distributionManagement>
         <snapshotRepository>
