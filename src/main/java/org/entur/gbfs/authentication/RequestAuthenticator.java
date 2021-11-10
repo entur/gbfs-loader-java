@@ -9,8 +9,7 @@ import java.util.Map;
  *
  * Implementations provided:
  * @see Oauth2ClientCredentialsGrantRequestAuthenticator
- * BearerTokenRequestAuthenticator
- * BasicAuthRequestAuthenticator
+ * @see BearerTokenRequestAuthenticator
  *
  * You may create your own implementation for custom authentication schemes
  */
