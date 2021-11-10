@@ -12,16 +12,16 @@ import java.net.URISyntaxException;
 import java.util.concurrent.CountDownLatch;
 import java.util.function.Consumer;
 
-public class GbfsAuthenticationTest {
+class GbfsAuthenticationTest {
     private CountDownLatch waiter;
 
-    private String TEST_URL = "";
-    private String TEST_LANGUAGE_CODE = "";
-    private String TEST_TOKEN_URL = "";
-    private String TEST_CLIENT_ID = "";
-    private String TEST_CLIENT_PASSWORD = "";
+    private final String TEST_URL = "";
+    private final String TEST_LANGUAGE_CODE = "";
+    private final String TEST_TOKEN_URL = "";
+    private final String TEST_CLIENT_ID = "";
+    private final String TEST_CLIENT_PASSWORD = "";
 
-    @Test @Disabled
+    @Test @Disabled("Test code provided to test live Oauth2 authentication")
     void testOauth2ClientCredentialsGrant() {
         GbfsLoader loader = new GbfsLoader(
                 TEST_URL,
@@ -37,7 +37,7 @@ public class GbfsAuthenticationTest {
         Assertions.assertNotNull(feed.getData().getBikes().get(0).getBikeId());
     }
 
-    @Test @Disabled
+    @Test @Disabled("Test code provided to test live Oauth2 authentication")
     void testOauth2ClientCredentialsGrantWithSubscription() throws URISyntaxException, InterruptedException {
         waiter = new CountDownLatch(1);
         GbfsSubscriptionManager loader = new GbfsSubscriptionManager();

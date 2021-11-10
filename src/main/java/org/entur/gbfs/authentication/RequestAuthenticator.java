@@ -1,9 +1,5 @@
 package org.entur.gbfs.authentication;
 
-import org.dmfs.httpessentials.exceptions.ProtocolError;
-import org.dmfs.httpessentials.exceptions.ProtocolException;
-
-import java.io.IOException;
 import java.util.Map;
 
 /**
