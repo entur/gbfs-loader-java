@@ -50,6 +50,8 @@
         <jackson-databind.version>2.12.5</jackson-databind.version>
         <slf4j.version>1.7.32</slf4j.version>
         <httpclient-version>4.5.13</httpclient-version>
+        <oauth2-essentials.version>0.17</oauth2-essentials.version>
+        <httpurlconnection-executor.version>0.20</httpurlconnection-executor.version>
 
         <nexus-staging-maven-plugin.version>1.6.8</nexus-staging-maven-plugin.version>
         <maven-exec-plugin.version>1.6.0</maven-exec-plugin.version>
@@ -112,12 +114,12 @@
         <dependency>
             <groupId>org.dmfs</groupId>
             <artifactId>oauth2-essentials</artifactId>
-            <version>0.17</version>
+            <version>${oauth2-essentials.version}</version>
         </dependency>
         <dependency>
             <groupId>org.dmfs</groupId>
             <artifactId>httpurlconnection-executor</artifactId>
-            <version>0.20</version>
+            <version>${httpurlconnection-executor.version}</version>
         </dependency>
 
         <!-- test dependencies -->
