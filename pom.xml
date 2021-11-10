@@ -109,6 +109,16 @@
             <artifactId>httpclient</artifactId>
             <version>${httpclient-version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.dmfs</groupId>
+            <artifactId>oauth2-essentials</artifactId>
+            <version>0.17</version>
+        </dependency>
+        <dependency>
+            <groupId>org.dmfs</groupId>
+            <artifactId>httpurlconnection-executor</artifactId>
+            <version>0.20</version>
+        </dependency>
 
         <!-- test dependencies -->
         <dependency>
