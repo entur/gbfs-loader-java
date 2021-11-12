@@ -50,7 +50,7 @@ for each feed.
 
 ### Authentication
 
-The ´GbfsLoader` constructor, as well as the `GbfsSubscriptionOptions` have an optional
+The `GbfsLoader` constructor, as well as the `GbfsSubscriptionOptions` have an optional
 `RequestAuthenticator` parameter. Use this with GBFS feeds that require authentication.
 
 Two implementations are provided in this library: `Oauth2ClientCredentialsGrantRequestAuthenticator`
