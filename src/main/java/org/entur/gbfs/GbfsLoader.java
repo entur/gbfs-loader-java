@@ -3,6 +3,9 @@ package org.entur.gbfs;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.entur.gbfs.authentication.RequestAuthenticationException;
+import org.entur.gbfs.authentication.RequestAuthenticator;
+import org.entur.gbfs.authentication.DummyRequestAuthenticator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.entur.gbfs.v2_2.gbfs.GBFS;
@@ -38,9 +41,30 @@ public class GbfsLoader {
 
     private final Map<String, String> httpHeaders;
 
+    private RequestAuthenticator requestAuthenticator;
+
     private GBFS disoveryFileData;
 
     private final Lock updateLock = new ReentrantLock();
+
+    /**
+     * Create a new GbfsLoader
+     *
+     * @param url The URL to the GBFS discovery file
+     */
+    public GbfsLoader(String url) {
+        this(url, new HashMap<>(), null);
+    }
+
+    /**
+     * Create a new GbfsLoader
+     *
+     * @param url The URL to the GBFS discovery file
+     * @param languageCode The language code to be used to look up feeds in the discovery file
+     */
+    public GbfsLoader(String url, String languageCode) {
+        this(url, new HashMap<>(), languageCode);
+    }
 
     /**
      * Create a new GbfsLoader
@@ -50,6 +74,37 @@ public class GbfsLoader {
      * @param languageCode The language code to be used to look up feeds in the discovery file
      */
     public GbfsLoader(String url, Map<String, String> httpHeaders, String languageCode) {
+        this(url, httpHeaders, languageCode, null);
+    }
+
+    /**
+     * Create a new GbfsLoader
+     *
+     * @param url The URL to the GBFS discovery file
+     * @param languageCode The language code to be used to look up feeds in the discovery file
+     * @param requestAuthenticator An instance of RequestAuthenticator to provide authentication strategy for
+     *                             each request
+     */
+    public GbfsLoader(String url, String languageCode, RequestAuthenticator requestAuthenticator) {
+        this(url, new HashMap<>(), languageCode, requestAuthenticator);
+    }
+
+    /**
+     * Create a new GbfsLoader
+     *
+     * @param url The URL to the GBFS discovery file
+     * @param httpHeaders Additional HTTP headers to be used in requests (e.g. auth headers)
+     * @param languageCode The language code to be used to look up feeds in the discovery file
+     * @param requestAuthenticator An instance of RequestAuthenticator to provide authentication strategy for
+     *                             each request
+     */
+    public GbfsLoader(String url, Map<String, String> httpHeaders, String languageCode, RequestAuthenticator requestAuthenticator) {
+        if (requestAuthenticator == null) {
+            this.requestAuthenticator = new DummyRequestAuthenticator();
+        } else {
+            this.requestAuthenticator = requestAuthenticator;
+        }
+
         this.httpHeaders = httpHeaders;
         URI uri;
         try {
@@ -63,7 +118,14 @@ public class GbfsLoader {
         }
 
         // Fetch autoconfiguration file
+        try {
+            this.requestAuthenticator.authenticateRequest(httpHeaders);
+        } catch (RequestAuthenticationException e) {
+            LOG.warn("Unable to authenticate request: {}", e.getCause().getMessage());
+        }
+
         disoveryFileData = fetchFeed(uri, httpHeaders, GBFS.class);
+
         if (disoveryFileData == null) {
             throw new RuntimeException("Could not fetch the feed auto-configuration file from " + uri);
         }
@@ -82,7 +144,7 @@ public class GbfsLoader {
             if (feedUpdaters.containsKey(feedName)) {
                 throw new RuntimeException(
                         "Feed contains duplicate url for feed " + feedName + ". " +
-                        "Urls: " + feed.getUrl() + ", " + feedUpdaters.get(feedName).url
+                                "Urls: " + feed.getUrl() + ", " + feedUpdaters.get(feedName).url
                 );
             }
 
@@ -90,7 +152,6 @@ public class GbfsLoader {
             if (feed.getName() != null) {
                 feedUpdaters.put(feedName, new GBFSFeedUpdater<>(feed));
             }
-
         }
     }
 
@@ -180,6 +241,12 @@ public class GbfsLoader {
         }
 
         private void fetchData() {
+            try {
+                requestAuthenticator.authenticateRequest(httpHeaders);
+            } catch (RequestAuthenticationException e) {
+                LOG.warn("Unable to authenticate request: {}", e.getCause().getMessage());
+            }
+
             T newData = GbfsLoader.fetchFeed(url, httpHeaders, implementingClass);
             if (newData == null) {
                 LOG.warn("Invalid data for {}", url);

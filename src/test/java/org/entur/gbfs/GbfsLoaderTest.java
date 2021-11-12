@@ -24,7 +24,6 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -43,7 +42,6 @@ public class GbfsLoaderTest {
     void getV22FeedWithExplicitLanguage() {
         GbfsLoader loader = new GbfsLoader(
                 "file:src/test/resources/gbfs/lillestrombysykkel/gbfs.json",
-                null,
                 LANGUAGE_NB
         );
 
@@ -53,9 +51,7 @@ public class GbfsLoaderTest {
     @Test
     void getV22FeedWithNoLanguage() {
         GbfsLoader loader = new GbfsLoader(
-                "file:src/test/resources/gbfs/lillestrombysykkel/gbfs.json",
-                null,
-                null
+                "file:src/test/resources/gbfs/lillestrombysykkel/gbfs.json"
         );
 
         validateV22Feed(loader);
@@ -65,7 +61,6 @@ public class GbfsLoaderTest {
     void getV22FeedWithWrongLanguage() {
         assertThrows(RuntimeException.class, () -> new GbfsLoader(
                 "file:src/test/resources/gbfs/lillestrombysykkel/gbfs.json",
-                null,
                 LANGUAGE_EN
         ));
     }
@@ -74,7 +69,6 @@ public class GbfsLoaderTest {
     void getV10FeedWithExplicitLanguage() {
         GbfsLoader loader = new GbfsLoader(
                 "file:src/test/resources/gbfs/helsinki/gbfs.json",
-                null,
                 LANGUAGE_EN
         );
 
@@ -92,7 +86,7 @@ public class GbfsLoaderTest {
         while (reader.readRecord()) {
             try {
                 String url = reader.get("Auto-Discovery URL");
-                new GbfsLoader(url, null, null).update();
+                new GbfsLoader(url).update();
             } catch (Exception e) {
                 exceptions.add(e);
             }
@@ -104,7 +98,7 @@ public class GbfsLoaderTest {
     @Test
     @Disabled
     void testSpin() {
-        new GbfsLoader("https://gbfs.spin.pm/api/gbfs/v2_2/edmonton/gbfs", null, null).update();
+        new GbfsLoader("https://gbfs.spin.pm/api/gbfs/v2_2/edmonton/gbfs").update();
     }
 
     private void validateV22Feed(GbfsLoader loader) {

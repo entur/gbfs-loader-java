@@ -18,7 +18,10 @@
 
 package org.entur.gbfs;
 
+import org.entur.gbfs.authentication.RequestAuthenticator;
+
 import java.net.URI;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -28,7 +31,8 @@ public class GbfsSubscriptionOptions {
     private URI discoveryURI;
     private String languageCode;
     private long minimumTtl;
-    private Map<String, String> headers;
+    private Map<String, String> headers = new HashMap<>();
+    private RequestAuthenticator requestAuthenticator;
 
     public URI getDiscoveryURI() {
         return discoveryURI;
@@ -60,5 +64,13 @@ public class GbfsSubscriptionOptions {
 
     public void setHeaders(Map<String, String> headers) {
         this.headers = headers;
+    }
+
+    public RequestAuthenticator getRequestAuthenticator() {
+        return requestAuthenticator;
+    }
+
+    public void setRequestAuthenticator(RequestAuthenticator requestAuthenticator) {
+        this.requestAuthenticator = requestAuthenticator;
     }
 }

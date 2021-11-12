@@ -53,7 +53,8 @@ public class GbfsSubscription {
         loader = new GbfsLoader(
                 subscriptionOptions.getDiscoveryURI().toString(),
                 subscriptionOptions.getHeaders(),
-                subscriptionOptions.getLanguageCode()
+                subscriptionOptions.getLanguageCode(),
+                subscriptionOptions.getRequestAuthenticator()
         );
     }
 
