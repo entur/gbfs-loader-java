@@ -47,3 +47,12 @@ for each feed.
 
         // Use your own scheduler to update the subscriptions
         subscriptions.update();
+
+### Authentication
+
+The ´GbfsLoader` constructor, as well as the `GbfsSubscriptionOptions` have an optional
+`RequestAuthenticator` parameter. Use this with GBFS feeds that require authentication.
+
+Two implementations are provided in this library: `Oauth2ClientCredentialsGrantRequestAuthenticator`
+and `BearerTokenRequestAuthenticator`. You can also implement the `RequestAuthenticator` interface
+to provide use custom authentication schemes.
