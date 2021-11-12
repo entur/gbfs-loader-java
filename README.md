@@ -56,3 +56,8 @@ The ´GbfsLoader` constructor, as well as the `GbfsSubscriptionOptions` have an 
 Two implementations are provided in this library: `Oauth2ClientCredentialsGrantRequestAuthenticator`
 and `BearerTokenRequestAuthenticator`. You can also implement the `RequestAuthenticator` interface
 to provide use custom authentication schemes.
+
+
+## Maven central
+This project is available in the central maven repository.
+See https://search.maven.org/search?q=g:org.entur.gbfs
