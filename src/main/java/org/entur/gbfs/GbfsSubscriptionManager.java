@@ -59,7 +59,7 @@ public class GbfsSubscriptionManager {
      */
     public void update() {
         Optional.ofNullable(customThreadPool).orElse(ForkJoinPool.commonPool())
-                .submit(() -> subscriptions.values().parallelStream().forEach(GbfsSubscription::update));
+                .execute(() -> subscriptions.values().parallelStream().forEach(GbfsSubscription::update));
     }
 
     /**
