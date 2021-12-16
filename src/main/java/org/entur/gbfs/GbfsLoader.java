@@ -119,7 +119,7 @@ public class GbfsLoader {
         init();
     }
 
-    synchronized private void init() {
+    private synchronized void init() {
         if (setupComplete.get()) {
             return;
         }
