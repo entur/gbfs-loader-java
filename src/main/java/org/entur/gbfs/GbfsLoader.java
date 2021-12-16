@@ -135,25 +135,24 @@ public class GbfsLoader {
             LOG.warn("GBFS autoconfiguration url {} does not end with gbfs.json. Make sure it follows the specification, if you get any errors using it.", url);
         }
 
-        // Fetch autoconfiguration file
-        try {
-            this.requestAuthenticator.authenticateRequest(httpHeaders);
-        } catch (RequestAuthenticationException e) {
-            LOG.warn("Unable to authenticate request: {}", e.getCause().getMessage());
+        if (authenticateRequest()) {
+            disoveryFileData = fetchFeed(uri, httpHeaders, GBFS.class);
+            if (disoveryFileData != null) {
+                createUpdaters();
+                setupComplete.set(true);
+            } else {
+                LOG.warn("Could not fetch the feed auto-configuration file from {}", uri);
+            }
         }
+    }
 
-        disoveryFileData = fetchFeed(uri, httpHeaders, GBFS.class);
-
-        if (disoveryFileData == null) {
-            throw new RuntimeException("Could not fetch the feed auto-configuration file from " + uri);
-        }
-
+    private void createUpdaters() {
         // Pick first language if none defined
         GBFSFeeds feeds = languageCode == null
                 ? disoveryFileData.getFeedsData().values().iterator().next()
                 : disoveryFileData.getFeedsData().get(languageCode);
         if (feeds == null) {
-            throw new RuntimeException("Language " + languageCode + " does not exist in feed " + uri);
+            throw new RuntimeException("Language " + languageCode + " does not exist in feed " + url);
         }
 
         // Create updater for each file
@@ -171,8 +170,16 @@ public class GbfsLoader {
                 feedUpdaters.put(feedName, new GBFSFeedUpdater<>(feed));
             }
         }
+    }
 
-        setupComplete.set(true);
+    private boolean authenticateRequest() {
+        try {
+            this.requestAuthenticator.authenticateRequest(httpHeaders);
+            return true;
+        } catch (RequestAuthenticationException e) {
+            LOG.warn("Unable to authenticate request: {}", e.getMessage());
+            return false;
+        }
     }
 
     /**
@@ -265,21 +272,9 @@ public class GbfsLoader {
         }
 
         private void fetchData() {
-            try {
-                requestAuthenticator.authenticateRequest(httpHeaders);
-            } catch (RequestAuthenticationException e) {
-                String message;
-                if (e.getCause() != null && e.getCause().getMessage() != null) {
-                    message = e.getCause().getMessage();
-                } else if (e.getMessage() != null) {
-                    message = e.getMessage();
-                } else {
-                    message = "Unknown reason";
-                }
-
-                LOG.warn("Unable to authenticate request: {}", message);
+            if (!authenticateRequest()) {
+                 return;
             }
-
             T newData = GbfsLoader.fetchFeed(url, httpHeaders, implementingClass);
             if (newData == null) {
                 LOG.warn("Invalid data for {}", url);
