@@ -119,7 +119,11 @@ public class GbfsLoader {
         init();
     }
 
-    public void init() {
+    synchronized private void init() {
+        if (setupComplete.get()) {
+            return;
+        }
+
         URI uri;
         try {
             uri = new URI(url);
