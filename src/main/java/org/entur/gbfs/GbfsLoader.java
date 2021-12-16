@@ -268,7 +268,16 @@ public class GbfsLoader {
             try {
                 requestAuthenticator.authenticateRequest(httpHeaders);
             } catch (RequestAuthenticationException e) {
-                LOG.warn("Unable to authenticate request: {}", e.getCause().getMessage());
+                String message;
+                if (e.getCause() != null && e.getCause().getMessage() != null) {
+                    message = e.getCause().getMessage();
+                } else if (e.getMessage() != null) {
+                    message = e.getMessage();
+                } else {
+                    message = "Unknown reason";
+                }
+
+                LOG.warn("Unable to authenticate request: {}", message);
             }
 
             T newData = GbfsLoader.fetchFeed(url, httpHeaders, implementingClass);
