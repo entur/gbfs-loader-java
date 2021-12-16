@@ -20,6 +20,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -39,11 +40,17 @@ public class GbfsLoader {
     /** One updater per feed type(?)*/
     private final Map<GBFSFeedName, GBFSFeedUpdater<?>> feedUpdaters = new HashMap<>();
 
+    private String url;
+
     private final Map<String, String> httpHeaders;
+
+    private String languageCode;
 
     private RequestAuthenticator requestAuthenticator;
 
     private GBFS disoveryFileData;
+
+    private AtomicBoolean setupComplete = new AtomicBoolean(false);
 
     private final Lock updateLock = new ReentrantLock();
 
@@ -105,7 +112,18 @@ public class GbfsLoader {
             this.requestAuthenticator = requestAuthenticator;
         }
 
+        this.url = url;
         this.httpHeaders = httpHeaders;
+        this.languageCode = languageCode;
+
+        init();
+    }
+
+    private synchronized void init() {
+        if (setupComplete.get()) {
+            return;
+        }
+
         URI uri;
         try {
             uri = new URI(url);
@@ -153,12 +171,18 @@ public class GbfsLoader {
                 feedUpdaters.put(feedName, new GBFSFeedUpdater<>(feed));
             }
         }
+
+        setupComplete.set(true);
     }
 
     /**
      * Checks if any of the feeds should be updated base on the TTL and fetches. Returns true, if any feeds were updated.
      */
     public boolean update() {
+        if (!setupComplete.get()) {
+            init();
+        }
+
         boolean didUpdate = false;
         if (updateLock.tryLock()) {
             for (GBFSFeedUpdater<?> updater : feedUpdaters.values()) {
