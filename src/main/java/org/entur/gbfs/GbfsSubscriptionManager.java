@@ -22,6 +22,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ForkJoinPool;
 import java.util.function.Consumer;
 
@@ -29,7 +30,7 @@ import java.util.function.Consumer;
  * Manage a set of subscriptions (for different GBFS feeds)
  */
 public class GbfsSubscriptionManager {
-    private final Map<String, GbfsSubscription> subscriptions = new HashMap<>();
+    private final Map<String, GbfsSubscription> subscriptions = new ConcurrentHashMap<>();
 
     private ForkJoinPool customThreadPool;
 
