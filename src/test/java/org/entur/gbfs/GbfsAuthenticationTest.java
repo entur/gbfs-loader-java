@@ -2,7 +2,7 @@ package org.entur.gbfs;
 
 import org.entur.gbfs.authentication.Oauth2ClientCredentialsGrantRequestAuthenticator;
 import org.entur.gbfs.authentication.RequestAuthenticator;
-import org.entur.gbfs.v2_2.free_bike_status.GBFSFreeBikeStatus;
+import org.entur.gbfs.v2_3.free_bike_status.GBFSFreeBikeStatus;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;

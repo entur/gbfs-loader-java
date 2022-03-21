@@ -8,10 +8,10 @@ import org.entur.gbfs.authentication.RequestAuthenticator;
 import org.entur.gbfs.authentication.DummyRequestAuthenticator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.entur.gbfs.v2_2.gbfs.GBFS;
-import org.entur.gbfs.v2_2.gbfs.GBFSFeed;
-import org.entur.gbfs.v2_2.gbfs.GBFSFeedName;
-import org.entur.gbfs.v2_2.gbfs.GBFSFeeds;
+import org.entur.gbfs.v2_3.gbfs.GBFS;
+import org.entur.gbfs.v2_3.gbfs.GBFSFeed;
+import org.entur.gbfs.v2_3.gbfs.GBFSFeedName;
+import org.entur.gbfs.v2_3.gbfs.GBFSFeeds;
 
 import java.io.IOException;
 import java.io.InputStream;
