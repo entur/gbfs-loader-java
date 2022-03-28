@@ -47,7 +47,7 @@
         <jdk.version>1.8</jdk.version>
 
         <gbfs-java-model.version>2.3.0</gbfs-java-model.version>
-        <jackson-databind.version>2.12.5</jackson-databind.version>
+        <jackson-databind.version>2.13.2.1</jackson-databind.version>
         <slf4j.version>1.7.32</slf4j.version>
         <httpclient-version>4.5.13</httpclient-version>
         <oauth2-essentials.version>0.17</oauth2-essentials.version>
