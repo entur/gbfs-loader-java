@@ -39,6 +39,10 @@ jobs:
       - run:
           name: Refresh cache
           command: mvn org.apache.maven.plugins:maven-dependency-plugin:3.1.0:go-offline -s .circleci/settings.xml
+      - save_cache:
+          paths:
+            - ~/.m2
+          key: dep-cache-v2-{{ checksum "pom.xml" }}
       # Cannot use -o because of snapshot dependencies.
       - run: mvn verify -s .circleci/settings.xml
       - run: *sonar-scan
