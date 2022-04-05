@@ -1,5 +1,12 @@
 package org.entur.gbfs;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
+
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.StatusLine;
@@ -11,15 +18,9 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URI;
-import java.util.Map;
-import java.util.concurrent.TimeUnit;
-
 public class HttpUtils {
     private static final Logger LOG = LoggerFactory.getLogger(HttpUtils.class);
+    /* Default timeout. */
     private static final long TIMEOUT_CONNECTION = 5000;
     private static final int TIMEOUT_SOCKET = 5000;
 
@@ -36,7 +37,7 @@ public class HttpUtils {
     }
 
     public static InputStream getData(
-        URI uri, long timeout, Map<String, String> requestHeaderValues
+            URI uri, Long timeoutConnection, Map<String, String> requestHeaderValues
     ) throws IOException {
         HttpGet httpget = new HttpGet(uri);
         if (requestHeaderValues != null) {
@@ -44,7 +45,8 @@ public class HttpUtils {
                 httpget.addHeader(entry.getKey(), entry.getValue());
             }
         }
-        HttpClient httpclient = getClient(timeout, timeout);
+        timeoutConnection = (timeoutConnection == null) ? TIMEOUT_CONNECTION : timeoutConnection;
+        HttpClient httpclient = getClient(timeoutConnection, timeoutConnection);
         HttpResponse response = httpclient.execute(httpget);
         if(response.getStatusLine().getStatusCode() != 200) {
             LOG.warn("Got non-200 status code: {}", response.getStatusLine().getStatusCode());

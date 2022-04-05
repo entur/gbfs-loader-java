@@ -1,2 +1,28 @@
-.idea
-target
+# Operating System Files #
+
+Thumbs.db
+
+# Eclipse Project Files #
+
+.project
+.classpath
+.settings
+.externalToolBuilders
+
+# IntelliJ IDEA Files #
+
+*.iml
+*.ipr
+*.iws
+*.idea
+
+# Build Files #
+
+generated-sources/
+target/
+
+# Mac Files #
+
+.DS_Store
+/bin/
+
