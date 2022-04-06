@@ -18,9 +18,6 @@
 
 package org.entur.gbfs;
 
-import java.util.Optional;
-import java.util.function.Consumer;
-
 import org.entur.gbfs.v2_3.free_bike_status.GBFSFreeBikeStatus;
 import org.entur.gbfs.v2_3.gbfs_versions.GBFSGbfsVersions;
 import org.entur.gbfs.v2_3.geofencing_zones.GBFSGeofencingZones;
@@ -34,6 +31,8 @@ import org.entur.gbfs.v2_3.system_pricing_plans.GBFSSystemPricingPlans;
 import org.entur.gbfs.v2_3.system_regions.GBFSSystemRegions;
 import org.entur.gbfs.v2_3.vehicle_types.GBFSVehicleTypes;
 
+import java.util.function.Consumer;
+import java.util.Optional;
 /**
  * Class to represent a subscription to GBFS feeds for a single system
  */
