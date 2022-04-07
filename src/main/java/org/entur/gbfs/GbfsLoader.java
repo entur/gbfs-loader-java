@@ -130,7 +130,7 @@ public class GbfsLoader {
         } else {
             this.requestAuthenticator = requestAuthenticator;
         }
-        
+
         this.url = url;
         this.httpHeaders = httpHeaders;
         this.languageCode = languageCode;
@@ -237,7 +237,7 @@ public class GbfsLoader {
     }
 
     /* private static methods */
-    
+
     private static <T> T fetchFeed(URI uri, Map<String, String> httpHeaders, Class<T> clazz) {
         return fetchFeed(uri, httpHeaders, null, clazz);
     }
@@ -245,7 +245,7 @@ public class GbfsLoader {
     private static <T> T fetchFeed(URI uri, Map<String, String> httpHeaders, Long timeout, Class<T> clazz) {
         try {
             InputStream is;
-            
+
             String proto = uri.getScheme();
             if (proto.equals("http") || proto.equals("https")) {
                 is = HttpUtils.getData(uri, timeout, httpHeaders);

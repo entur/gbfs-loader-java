@@ -36,7 +36,7 @@ public class HttpUtils {
     }
 
     public static InputStream getData(
-            URI uri, Long timeoutConnection, Map<String, String> requestHeaderValues
+            URI uri, Long timeout, Map<String, String> requestHeaderValues
     ) throws IOException {
         HttpGet httpget = new HttpGet(uri);
         if (requestHeaderValues != null) {
@@ -44,8 +44,8 @@ public class HttpUtils {
                 httpget.addHeader(entry.getKey(), entry.getValue());
             }
         }
-        timeoutConnection = (timeoutConnection == null) ? TIMEOUT_CONNECTION : timeoutConnection;
-        HttpClient httpclient = getClient(timeoutConnection, timeoutConnection);
+        timeout = (timeout == null) ? TIMEOUT_CONNECTION : timeout;
+        HttpClient httpclient = getClient(timeout, timeout);
         HttpResponse response = httpclient.execute(httpget);
         if(response.getStatusLine().getStatusCode() != 200) {
             LOG.warn("Got non-200 status code: {}", response.getStatusLine().getStatusCode());
