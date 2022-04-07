@@ -41,21 +41,21 @@ public class GbfsLoader {
     /** One updater per feed type(?)*/
     private final Map<GBFSFeedName, GBFSFeedUpdater<?>> feedUpdaters = new HashMap<>();
 
-    private String url;
+    private final String url;
 
     private final Map<String, String> httpHeaders;
 
-    private String languageCode;
+    private final String languageCode;
 
-    private RequestAuthenticator requestAuthenticator;
+    private final RequestAuthenticator requestAuthenticator;
 
     private GBFS disoveryFileData;
 
-    private AtomicBoolean setupComplete = new AtomicBoolean(false);
+    private final AtomicBoolean setupComplete = new AtomicBoolean(false);
 
     private final Lock updateLock = new ReentrantLock();
     
-    private long timeoutConnection;
+    private final Long timeoutConnection;
     
     /**
      * Create a new GbfsLoader
@@ -84,7 +84,7 @@ public class GbfsLoader {
      * @param languageCode The language code to be used to look up feeds in the discovery file
      */
     public GbfsLoader(String url, Map<String, String> httpHeaders, String languageCode) {
-        this(url, httpHeaders, languageCode, null, Optional.empty());
+        this(url, httpHeaders, languageCode, null, null);
     }
 
     /**
@@ -96,7 +96,7 @@ public class GbfsLoader {
      *                             each request
      */
     public GbfsLoader(String url, String languageCode, RequestAuthenticator requestAuthenticator) {
-        this(url, new HashMap<>(), languageCode, requestAuthenticator, Optional.empty());
+        this(url, new HashMap<>(), languageCode, requestAuthenticator, null);
     }
 
     /**
@@ -110,7 +110,7 @@ public class GbfsLoader {
      */
     public GbfsLoader(String url, String languageCode, RequestAuthenticator requestAuthenticator,
             Long timeoutConnection) {
-        this(url, new HashMap<>(), languageCode, requestAuthenticator, Optional.of(timeoutConnection));
+        this(url, new HashMap<>(), languageCode, requestAuthenticator, timeoutConnection);
     }
     
     /**
@@ -124,7 +124,7 @@ public class GbfsLoader {
      * @param timeoutConnection The optional timeout connection value, by default, the static value is applied.
      */
     public GbfsLoader(String url, Map<String, String> httpHeaders, String languageCode,
-            RequestAuthenticator requestAuthenticator, Optional<Long> timeoutConnection) {
+            RequestAuthenticator requestAuthenticator, Long timeoutConnection) {
         if (requestAuthenticator == null) {
             this.requestAuthenticator = new DummyRequestAuthenticator();
         } else {
@@ -134,7 +134,7 @@ public class GbfsLoader {
         this.url = url;
         this.httpHeaders = httpHeaders;
         this.languageCode = languageCode;
-        this.timeoutConnection = timeoutConnection.isPresent() ? timeoutConnection.get() : null;
+        this.timeoutConnection = timeoutConnection;
         
         init();
     }

@@ -55,7 +55,7 @@ public class GbfsSubscription {
                 subscriptionOptions.getHeaders(),
                 subscriptionOptions.getLanguageCode(),
                 subscriptionOptions.getRequestAuthenticator(), //
-                Optional.of(subscriptionOptions.getTimeout())
+                subscriptionOptions.getTimeout()
         );
     }
 
