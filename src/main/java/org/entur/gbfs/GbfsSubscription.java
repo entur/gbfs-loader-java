@@ -32,7 +32,7 @@ import org.entur.gbfs.v2_3.system_regions.GBFSSystemRegions;
 import org.entur.gbfs.v2_3.vehicle_types.GBFSVehicleTypes;
 
 import java.util.function.Consumer;
-
+import java.util.Optional;
 /**
  * Class to represent a subscription to GBFS feeds for a single system
  */
@@ -54,7 +54,8 @@ public class GbfsSubscription {
                 subscriptionOptions.getDiscoveryURI().toString(),
                 subscriptionOptions.getHeaders(),
                 subscriptionOptions.getLanguageCode(),
-                subscriptionOptions.getRequestAuthenticator()
+                subscriptionOptions.getRequestAuthenticator(), //
+                Optional.of(subscriptionOptions.getTimeout())
         );
     }
 

@@ -20,6 +20,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -53,7 +54,9 @@ public class GbfsLoader {
     private AtomicBoolean setupComplete = new AtomicBoolean(false);
 
     private final Lock updateLock = new ReentrantLock();
-
+    
+    private long timeoutConnection;
+    
     /**
      * Create a new GbfsLoader
      *
@@ -81,7 +84,7 @@ public class GbfsLoader {
      * @param languageCode The language code to be used to look up feeds in the discovery file
      */
     public GbfsLoader(String url, Map<String, String> httpHeaders, String languageCode) {
-        this(url, httpHeaders, languageCode, null);
+        this(url, httpHeaders, languageCode, null, Optional.empty());
     }
 
     /**
@@ -93,9 +96,23 @@ public class GbfsLoader {
      *                             each request
      */
     public GbfsLoader(String url, String languageCode, RequestAuthenticator requestAuthenticator) {
-        this(url, new HashMap<>(), languageCode, requestAuthenticator);
+        this(url, new HashMap<>(), languageCode, requestAuthenticator, Optional.empty());
     }
 
+    /**
+     * Create a new GbfsLoader
+     *
+     * @param url The URL to the GBFS discovery file
+     * @param languageCode The language code to be used to look up feeds in the discovery file
+     * @param requestAuthenticator An instance of RequestAuthenticator to provide authentication strategy for
+     *            each request.
+     * @param timeoutConnection The timeout connection value.
+     */
+    public GbfsLoader(String url, String languageCode, RequestAuthenticator requestAuthenticator,
+            Long timeoutConnection) {
+        this(url, new HashMap<>(), languageCode, requestAuthenticator, Optional.of(timeoutConnection));
+    }
+    
     /**
      * Create a new GbfsLoader
      *
@@ -103,9 +120,11 @@ public class GbfsLoader {
      * @param httpHeaders Additional HTTP headers to be used in requests (e.g. auth headers)
      * @param languageCode The language code to be used to look up feeds in the discovery file
      * @param requestAuthenticator An instance of RequestAuthenticator to provide authentication strategy for
-     *                             each request
+     *            each request.
+     * @param timeoutConnection The optional timeout connection value, by default, the static value is applied.
      */
-    public GbfsLoader(String url, Map<String, String> httpHeaders, String languageCode, RequestAuthenticator requestAuthenticator) {
+    public GbfsLoader(String url, Map<String, String> httpHeaders, String languageCode,
+            RequestAuthenticator requestAuthenticator, Optional<Long> timeoutConnection) {
         if (requestAuthenticator == null) {
             this.requestAuthenticator = new DummyRequestAuthenticator();
         } else {
@@ -115,7 +134,8 @@ public class GbfsLoader {
         this.url = url;
         this.httpHeaders = httpHeaders;
         this.languageCode = languageCode;
-
+        this.timeoutConnection = timeoutConnection.isPresent() ? timeoutConnection.get() : null;
+        
         init();
     }
 
@@ -136,7 +156,7 @@ public class GbfsLoader {
         }
 
         if (authenticateRequest()) {
-            disoveryFileData = fetchFeed(uri, httpHeaders, GBFS.class);
+            disoveryFileData = fetchFeed(uri, httpHeaders, timeoutConnection, GBFS.class);
             if (disoveryFileData != null) {
                 createUpdaters();
                 setupComplete.set(true);
@@ -219,12 +239,16 @@ public class GbfsLoader {
     /* private static methods */
 
     private static <T> T fetchFeed(URI uri, Map<String, String> httpHeaders, Class<T> clazz) {
+        return fetchFeed(uri, httpHeaders, null, clazz);
+    }
+    
+    private static <T> T fetchFeed(URI uri, Map<String, String> httpHeaders, Long timeout, Class<T> clazz) {
         try {
             InputStream is;
 
             String proto = uri.getScheme();
             if (proto.equals("http") || proto.equals("https")) {
-                is = HttpUtils.getData(uri, httpHeaders);
+                is = HttpUtils.getData(uri, timeout, httpHeaders);
             } else {
                 // Local file probably, try standard java
                 is = uri.toURL().openStream();

@@ -33,6 +33,7 @@ public class GbfsSubscriptionOptions {
     private long minimumTtl;
     private Map<String, String> headers = new HashMap<>();
     private RequestAuthenticator requestAuthenticator;
+    private Long timeout;
 
     public URI getDiscoveryURI() {
         return discoveryURI;
@@ -73,4 +74,13 @@ public class GbfsSubscriptionOptions {
     public void setRequestAuthenticator(RequestAuthenticator requestAuthenticator) {
         this.requestAuthenticator = requestAuthenticator;
     }
+
+    public Long getTimeout() {
+        return timeout;
+    }
+
+    public void setTimeout(Long timeout) {
+        this.timeout = timeout;
+    }
+    
 }
