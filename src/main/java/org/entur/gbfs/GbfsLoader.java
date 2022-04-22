@@ -123,23 +123,7 @@ public class GbfsLoader {
      * @param timeoutConnection The optional timeout connection value, by default, the static value is applied.
      */
     public GbfsLoader(String url, Map<String, String> httpHeaders, String languageCode,
-            RequestAuthenticator requestAuthenticator, Long timeoutConnection) {
-        this(url, httpHeaders, languageCode, requestAuthenticator, timeoutConnection, false);
-    }
-
-    /**
-     * Create a new GbfsLoader
-     *
-     * @param url The URL to the GBFS discovery file
-     * @param httpHeaders Additional HTTP headers to be used in requests (e.g. auth headers)
-     * @param languageCode The language code to be used to look up feeds in the discovery file
-     * @param requestAuthenticator An instance of RequestAuthenticator to provide authentication strategy for
-     *            each request.
-     * @param timeoutConnection The optional timeout connection value, by default, the static value is applied.
-     */
-    public GbfsLoader(String url, Map<String, String> httpHeaders, String languageCode,
-                      RequestAuthenticator requestAuthenticator, Long timeoutConnection,
-                      boolean enableValidation) {
+                      RequestAuthenticator requestAuthenticator, Long timeoutConnection) {
         if (requestAuthenticator == null) {
             this.requestAuthenticator = new DummyRequestAuthenticator();
         } else {
