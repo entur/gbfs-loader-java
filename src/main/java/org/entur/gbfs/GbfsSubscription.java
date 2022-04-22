@@ -90,14 +90,14 @@ public class GbfsSubscription {
             delivery.setGeofencingZones(loader.getFeed(GBFSGeofencingZones.class));
 
             if (subscriptionOptions.isEnableValidation()) {
-                delivery.setValidationResult(validateFeeds(delivery));
+                delivery.setValidationResult(validateFeeds());
             }
 
             consumer.accept(delivery);
         }
     }
 
-    private ValidationResult validateFeeds(GbfsDelivery delivery) {
+    private ValidationResult validateFeeds() {
         Map<String, InputStream> feeds = new HashMap<>();
         Arrays.stream(GBFSFeedName.values()).forEach(feedName -> {
             byte[] rawFeed = loader.getRawFeed(feedName);
