@@ -44,7 +44,8 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <jdk.version>1.8</jdk.version>
+        <jdk.version>11</jdk.version>
+        <jdk.target.version>1.8</jdk.target.version>
 
         <gbfs-java-model.version>2.3.1</gbfs-java-model.version>
         <jackson-databind.version>2.13.2.2</jackson-databind.version>
@@ -89,6 +90,11 @@
             <groupId>org.entur.gbfs</groupId>
             <artifactId>gbfs-java-model</artifactId>
             <version>${gbfs-java-model.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.entur.gbfs</groupId>
+            <artifactId>gbfs-validator-java</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
@@ -236,7 +242,7 @@
                 <version>${maven-compiler-plugin.version}</version>
                 <configuration>
                     <source>${jdk.version}</source>
-                    <target>${jdk.version}</target>
+                    <target>${jdk.target.version}</target>
                     <encoding>UTF-8</encoding>
                     <compilerArgs>
                         <!--arg>-Werror</arg-->

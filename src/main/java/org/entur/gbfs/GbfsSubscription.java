@@ -19,6 +19,7 @@
 package org.entur.gbfs;
 
 import org.entur.gbfs.v2_3.free_bike_status.GBFSFreeBikeStatus;
+import org.entur.gbfs.v2_3.gbfs.GBFSFeedName;
 import org.entur.gbfs.v2_3.gbfs_versions.GBFSGbfsVersions;
 import org.entur.gbfs.v2_3.geofencing_zones.GBFSGeofencingZones;
 import org.entur.gbfs.v2_3.station_information.GBFSStationInformation;
@@ -30,9 +31,17 @@ import org.entur.gbfs.v2_3.system_information.GBFSSystemInformation;
 import org.entur.gbfs.v2_3.system_pricing_plans.GBFSSystemPricingPlans;
 import org.entur.gbfs.v2_3.system_regions.GBFSSystemRegions;
 import org.entur.gbfs.v2_3.vehicle_types.GBFSVehicleTypes;
+import org.entur.gbfs.validation.GbfsValidator;
+import org.entur.gbfs.validation.GbfsValidatorFactory;
+import org.entur.gbfs.validation.model.ValidationResult;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.Consumer;
-import java.util.Optional;
+
 /**
  * Class to represent a subscription to GBFS feeds for a single system
  */
@@ -79,7 +88,24 @@ public class GbfsSubscription {
             delivery.setSystemHours(loader.getFeed(GBFSSystemHours.class));
             delivery.setSystemPricingPlans(loader.getFeed(GBFSSystemPricingPlans.class));
             delivery.setGeofencingZones(loader.getFeed(GBFSGeofencingZones.class));
+
+            if (subscriptionOptions.isEnableValidation()) {
+                delivery.setValidationResult(validateFeeds(delivery));
+            }
+
             consumer.accept(delivery);
         }
+    }
+
+    private ValidationResult validateFeeds(GbfsDelivery delivery) {
+        Map<String, InputStream> feeds = new HashMap<>();
+        Arrays.stream(GBFSFeedName.values()).forEach(feedName -> {
+            byte[] rawFeed = loader.getRawFeed(feedName);
+            if (rawFeed != null) {
+                feeds.put(feedName.value(), new ByteArrayInputStream(loader.getRawFeed(feedName)));
+            }
+        });
+        GbfsValidator validator = GbfsValidatorFactory.getGbfsJsonValidator();
+        return validator.validate(feeds);
     }
 }

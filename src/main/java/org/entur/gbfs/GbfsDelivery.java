@@ -31,6 +31,7 @@ import org.entur.gbfs.v2_3.system_information.GBFSSystemInformation;
 import org.entur.gbfs.v2_3.system_pricing_plans.GBFSSystemPricingPlans;
 import org.entur.gbfs.v2_3.system_regions.GBFSSystemRegions;
 import org.entur.gbfs.v2_3.vehicle_types.GBFSVehicleTypes;
+import org.entur.gbfs.validation.model.ValidationResult;
 
 /**
  * This class holds the data for all the GBFS files
@@ -49,6 +50,7 @@ public class GbfsDelivery {
     private GBFSSystemPricingPlans systemPricingPlans;
     private GBFSSystemAlerts systemAlerts;
     private GBFSGeofencingZones geofencingZones;
+    private ValidationResult validationResult;
 
     public void setFeed(GBFS feed) {
         setDiscovery((GBFS) feed);
@@ -156,5 +158,13 @@ public class GbfsDelivery {
 
     public void setGeofencingZones(GBFSGeofencingZones geofencingZones) {
         this.geofencingZones = geofencingZones;
+    }
+
+    public ValidationResult getValidationResult() {
+        return validationResult;
+    }
+
+    public void setValidationResult(ValidationResult validationResult) {
+        this.validationResult = validationResult;
     }
 }
