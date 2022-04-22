@@ -2,6 +2,7 @@ package org.entur.gbfs;
 
 import com.csvreader.CsvReader;
 import org.entur.gbfs.v2_3.free_bike_status.GBFSFreeBikeStatus;
+import org.entur.gbfs.v2_3.gbfs.GBFSFeedName;
 import org.entur.gbfs.v2_3.geofencing_zones.GBFSGeofencingZones;
 import org.entur.gbfs.v2_3.station_information.GBFSStation;
 import org.entur.gbfs.v2_3.station_information.GBFSStationInformation;
@@ -14,11 +15,15 @@ import org.entur.gbfs.v2_3.system_pricing_plans.GBFSSystemPricingPlans;
 import org.entur.gbfs.v2_3.system_regions.GBFSSystemRegions;
 import org.entur.gbfs.v2_3.vehicle_types.GBFSVehicleType;
 import org.entur.gbfs.v2_3.vehicle_types.GBFSVehicleTypes;
+import org.entur.gbfs.validation.GbfsValidator;
+import org.entur.gbfs.validation.GbfsValidatorFactory;
+import org.entur.gbfs.validation.model.FileValidationResult;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
@@ -104,6 +109,10 @@ public class GbfsLoaderTest {
     private void validateV22Feed(GbfsLoader loader) {
         assertTrue(loader.update());
 
+        GbfsValidator validator = GbfsValidatorFactory.getGbfsJsonValidator();
+        FileValidationResult validationResult = validator.validateFile("system_information", new ByteArrayInputStream(loader.getRawFeed(GBFSFeedName.SystemInformation)));
+        assertEquals(0, validationResult.getErrorsCount());
+
         GBFSSystemInformation systemInformation = loader.getFeed(GBFSSystemInformation.class);
         assertNotNull(systemInformation);
         assertEquals("lillestrombysykkel", systemInformation.getData().getSystemId());
@@ -116,6 +125,8 @@ public class GbfsLoaderTest {
         assertNull(systemInformation.getData().getShortName());
         assertNull(systemInformation.getData().getUrl());
 
+        validationResult = validator.validateFile("vehicle_types", new ByteArrayInputStream(loader.getRawFeed(GBFSFeedName.VehicleTypes)));
+        assertEquals(0, validationResult.getErrorsCount());
 
         GBFSVehicleTypes vehicleTypes = loader.getFeed(GBFSVehicleTypes.class);
         assertNotNull(vehicleTypes);
@@ -126,6 +137,8 @@ public class GbfsLoaderTest {
         assertEquals(GBFSVehicleType.PropulsionType.HUMAN, vehicleType.getPropulsionType());
         assertNull(vehicleType.getMaxRangeMeters());
 
+        validationResult = validator.validateFile("station_information", new ByteArrayInputStream(loader.getRawFeed(GBFSFeedName.StationInformation)));
+        assertEquals(0, validationResult.getErrorsCount());
 
         GBFSStationInformation stationInformation = loader.getFeed(GBFSStationInformation.class);
         assertNotNull(stationInformation);
@@ -134,6 +147,8 @@ public class GbfsLoaderTest {
         assertTrue(stations.stream().anyMatch(gbfsStation -> gbfsStation.getName().equals("TORVGATA")));
         assertEquals(21, stations.stream().mapToDouble(GBFSStation::getCapacity).sum());
 
+        validationResult = validator.validateFile("station_status", new ByteArrayInputStream(loader.getRawFeed(GBFSFeedName.StationStatus)));
+        assertEquals(0, validationResult.getErrorsCount());
 
         GBFSStationStatus stationStatus = loader.getFeed(GBFSStationStatus.class);
         assertNotNull(stationStatus);
@@ -146,6 +161,9 @@ public class GbfsLoaderTest {
         assertNull(loader.getFeed(GBFSSystemCalendar.class));
         assertNull(loader.getFeed(GBFSSystemRegions.class));
 
+        validationResult = validator.validateFile("system_pricing_plans", new ByteArrayInputStream(loader.getRawFeed(GBFSFeedName.SystemPricingPlans)));
+        assertEquals(0, validationResult.getErrorsCount());
+
         GBFSSystemPricingPlans pricingPlans = loader.getFeed(GBFSSystemPricingPlans.class);
 
         assertNotNull(pricingPlans);
@@ -157,6 +175,10 @@ public class GbfsLoaderTest {
 
     private void validateV10Feed(GbfsLoader loader) {
         assertTrue(loader.update());
+
+        GbfsValidator validator = GbfsValidatorFactory.getGbfsJsonValidator();
+        FileValidationResult validationResult = validator.validateFile("system_information", new ByteArrayInputStream(loader.getRawFeed(GBFSFeedName.SystemInformation)));
+        assertEquals(0, validationResult.getErrorsCount());
 
         GBFSSystemInformation systemInformation = loader.getFeed(GBFSSystemInformation.class);
         assertNotNull(systemInformation);
@@ -173,6 +195,8 @@ public class GbfsLoaderTest {
 
         assertNull(loader.getFeed(GBFSVehicleTypes.class));
 
+        validationResult = validator.validateFile("station_information", new ByteArrayInputStream(loader.getRawFeed(GBFSFeedName.StationInformation)));
+        assertEquals(0, validationResult.getErrorsCount());
 
         GBFSStationInformation stationInformation = loader.getFeed(GBFSStationInformation.class);
         assertNotNull(stationInformation);
@@ -181,6 +205,8 @@ public class GbfsLoaderTest {
         assertTrue(stations.stream().anyMatch(gbfsStation -> gbfsStation.getName().equals("Kaivopuisto")));
         assertEquals(239, stations.stream().mapToDouble(GBFSStation::getCapacity).sum());
 
+        validationResult = validator.validateFile("station_status", new ByteArrayInputStream(loader.getRawFeed(GBFSFeedName.StationStatus)));
+        assertEquals(0, validationResult.getErrorsCount());
 
         GBFSStationStatus stationStatus = loader.getFeed(GBFSStationStatus.class);
         assertNotNull(stationStatus);

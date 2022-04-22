@@ -20,7 +20,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -124,7 +123,7 @@ public class GbfsLoader {
      * @param timeoutConnection The optional timeout connection value, by default, the static value is applied.
      */
     public GbfsLoader(String url, Map<String, String> httpHeaders, String languageCode,
-            RequestAuthenticator requestAuthenticator, Long timeoutConnection) {
+                      RequestAuthenticator requestAuthenticator, Long timeoutConnection) {
         if (requestAuthenticator == null) {
             this.requestAuthenticator = new DummyRequestAuthenticator();
         } else {
@@ -156,7 +155,13 @@ public class GbfsLoader {
         }
 
         if (authenticateRequest()) {
-            disoveryFileData = fetchFeed(uri, httpHeaders, timeoutConnection, GBFS.class);
+            byte[] rawFeed = fetchFeed(uri, httpHeaders, timeoutConnection);
+            try {
+                disoveryFileData = objectMapper.readValue(rawFeed, GBFS.class);
+            } catch (IOException e) {
+                LOG.warn("Error unmarshalling discovery feed", e);
+            }
+
             if (disoveryFileData != null) {
                 createUpdaters();
                 setupComplete.set(true);
@@ -236,13 +241,18 @@ public class GbfsLoader {
         return feed.cast(updater.getData());
     }
 
-    /* private static methods */
+    public byte[] getRawFeed(GBFSFeedName feedName) {
+        GBFSFeedUpdater<?> updater = feedUpdaters.get(feedName);
+        if (updater == null) { return null; }
+        return updater.getRawData();
+    }
 
-    private static <T> T fetchFeed(URI uri, Map<String, String> httpHeaders, Class<T> clazz) {
-        return fetchFeed(uri, httpHeaders, null, clazz);
+    /* private static methods */
+    private static byte[] fetchFeed(URI uri, Map<String, String> httpHeaders) {
+        return fetchFeed(uri, httpHeaders, null);
     }
     
-    private static <T> T fetchFeed(URI uri, Map<String, String> httpHeaders, Long timeout, Class<T> clazz) {
+    private static byte[] fetchFeed(URI uri, Map<String, String> httpHeaders, Long timeout) {
         try {
             InputStream is;
 
@@ -257,9 +267,11 @@ public class GbfsLoader {
                 LOG.warn("Failed to get data from url {}", uri);
                 return null;
             }
-            T data = objectMapper.readValue(is, clazz);
+
+            byte[] asBytes = is.readAllBytes();
             is.close();
-            return data;
+
+            return asBytes;
         } catch (IllegalArgumentException e) {
             LOG.warn("Error parsing GBFS feed from {}", uri, e);
             return null;
@@ -284,6 +296,7 @@ public class GbfsLoader {
 
         private int nextUpdate;
         private T data;
+        private byte[] rawData;
 
         @SuppressWarnings("unchecked")
         private GBFSFeedUpdater(GBFSFeed feed) {
@@ -295,24 +308,35 @@ public class GbfsLoader {
             return data;
         }
 
+        public byte[] getRawData() {
+            return rawData;
+        }
+
         private void fetchData() {
             if (!authenticateRequest()) {
                  return;
             }
-            T newData = GbfsLoader.fetchFeed(url, httpHeaders, implementingClass);
-            if (newData == null) {
+
+            rawData = GbfsLoader.fetchFeed(url, httpHeaders);
+
+            if (rawData == null) {
                 LOG.warn("Invalid data for {}", url);
                 nextUpdate = getCurrentTimeSeconds();
                 return;
             }
 
-            data = newData;
+            try {
+                data = objectMapper.readValue(rawData, implementingClass);
+            } catch (IOException e) {
+                LOG.warn("Error unmarshalling feed", e);
+                data = null;
+            }
 
             try {
                 // Fetch lastUpdated and ttl from the resulting class. Due to type erasure we don't know the actual
                 // class, and have to use introspection to get the method references, as they do not share a supertype.
-                Integer lastUpdated = (Integer) implementingClass.getMethod("getLastUpdated").invoke(newData);
-                Integer ttl = (Integer) implementingClass.getMethod("getTtl").invoke(newData);
+                Integer lastUpdated = (Integer) implementingClass.getMethod("getLastUpdated").invoke(data);
+                Integer ttl = (Integer) implementingClass.getMethod("getTtl").invoke(data);
                 if (lastUpdated == null || ttl == null) {
                     nextUpdate = getCurrentTimeSeconds();
                 } else {

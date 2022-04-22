@@ -34,6 +34,7 @@ public class GbfsSubscriptionOptions {
     private Map<String, String> headers = new HashMap<>();
     private RequestAuthenticator requestAuthenticator;
     private Long timeout;
+    private boolean enableValidation;
 
     public URI getDiscoveryURI() {
         return discoveryURI;
@@ -82,5 +83,12 @@ public class GbfsSubscriptionOptions {
     public void setTimeout(Long timeout) {
         this.timeout = timeout;
     }
-    
+
+    public boolean isEnableValidation() {
+        return enableValidation;
+    }
+
+    public void setEnableValidation(boolean enableValidation) {
+        this.enableValidation = enableValidation;
+    }
 }

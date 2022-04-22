@@ -40,6 +40,7 @@ public class GBFSSubscriptionTest {
     Consumer<GbfsDelivery> getTestConsumer() {
         return delivery -> {
             Assertions.assertNotNull(delivery);
+            Assertions.assertEquals(0, delivery.getValidationResult().getSummary().getErrorsCount());
             waiter.countDown();
         };
     }
@@ -49,6 +50,7 @@ public class GBFSSubscriptionTest {
         GbfsSubscriptionOptions options = new GbfsSubscriptionOptions();
         options.setDiscoveryURI(new URI(url));
         options.setLanguageCode(languageCode);
+        options.setEnableValidation(true);
         return options;
     }
 }
