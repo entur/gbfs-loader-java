@@ -156,8 +156,11 @@ public class GbfsLoader {
 
         if (authenticateRequest()) {
             byte[] rawFeed = fetchFeed(uri, httpHeaders, timeoutConnection);
+
             try {
-                disoveryFileData = objectMapper.readValue(rawFeed, GBFS.class);
+                if (rawFeed != null) {
+                    disoveryFileData = objectMapper.readValue(rawFeed, GBFS.class);
+                }
             } catch (IOException e) {
                 LOG.warn("Error unmarshalling discovery feed", e);
             }
