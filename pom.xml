@@ -47,7 +47,7 @@
         <jdk.version>11</jdk.version>
 
         <gbfs-java-model.version>2.3.1</gbfs-java-model.version>
-        <gbfs-validator-java.version>1.0.1-SNAPSHOT</gbfs-validator-java.version>
+        <gbfs-validator-java.version>1.0.1</gbfs-validator-java.version>
         <jackson-databind.version>2.13.2.2</jackson-databind.version>
         <slf4j.version>1.7.36</slf4j.version>
         <httpclient-version>4.5.13</httpclient-version>
