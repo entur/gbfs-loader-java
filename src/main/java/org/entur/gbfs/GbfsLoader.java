@@ -48,6 +48,8 @@ public class GbfsLoader {
 
     private final RequestAuthenticator requestAuthenticator;
 
+    private byte[] rawDiscoveryFileData;
+
     private GBFS disoveryFileData;
 
     private final AtomicBoolean setupComplete = new AtomicBoolean(false);
@@ -155,11 +157,11 @@ public class GbfsLoader {
         }
 
         if (authenticateRequest()) {
-            byte[] rawFeed = fetchFeed(uri, httpHeaders, timeoutConnection);
+            rawDiscoveryFileData = fetchFeed(uri, httpHeaders, timeoutConnection);
 
             try {
-                if (rawFeed != null) {
-                    disoveryFileData = objectMapper.readValue(rawFeed, GBFS.class);
+                if (rawDiscoveryFileData != null) {
+                    disoveryFileData = objectMapper.readValue(rawDiscoveryFileData, GBFS.class);
                 }
             } catch (IOException e) {
                 LOG.warn("Error unmarshalling discovery feed", e);
@@ -245,6 +247,9 @@ public class GbfsLoader {
     }
 
     public byte[] getRawFeed(GBFSFeedName feedName) {
+        if (feedName.equals(GBFSFeedName.GBFS)) {
+            return rawDiscoveryFileData;
+        }
         GBFSFeedUpdater<?> updater = feedUpdaters.get(feedName);
         if (updater == null) { return null; }
         return updater.getRawData();
