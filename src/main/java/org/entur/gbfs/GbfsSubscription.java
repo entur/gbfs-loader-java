@@ -69,6 +69,14 @@ public class GbfsSubscription {
     }
 
     /**
+     * Check if the subscription is ready to use
+     * @return True if the subscription setup is complete
+     */
+    public boolean getSetupComplete() {
+        return loader.getSetupComplete().get();
+    }
+
+    /**
      * Update the subscription by updating the loader and push a new delivery
      * to the consumer if the update had changes
      */

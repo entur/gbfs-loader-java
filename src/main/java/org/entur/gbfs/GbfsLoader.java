@@ -140,6 +140,10 @@ public class GbfsLoader {
         init();
     }
 
+    public AtomicBoolean getSetupComplete() {
+        return setupComplete;
+    }
+
     private synchronized void init() {
         if (setupComplete.get()) {
             return;

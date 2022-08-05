@@ -50,8 +50,14 @@ public class GbfsSubscriptionManager {
         String id = UUID.randomUUID().toString();
         GbfsSubscription subscription = new GbfsSubscription(options, consumer);
         subscription.init();
-        subscriptions.put(id, subscription);
-        return id;
+
+        // Only add subscription if setup is complete
+        if (subscription.getSetupComplete()) {
+            subscriptions.put(id, subscription);
+            return id;
+        }
+
+        return null;
     }
 
     /**
