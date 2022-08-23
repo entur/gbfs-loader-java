@@ -334,6 +334,7 @@ public class GbfsLoader {
             if (rawData == null) {
                 LOG.warn("Invalid data for {}", url);
                 nextUpdate = getCurrentTimeSeconds();
+                data = null;
                 return;
             }
 
@@ -342,6 +343,7 @@ public class GbfsLoader {
             } catch (IOException e) {
                 LOG.warn("Error unmarshalling feed", e);
                 data = null;
+                return;
             }
 
             try {
