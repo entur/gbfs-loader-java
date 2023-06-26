@@ -10,7 +10,6 @@ import org.entur.gbfs.v2_3.station_status.GBFSStationStatus;
 import org.entur.gbfs.v2_3.system_alerts.GBFSSystemAlerts;
 import org.entur.gbfs.v2_3.system_calendar.GBFSSystemCalendar;
 import org.entur.gbfs.v2_3.system_hours.GBFSSystemHours;
-import org.entur.gbfs.v2_3.system_information.GBFSData;
 import org.entur.gbfs.v2_3.system_information.GBFSSystemInformation;
 import org.entur.gbfs.v2_3.system_pricing_plans.GBFSSystemPricingPlans;
 import org.entur.gbfs.v2_3.system_regions.GBFSSystemRegions;
@@ -119,7 +118,7 @@ public class GbfsLoaderTest {
         assertEquals("lillestrombysykkel", systemInformation.getData().getSystemId());
         assertEquals(LANGUAGE_NB, systemInformation.getData().getLanguage());
         assertEquals("Lillestrøm bysykkel", systemInformation.getData().getName());
-        assertEquals(GBFSData.Timezone.fromValue("Europe/Oslo"), systemInformation.getData().getTimezone());
+        assertEquals("Europe/Oslo", systemInformation.getData().getTimezone());
         assertNull(systemInformation.getData().getEmail());
         assertNull(systemInformation.getData().getOperator());
         assertNull(systemInformation.getData().getPhoneNumber());
@@ -186,7 +185,7 @@ public class GbfsLoaderTest {
         assertEquals("HSL_FI_Helsinki", systemInformation.getData().getSystemId());
         assertEquals(LANGUAGE_EN, systemInformation.getData().getLanguage());
         assertEquals("HSL Bikes Share", systemInformation.getData().getName());
-        assertEquals(GBFSData.Timezone.fromValue("Europe/Helsinki"), systemInformation.getData().getTimezone());
+        assertEquals("Europe/Helsinki", systemInformation.getData().getTimezone());
         assertNull(systemInformation.getData().getEmail());
         assertNull(systemInformation.getData().getOperator());
         assertNull(systemInformation.getData().getPhoneNumber());
