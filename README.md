@@ -53,9 +53,9 @@ for each feed.
 The `GbfsLoader` constructor, as well as the `GbfsSubscriptionOptions` have an optional
 `RequestAuthenticator` parameter. Use this with GBFS feeds that require authentication.
 
-Two implementations are provided in this library: `Oauth2ClientCredentialsGrantRequestAuthenticator`
-and `BearerTokenRequestAuthenticator`. You can also implement the `RequestAuthenticator` interface
-to provide use custom authentication schemes.
+The following implementations are provided in this library: `Oauth2ClientCredentialsGrantRequestAuthenticator`, 
+`BearerTokenRequestAuthenticator` and `HttpHeadersRequestAuthenticator`. You can also implement the
+`RequestAuthenticator` interface to provide use custom authentication schemes.
 
 
 ## Maven central
