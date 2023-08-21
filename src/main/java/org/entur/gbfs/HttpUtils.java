@@ -8,6 +8,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpHead;
 import org.apache.http.config.SocketConfig;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.impl.conn.SystemDefaultRoutePlanner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -85,6 +86,7 @@ public class HttpUtils {
 
     private static HttpClient getClient(long timeoutConnection, long timeoutSocket) {
         return HttpClientBuilder.create()
+                .setRoutePlanner(new SystemDefaultRoutePlanner(null))
                 .setDefaultSocketConfig(SocketConfig.custom().setSoTimeout((int)timeoutSocket).build())
                 .setConnectionTimeToLive(timeoutConnection, TimeUnit.MILLISECONDS)
                 .build();
