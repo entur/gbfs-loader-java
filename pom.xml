@@ -75,7 +75,7 @@
         <dependency-check-maven.version>5.0.0-M1</dependency-check-maven.version>
         <maven-scm-provider-gitexe.version>1.11.2</maven-scm-provider-gitexe.version>
         <maven-scm-api.version>1.11.2</maven-scm-api.version>
-        <gitflow-maven-plugin.version>1.18.0</gitflow-maven-plugin.version>
+        <gitflow-maven-plugin.version>1.20.0</gitflow-maven-plugin.version>
         <nexus-staging-maven-plugin.version>1.6.13</nexus-staging-maven-plugin.version>
         <jacoco-maven-plugin.version>0.8.10</jacoco-maven-plugin.version>
 
