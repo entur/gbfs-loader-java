@@ -70,7 +70,7 @@
         <maven-site-plugin.version>3.12.1</maven-site-plugin.version>
         <maven-resources-plugin.version>3.3.1</maven-resources-plugin.version>
         <maven-deploy-plugin.version>3.1.1</maven-deploy-plugin.version>
-        <versions-maven-plugin.version>2.10.0</versions-maven-plugin.version>
+        <versions-maven-plugin.version>2.16.0</versions-maven-plugin.version>
         <plexus-compiler-javac.version>2.13.0</plexus-compiler-javac.version>
         <dependency-check-maven.version>5.0.0-M1</dependency-check-maven.version>
         <maven-scm-provider-gitexe.version>1.13.0</maven-scm-provider-gitexe.version>
