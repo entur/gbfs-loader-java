@@ -44,7 +44,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <jdk.version>11</jdk.version>
+        <jdk.version>17</jdk.version>
 
         <gbfs-java-model.version>3.0.1</gbfs-java-model.version>
         <gbfs-validator-java.version>1.0.4</gbfs-validator-java.version>
