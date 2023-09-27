@@ -4,6 +4,8 @@ import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.StatusLine;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.config.CookieSpecs;
+import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpHead;
 import org.apache.http.config.SocketConfig;
@@ -89,6 +91,7 @@ public class HttpUtils {
                 .setRoutePlanner(new SystemDefaultRoutePlanner(null))
                 .setDefaultSocketConfig(SocketConfig.custom().setSoTimeout((int)timeoutSocket).build())
                 .setConnectionTimeToLive(timeoutConnection, TimeUnit.MILLISECONDS)
+                .setDefaultRequestConfig(RequestConfig.custom().setCookieSpec(CookieSpecs.STANDARD).build())
                 .build();
     }
 }
