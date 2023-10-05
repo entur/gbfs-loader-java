@@ -1,8 +1,6 @@
 package org.entur.gbfs.authentication;
 
-import static com.github.tomakehurst.wiremock.client.WireMock.okJson;
-import static com.github.tomakehurst.wiremock.client.WireMock.post;
-import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
+import static com.github.tomakehurst.wiremock.client.WireMock.*;
 
 import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
@@ -20,12 +18,21 @@ class Oauth2ClientCredentialsGrantRequestAuthenticatorTest {
     WireMockRuntimeInfo runtimeInfo
   ) {
     String TEST_TOKEN_URL = "http://localhost:" + runtimeInfo.getHttpPort() + "/token";
-    stubFor(post("/token").willReturn(okJson("{\"access_token\":\"fake_token\"}")));
+    String TEST_USER = "foo";
+    String TEST_PASSWORD = "bar";
+
+    stubFor(
+      post("/token")
+        .withRequestBody(equalTo("grant_type=client_credentials&scope=test-scope"))
+        .withBasicAuth(TEST_USER, TEST_PASSWORD)
+        .willReturn(okJson("{\"access_token\":\"fake_token\"}"))
+    );
     Oauth2ClientCredentialsGrantRequestAuthenticator authenticator =
       new Oauth2ClientCredentialsGrantRequestAuthenticator(
         URI.create(TEST_TOKEN_URL),
-        "foo",
-        "bar"
+        TEST_USER,
+        TEST_PASSWORD,
+        "test-scope"
       );
     Map<String, String> headers = new HashMap<>();
     authenticator.authenticateRequest(headers);
