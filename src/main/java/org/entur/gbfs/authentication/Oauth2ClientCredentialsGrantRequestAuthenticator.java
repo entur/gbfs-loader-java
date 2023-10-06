@@ -1,5 +1,7 @@
 package org.entur.gbfs.authentication;
 
+import java.net.URI;
+import java.util.Map;
 import org.dmfs.httpessentials.client.HttpRequestExecutor;
 import org.dmfs.httpessentials.httpurlconnection.HttpUrlConnectionExecutor;
 import org.dmfs.oauth2.client.BasicOAuth2AuthorizationProvider;
@@ -15,45 +17,43 @@ import org.dmfs.rfc3986.uris.EmptyUri;
 import org.dmfs.rfc5545.DateTime;
 import org.dmfs.rfc5545.Duration;
 
-import java.net.URI;
-import java.util.Map;
+public class Oauth2ClientCredentialsGrantRequestAuthenticator
+  implements RequestAuthenticator {
 
-public class Oauth2ClientCredentialsGrantRequestAuthenticator implements RequestAuthenticator {
-    private final HttpRequestExecutor executor = new HttpUrlConnectionExecutor();
-    private final OAuth2Client client;
-    private OAuth2AccessToken token;
+  private final HttpRequestExecutor executor = new HttpUrlConnectionExecutor();
+  private final OAuth2Client client;
+  private OAuth2AccessToken token;
 
-    public Oauth2ClientCredentialsGrantRequestAuthenticator(
-            URI tokenUrl,
-            String clientId,
-            String clientPassword
-    ) {
-        OAuth2AuthorizationProvider provider = new BasicOAuth2AuthorizationProvider(
-                null,
-                tokenUrl,
-                new Duration(1,0,3600)
-        );
+  public Oauth2ClientCredentialsGrantRequestAuthenticator(
+    URI tokenUrl,
+    String clientId,
+    String clientPassword
+  ) {
+    OAuth2AuthorizationProvider provider = new BasicOAuth2AuthorizationProvider(
+      null,
+      tokenUrl,
+      new Duration(1, 0, 3600)
+    );
 
-        OAuth2ClientCredentials credentials = new BasicOAuth2ClientCredentials(
-                clientId, clientPassword
-        );
+    OAuth2ClientCredentials credentials = new BasicOAuth2ClientCredentials(
+      clientId,
+      clientPassword
+    );
 
-        client = new BasicOAuth2Client(
-                provider,
-                credentials,
-                EmptyUri.INSTANCE
-        );
+    client = new BasicOAuth2Client(provider, credentials, EmptyUri.INSTANCE);
+  }
+
+  @Override
+  public void authenticateRequest(Map<String, String> httpHeaders)
+    throws RequestAuthenticationException {
+    try {
+      if (token == null || token.expirationDate().after(DateTime.now())) {
+        token =
+          new ClientCredentialsGrant(client, EmptyScope.INSTANCE).accessToken(executor);
+      }
+      httpHeaders.put("Authorization", String.format("Bearer %s", token.accessToken()));
+    } catch (Exception e) {
+      throw new RequestAuthenticationException(e);
     }
-
-    @Override
-    public void authenticateRequest(Map<String, String> httpHeaders) throws RequestAuthenticationException {
-        try {
-            if (token == null || token.expirationDate().after(DateTime.now())) {
-                token = new ClientCredentialsGrant(client, EmptyScope.INSTANCE).accessToken(executor);
-            }
-            httpHeaders.put("Authorization", String.format("Bearer %s", token.accessToken()));
-        } catch (Exception e) {
-            throw new RequestAuthenticationException(e);
-        }
-    }
+  }
 }
