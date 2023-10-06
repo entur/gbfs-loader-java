@@ -37,134 +37,135 @@ import org.entur.gbfs.validation.model.ValidationResult;
  * This class holds the data for all the GBFS files
  */
 public class GbfsDelivery {
-    private GBFS discovery;
-    private GBFSGbfsVersions version;
-    private GBFSSystemInformation systemInformation;
-    private GBFSVehicleTypes vehicleTypes;
-    private GBFSStationInformation stationInformation;
-    private GBFSStationStatus stationStatus;
-    private GBFSFreeBikeStatus freeBikeStatus;
-    private GBFSSystemHours systemHours;
-    private GBFSSystemCalendar systemCalendar;
-    private GBFSSystemRegions systemRegions;
-    private GBFSSystemPricingPlans systemPricingPlans;
-    private GBFSSystemAlerts systemAlerts;
-    private GBFSGeofencingZones geofencingZones;
-    private ValidationResult validationResult;
 
-    public void setFeed(GBFS feed) {
-        setDiscovery((GBFS) feed);
-    }
+  private GBFS discovery;
+  private GBFSGbfsVersions version;
+  private GBFSSystemInformation systemInformation;
+  private GBFSVehicleTypes vehicleTypes;
+  private GBFSStationInformation stationInformation;
+  private GBFSStationStatus stationStatus;
+  private GBFSFreeBikeStatus freeBikeStatus;
+  private GBFSSystemHours systemHours;
+  private GBFSSystemCalendar systemCalendar;
+  private GBFSSystemRegions systemRegions;
+  private GBFSSystemPricingPlans systemPricingPlans;
+  private GBFSSystemAlerts systemAlerts;
+  private GBFSGeofencingZones geofencingZones;
+  private ValidationResult validationResult;
 
-    public GBFS getDiscovery() {
-        return discovery;
-    }
+  public void setFeed(GBFS feed) {
+    setDiscovery((GBFS) feed);
+  }
 
-    public void setDiscovery(GBFS discovery) {
-        this.discovery = discovery;
-    }
+  public GBFS getDiscovery() {
+    return discovery;
+  }
 
-    public GBFSGbfsVersions getVersion() {
-        return version;
-    }
+  public void setDiscovery(GBFS discovery) {
+    this.discovery = discovery;
+  }
 
-    public void setVersion(GBFSGbfsVersions version) {
-        this.version = version;
-    }
+  public GBFSGbfsVersions getVersion() {
+    return version;
+  }
 
-    public GBFSSystemInformation getSystemInformation() {
-        return systemInformation;
-    }
+  public void setVersion(GBFSGbfsVersions version) {
+    this.version = version;
+  }
 
-    public void setSystemInformation(GBFSSystemInformation systemInformation) {
-        this.systemInformation = systemInformation;
-    }
+  public GBFSSystemInformation getSystemInformation() {
+    return systemInformation;
+  }
 
-    public GBFSVehicleTypes getVehicleTypes() {
-        return vehicleTypes;
-    }
+  public void setSystemInformation(GBFSSystemInformation systemInformation) {
+    this.systemInformation = systemInformation;
+  }
 
-    public void setVehicleTypes(GBFSVehicleTypes vehicleTypes) {
-        this.vehicleTypes = vehicleTypes;
-    }
+  public GBFSVehicleTypes getVehicleTypes() {
+    return vehicleTypes;
+  }
 
-    public GBFSStationInformation getStationInformation() {
-        return stationInformation;
-    }
+  public void setVehicleTypes(GBFSVehicleTypes vehicleTypes) {
+    this.vehicleTypes = vehicleTypes;
+  }
 
-    public void setStationInformation(GBFSStationInformation stationInformation) {
-        this.stationInformation = stationInformation;
-    }
+  public GBFSStationInformation getStationInformation() {
+    return stationInformation;
+  }
 
-    public GBFSStationStatus getStationStatus() {
-        return stationStatus;
-    }
+  public void setStationInformation(GBFSStationInformation stationInformation) {
+    this.stationInformation = stationInformation;
+  }
 
-    public void setStationStatus(GBFSStationStatus stationStatus) {
-        this.stationStatus = stationStatus;
-    }
+  public GBFSStationStatus getStationStatus() {
+    return stationStatus;
+  }
 
-    public GBFSFreeBikeStatus getFreeBikeStatus() {
-        return freeBikeStatus;
-    }
+  public void setStationStatus(GBFSStationStatus stationStatus) {
+    this.stationStatus = stationStatus;
+  }
 
-    public void setFreeBikeStatus(GBFSFreeBikeStatus freeBikeStatus) {
-        this.freeBikeStatus = freeBikeStatus;
-    }
+  public GBFSFreeBikeStatus getFreeBikeStatus() {
+    return freeBikeStatus;
+  }
 
-    public GBFSSystemHours getSystemHours() {
-        return systemHours;
-    }
+  public void setFreeBikeStatus(GBFSFreeBikeStatus freeBikeStatus) {
+    this.freeBikeStatus = freeBikeStatus;
+  }
 
-    public void setSystemHours(GBFSSystemHours systemHours) {
-        this.systemHours = systemHours;
-    }
+  public GBFSSystemHours getSystemHours() {
+    return systemHours;
+  }
 
-    public GBFSSystemCalendar getSystemCalendar() {
-        return systemCalendar;
-    }
+  public void setSystemHours(GBFSSystemHours systemHours) {
+    this.systemHours = systemHours;
+  }
 
-    public void setSystemCalendar(GBFSSystemCalendar systemCalendar) {
-        this.systemCalendar = systemCalendar;
-    }
+  public GBFSSystemCalendar getSystemCalendar() {
+    return systemCalendar;
+  }
 
-    public GBFSSystemRegions getSystemRegions() {
-        return systemRegions;
-    }
+  public void setSystemCalendar(GBFSSystemCalendar systemCalendar) {
+    this.systemCalendar = systemCalendar;
+  }
 
-    public void setSystemRegions(GBFSSystemRegions systemRegions) {
-        this.systemRegions = systemRegions;
-    }
+  public GBFSSystemRegions getSystemRegions() {
+    return systemRegions;
+  }
 
-    public GBFSSystemPricingPlans getSystemPricingPlans() {
-        return systemPricingPlans;
-    }
+  public void setSystemRegions(GBFSSystemRegions systemRegions) {
+    this.systemRegions = systemRegions;
+  }
 
-    public void setSystemPricingPlans(GBFSSystemPricingPlans systemPricingPlans) {
-        this.systemPricingPlans = systemPricingPlans;
-    }
+  public GBFSSystemPricingPlans getSystemPricingPlans() {
+    return systemPricingPlans;
+  }
 
-    public GBFSSystemAlerts getSystemAlerts() {
-        return systemAlerts;
-    }
+  public void setSystemPricingPlans(GBFSSystemPricingPlans systemPricingPlans) {
+    this.systemPricingPlans = systemPricingPlans;
+  }
 
-    public void setSystemAlerts(GBFSSystemAlerts systemAlerts) {
-        this.systemAlerts = systemAlerts;
-    }
+  public GBFSSystemAlerts getSystemAlerts() {
+    return systemAlerts;
+  }
 
-    public GBFSGeofencingZones getGeofencingZones() {
-        return geofencingZones;
-    }
+  public void setSystemAlerts(GBFSSystemAlerts systemAlerts) {
+    this.systemAlerts = systemAlerts;
+  }
 
-    public void setGeofencingZones(GBFSGeofencingZones geofencingZones) {
-        this.geofencingZones = geofencingZones;
-    }
+  public GBFSGeofencingZones getGeofencingZones() {
+    return geofencingZones;
+  }
 
-    public ValidationResult getValidationResult() {
-        return validationResult;
-    }
+  public void setGeofencingZones(GBFSGeofencingZones geofencingZones) {
+    this.geofencingZones = geofencingZones;
+  }
 
-    public void setValidationResult(ValidationResult validationResult) {
-        this.validationResult = validationResult;
-    }
+  public ValidationResult getValidationResult() {
+    return validationResult;
+  }
+
+  public void setValidationResult(ValidationResult validationResult) {
+    this.validationResult = validationResult;
+  }
 }

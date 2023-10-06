@@ -18,77 +18,77 @@
 
 package org.entur.gbfs;
 
-import org.entur.gbfs.authentication.RequestAuthenticator;
-
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
+import org.entur.gbfs.authentication.RequestAuthenticator;
 
 /**
  * Options for a Gbfs Subscription
  */
 public class GbfsSubscriptionOptions {
-    private URI discoveryURI;
-    private String languageCode;
-    private long minimumTtl;
-    private Map<String, String> headers = new HashMap<>();
-    private RequestAuthenticator requestAuthenticator;
-    private Long timeout;
-    private boolean enableValidation;
 
-    public URI getDiscoveryURI() {
-        return discoveryURI;
-    }
+  private URI discoveryURI;
+  private String languageCode;
+  private long minimumTtl;
+  private Map<String, String> headers = new HashMap<>();
+  private RequestAuthenticator requestAuthenticator;
+  private Long timeout;
+  private boolean enableValidation;
 
-    public void setDiscoveryURI(URI discoveryURI) {
-        this.discoveryURI = discoveryURI;
-    }
+  public URI getDiscoveryURI() {
+    return discoveryURI;
+  }
 
-    public String getLanguageCode() {
-        return languageCode;
-    }
+  public void setDiscoveryURI(URI discoveryURI) {
+    this.discoveryURI = discoveryURI;
+  }
 
-    public void setLanguageCode(String languageCode) {
-        this.languageCode = languageCode;
-    }
+  public String getLanguageCode() {
+    return languageCode;
+  }
 
-    public long getMinimumTtl() {
-        return minimumTtl;
-    }
+  public void setLanguageCode(String languageCode) {
+    this.languageCode = languageCode;
+  }
 
-    public void setMinimumTtl(long minimumTtl) {
-        this.minimumTtl = minimumTtl;
-    }
+  public long getMinimumTtl() {
+    return minimumTtl;
+  }
 
-    public Map<String, String> getHeaders() {
-        return headers;
-    }
+  public void setMinimumTtl(long minimumTtl) {
+    this.minimumTtl = minimumTtl;
+  }
 
-    public void setHeaders(Map<String, String> headers) {
-        this.headers = headers;
-    }
+  public Map<String, String> getHeaders() {
+    return headers;
+  }
 
-    public RequestAuthenticator getRequestAuthenticator() {
-        return requestAuthenticator;
-    }
+  public void setHeaders(Map<String, String> headers) {
+    this.headers = headers;
+  }
 
-    public void setRequestAuthenticator(RequestAuthenticator requestAuthenticator) {
-        this.requestAuthenticator = requestAuthenticator;
-    }
+  public RequestAuthenticator getRequestAuthenticator() {
+    return requestAuthenticator;
+  }
 
-    public Long getTimeout() {
-        return timeout;
-    }
+  public void setRequestAuthenticator(RequestAuthenticator requestAuthenticator) {
+    this.requestAuthenticator = requestAuthenticator;
+  }
 
-    public void setTimeout(Long timeout) {
-        this.timeout = timeout;
-    }
+  public Long getTimeout() {
+    return timeout;
+  }
 
-    public boolean isEnableValidation() {
-        return enableValidation;
-    }
+  public void setTimeout(Long timeout) {
+    this.timeout = timeout;
+  }
 
-    public void setEnableValidation(boolean enableValidation) {
-        this.enableValidation = enableValidation;
-    }
+  public boolean isEnableValidation() {
+    return enableValidation;
+  }
+
+  public void setEnableValidation(boolean enableValidation) {
+    this.enableValidation = enableValidation;
+  }
 }

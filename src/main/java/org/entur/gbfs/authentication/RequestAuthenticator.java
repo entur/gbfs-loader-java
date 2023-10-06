@@ -14,11 +14,11 @@ import java.util.Map;
  * You may create your own implementation for custom authentication schemes
  */
 public interface RequestAuthenticator {
-
-    /**
-     * This method is called before each request is made
-     *
-     * @param httpHeaders The configured http headers used by the loader
-     */
-    void authenticateRequest(Map<String, String> httpHeaders) throws RequestAuthenticationException;
+  /**
+   * This method is called before each request is made
+   *
+   * @param httpHeaders The configured http headers used by the loader
+   */
+  void authenticateRequest(Map<String, String> httpHeaders)
+    throws RequestAuthenticationException;
 }

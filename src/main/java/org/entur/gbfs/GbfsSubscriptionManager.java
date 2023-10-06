@@ -29,51 +29,59 @@ import java.util.function.Consumer;
  * Manage a set of subscriptions (for different GBFS feeds)
  */
 public class GbfsSubscriptionManager {
-    private final Map<String, GbfsSubscription> subscriptions = new ConcurrentHashMap<>();
 
-    private ForkJoinPool customThreadPool;
+  private final Map<String, GbfsSubscription> subscriptions = new ConcurrentHashMap<>();
 
-    public GbfsSubscriptionManager() {}
+  private ForkJoinPool customThreadPool;
 
-    public GbfsSubscriptionManager(ForkJoinPool customThreadPool) {
-        this.customThreadPool = customThreadPool;
+  public GbfsSubscriptionManager() {}
+
+  public GbfsSubscriptionManager(ForkJoinPool customThreadPool) {
+    this.customThreadPool = customThreadPool;
+  }
+
+  /**
+   * Start a subscription on a GBFS feed delivery
+   *
+   * @param options Options
+   * @param consumer A consumer that will handle receiving updates from the loader
+   * @return A string identifier
+   */
+  public String subscribe(
+    GbfsSubscriptionOptions options,
+    Consumer<GbfsDelivery> consumer
+  ) {
+    String id = UUID.randomUUID().toString();
+    GbfsSubscription subscription = new GbfsSubscription(options, consumer);
+    subscription.init();
+
+    // Only add subscription if setup is complete
+    if (subscription.getSetupComplete()) {
+      subscriptions.put(id, subscription);
+      return id;
     }
 
-    /**
-     * Start a subscription on a GBFS feed delivery
-     *
-     * @param options Options
-     * @param consumer A consumer that will handle receiving updates from the loader
-     * @return A string identifier
-     */
-    public String subscribe(GbfsSubscriptionOptions options, Consumer<GbfsDelivery> consumer) {
-        String id = UUID.randomUUID().toString();
-        GbfsSubscription subscription = new GbfsSubscription(options, consumer);
-        subscription.init();
+    return null;
+  }
 
-        // Only add subscription if setup is complete
-        if (subscription.getSetupComplete()) {
-            subscriptions.put(id, subscription);
-            return id;
-        }
+  /**
+   * Update all subscriptions
+   */
+  public void update() {
+    Optional
+      .ofNullable(customThreadPool)
+      .orElse(ForkJoinPool.commonPool())
+      .execute(() ->
+        subscriptions.values().parallelStream().forEach(GbfsSubscription::update)
+      );
+  }
 
-        return null;
-    }
-
-    /**
-     * Update all subscriptions
-     */
-    public void update() {
-        Optional.ofNullable(customThreadPool).orElse(ForkJoinPool.commonPool())
-                .execute(() -> subscriptions.values().parallelStream().forEach(GbfsSubscription::update));
-    }
-
-    /**
-     * Stop a subscription on a GBFS feed delivery
-     *
-     * @param identifier An identifier returned by subscribe method.
-     */
-    public void unsubscribe(String identifier) {
-        subscriptions.remove(identifier);
-    }
+  /**
+   * Stop a subscription on a GBFS feed delivery
+   *
+   * @param identifier An identifier returned by subscribe method.
+   */
+  public void unsubscribe(String identifier) {
+    subscriptions.remove(identifier);
+  }
 }
