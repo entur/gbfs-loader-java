@@ -34,15 +34,3 @@ jobs:
         run: |
           sudo timedatectl set-timezone "Europe/Oslo"
           mvn --batch-mode verify -Dprettier.nodePath=node -Dprettier.npmPath=npm
-
-      - name: SonarQube Scan
-        run: |
-          mvn \
-          org.jacoco:jacoco-maven-plugin:prepare-agent verify \
-          org.jacoco:jacoco-maven-plugin:report sonar:sonar \
-          -Dmaven.main.skip \
-          -DskipTests \
-          -Dsonar.projectKey=entur_gbfs-loader-java \
-          -Dsonar.organization=enturas-github \
-          -Dsonar.host.url=https://sonarcloud.io \
-          -Dsonar.login=${{ secrets.ENTUR_SONAR_PASSWORD }}
