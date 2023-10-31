@@ -24,7 +24,7 @@ aliases:
       git config --global user.email "circleci@entur.no"
       git config --global user.name "circleci"
       git checkout master
-      mvn gitflow:release-start gitflow:release-finish -DskipTests=true -P prettierSkip -Prelease -DpostReleaseGoals=deploy -DargLine='-P prettierSkip -Prelease -DskipTests -s .circleci/settings.xml' -B -s .circleci/settings.xml
+      mvn gitflow:release-start gitflow:release-finish -DskipTests=true -Dprettier.nodePath=node -Dprettier.npmPath=npm -P prettierSkip -Prelease -DpostReleaseGoals=deploy -DargLine='-P prettierSkip -Prelease -Dprettier.nodePath=node -Dprettier.npmPath=npm -DskipTests -s .circleci/settings.xml' -B -s .circleci/settings.xml
   - &import_gpg_key
     name: Configure GPG private key for signing project artifacts in OSS Sonatype
     command: |
