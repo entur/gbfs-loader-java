@@ -52,7 +52,7 @@
         <slf4j.version>1.7.36</slf4j.version>
         <httpclient-version>4.5.14</httpclient-version>
         <oauth2-essentials.version>0.22.1</oauth2-essentials.version>
-        <httpurlconnection-executor.version>0.21.3</httpurlconnection-executor.version>
+        <httpurlconnection-executor.version>1.22.1</httpurlconnection-executor.version>
 
         <nexus-staging-maven-plugin.version>1.6.8</nexus-staging-maven-plugin.version>
         <maven-exec-plugin.version>1.6.0</maven-exec-plugin.version>
