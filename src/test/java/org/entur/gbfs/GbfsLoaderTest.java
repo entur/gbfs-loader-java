@@ -54,6 +54,23 @@ public class GbfsLoaderTest {
   }
 
   @Test
+  void testBackoffStrategy() {
+    GbfsLoader loader = new GbfsLoader(
+      "file:src/test/resources/gbfs/feedwith404feeds/gbfs.json",
+      LANGUAGE_NB
+    );
+    assertTrue(
+      loader.update(),
+      "First update should return true (even though not successful), as it was at " +
+      "least initiated"
+    );
+    assertFalse(
+      loader.update(),
+      "Should not update immediately after failing one, even though ttl is 0"
+    );
+  }
+
+  @Test
   void getV22FeedWithNoLanguage() {
     GbfsLoader loader = new GbfsLoader(
       "file:src/test/resources/gbfs/lillestrombysykkel/gbfs.json"
