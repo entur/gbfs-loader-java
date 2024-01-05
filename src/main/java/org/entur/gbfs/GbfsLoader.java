@@ -252,9 +252,12 @@ public class GbfsLoader {
       for (GBFSFeedUpdater<?> updater : feedUpdaters.values()) {
         if (updater.shouldUpdate()) {
           updater.fetchData();
+          // TODO didUpdate is set to true, once for one feed an update was initiated,
+          // no matter if successful or not(?)
           didUpdate = true;
         }
       }
+      // TODO Is really no exception ever thrown so we can ignore the try/finally idiom here?
       updateLock.unlock();
     }
     return didUpdate;
@@ -337,9 +340,10 @@ public class GbfsLoader {
     /** To which class should the file be deserialized to */
     private final Class<T> implementingClass;
 
-    private int nextUpdate;
     private T data;
     private byte[] rawData;
+
+    private UpdateStrategy updateStrategy = new UpdateStrategy();
 
     @SuppressWarnings("unchecked")
     private GBFSFeedUpdater(GBFSFeed feed) {
@@ -364,7 +368,7 @@ public class GbfsLoader {
 
       if (rawData == null) {
         LOG.warn("Invalid data for {}", url);
-        nextUpdate = getCurrentTimeSeconds();
+        updateStrategy.rescheduleAfterFailure();
         data = null;
         return;
       }
@@ -373,6 +377,7 @@ public class GbfsLoader {
         data = objectMapper.readValue(rawData, implementingClass);
       } catch (IOException e) {
         LOG.warn("Error unmarshalling feed", e);
+        updateStrategy.rescheduleAfterFailure();
         data = null;
         return;
       }
@@ -384,11 +389,7 @@ public class GbfsLoader {
           .getMethod("getLastUpdated")
           .invoke(data);
         Integer ttl = (Integer) implementingClass.getMethod("getTtl").invoke(data);
-        if (lastUpdated == null || ttl == null) {
-          nextUpdate = getCurrentTimeSeconds();
-        } else {
-          nextUpdate = lastUpdated + ttl;
-        }
+        updateStrategy.scheduleNextUpdate(lastUpdated, ttl);
       } catch (
         NoSuchMethodException
         | InvocationTargetException
@@ -396,16 +397,59 @@ public class GbfsLoader {
         | ClassCastException e
       ) {
         LOG.warn("Invalid data for {}", url);
-        nextUpdate = getCurrentTimeSeconds();
+        updateStrategy.rescheduleAfterFailure();
       }
     }
 
     private boolean shouldUpdate() {
-      return getCurrentTimeSeconds() >= nextUpdate;
+      return updateStrategy.shouldUpdate();
     }
 
-    private int getCurrentTimeSeconds() {
-      return (int) (System.currentTimeMillis() / 1000);
+    /**
+     * Class to schedule nextUpdate, depending on lastUpdated, ttl and number of recently failed
+     * request attempts. In case of a failing request, e.g. because the remote site is not available
+     * or a quota is exceeded, this strategy backs off exponentially, up to a max backoff of 1 hour.
+     * To avoid that aa large number of requests is scheduled at exactly the same time, we subtract
+     * a random amount up to 5% of the backoff time.
+     */
+    private static class UpdateStrategy {
+
+      private static int MAX_BACKOFF_SECONDS = 3600;
+      private int failedAttemptsCount = 0;
+      private int nextUpdate;
+
+      private boolean shouldUpdate() {
+        return getCurrentTimeSeconds() >= nextUpdate;
+      }
+
+      public void rescheduleAfterFailure() {
+        failedAttemptsCount++;
+        int backoffSeconds = Math.min(
+          MAX_BACKOFF_SECONDS,
+          (int) Math.pow(2, failedAttemptsCount - 1)
+        );
+        // subtract a random value up to 5% to spread requests
+        int randomOffset = (int) (Math.random() * 0.05 * backoffSeconds);
+        nextUpdate = getCurrentTimeSeconds() + backoffSeconds - randomOffset;
+        LOG.info(
+          "Rescheduled nextUpdate after {} failure(s) to {}",
+          failedAttemptsCount,
+          nextUpdate
+        );
+      }
+
+      private int getCurrentTimeSeconds() {
+        return (int) (System.currentTimeMillis() / 1000);
+      }
+
+      public void scheduleNextUpdate(Integer lastUpdated, Integer ttl) {
+        failedAttemptsCount = 0;
+        if (lastUpdated == null || ttl == null) {
+          nextUpdate = getCurrentTimeSeconds();
+        } else {
+          nextUpdate = lastUpdated + ttl;
+        }
+      }
     }
   }
 }
