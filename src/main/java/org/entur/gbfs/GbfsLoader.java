@@ -249,16 +249,19 @@ public class GbfsLoader {
 
     boolean didUpdate = false;
     if (updateLock.tryLock()) {
-      for (GBFSFeedUpdater<?> updater : feedUpdaters.values()) {
-        if (updater.shouldUpdate()) {
-          updater.fetchData();
-          // TODO didUpdate is set to true, once for one feed an update was initiated,
-          // no matter if successful or not(?)
-          didUpdate = true;
+      try {
+        for (GBFSFeedUpdater<?> updater : feedUpdaters.values()) {
+          if (updater.shouldUpdate()) {
+            updater.fetchData();
+            // TODO didUpdate is set to true, once for one feed an update was initiated,
+            // no matter if successful or not(?)
+            didUpdate = true;
+          }
         }
+      } finally {
+        // be sure to release lock, even in case an exception is thrown
+        updateLock.unlock();
       }
-      // TODO Is really no exception ever thrown so we can ignore the try/finally idiom here?
-      updateLock.unlock();
     }
     return didUpdate;
   }
