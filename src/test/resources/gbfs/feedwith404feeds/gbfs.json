@@ -1,0 +1,26 @@
+{
+  "last_updated": 1631517382,
+  "ttl": 0,
+  "data": {
+    "nb": {
+      "feeds": [
+        {
+          "name": "system_information",
+          "url": "file:src/test/resources/gbfs/feedwith404feeds/system_information.json"
+        },
+        {
+          "name": "station_information",
+          "url": "file:src/test/resources/gbfs/feedwith404feeds/station_information.json"
+        },
+        {
+          "name": "station_status",
+          "url": "file:src/test/resources/gbfs/feedwith404feeds/station_status.json"
+        },
+        {
+          "name": "free_bike_status",
+          "url": "file:src/test/resources/gbfs/feedwith404feeds/free_bike_status.json"
+        }
+      ]
+    }
+  }
+}
