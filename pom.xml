@@ -46,8 +46,8 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <jdk.version>17</jdk.version>
 
-        <gbfs-java-model.version>3.0.19</gbfs-java-model.version>
-        <gbfs-validator-java.version>1.0.18</gbfs-validator-java.version>
+        <gbfs-java-model.version>3.0.21</gbfs-java-model.version>
+        <gbfs-validator-java.version>1.0.20</gbfs-validator-java.version>
         <jackson-databind.version>2.16.1</jackson-databind.version>
         <slf4j.version>1.7.36</slf4j.version>
         <httpclient-version>4.5.14</httpclient-version>
@@ -83,15 +83,15 @@
         <argLine />
 
         <!-- Unit test frameworks versions -->
-        <assertj.core.version>3.25.1</assertj.core.version>
-        <junit.version>5.10.1</junit.version>
+        <assertj.core.version>3.25.3</assertj.core.version>
+        <junit.version>5.10.2</junit.version>
 
         <!-- GPG configuration for jar signing-->
         <gpg.executable>gpg</gpg.executable>
         <gpg.keyname>${env.GPG_KEY_NAME}</gpg.keyname>
 
         <prettier-java.version>2.1.0</prettier-java.version>
-        <prettier-maven-plugin.version>0.21</prettier-maven-plugin.version>
+        <prettier-maven-plugin.version>0.22</prettier-maven-plugin.version>
         <plugin.prettier.goal>write</plugin.prettier.goal>
     </properties>
 
