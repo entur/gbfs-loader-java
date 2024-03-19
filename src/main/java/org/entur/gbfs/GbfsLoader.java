@@ -1,5 +1,8 @@
 package org.entur.gbfs;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
 import org.entur.gbfs.authentication.RequestAuthenticator;
 import org.entur.gbfs.v2.GbfsV2Loader;
 import org.entur.gbfs.v2_3.gbfs.GBFS;
@@ -7,17 +10,13 @@ import org.entur.gbfs.v2_3.gbfs.GBFSFeedName;
 import org.entur.gbfs.v3.GbfsV3Loader;
 import org.entur.gbfs.v3_0_RC2.gbfs.GBFSGbfs;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicBoolean;
-
 /**
  * Class for managing the state and loading of complete GBFS datasets, and updating them according to individual feed's
  * TTL rules.
  */
 public class GbfsLoader implements GbfsVersionLoader {
-  private final GbfsVersionLoader gbfsVersionLoader;
 
+  private final GbfsVersionLoader gbfsVersionLoader;
 
   /**
    * Create a new GbfsLoader
@@ -99,7 +98,14 @@ public class GbfsLoader implements GbfsVersionLoader {
     RequestAuthenticator requestAuthenticator,
     Long timeoutConnection
   ) {
-    this(url, httpHeaders, languageCode, requestAuthenticator, timeoutConnection, Version.V2);
+    this(
+      url,
+      httpHeaders,
+      languageCode,
+      requestAuthenticator,
+      timeoutConnection,
+      Version.V2
+    );
   }
 
   /**
@@ -112,29 +118,31 @@ public class GbfsLoader implements GbfsVersionLoader {
    *            each request.
    */
   public GbfsLoader(
-          String url,
-          Map<String, String> httpHeaders,
-          String languageCode,
-          RequestAuthenticator requestAuthenticator,
-          Long timeoutConnection,
-          Version version
+    String url,
+    Map<String, String> httpHeaders,
+    String languageCode,
+    RequestAuthenticator requestAuthenticator,
+    Long timeoutConnection,
+    Version version
   ) {
     if (version.equals(Version.V3)) {
-      gbfsVersionLoader = new GbfsV3Loader(
-              url,
-              httpHeaders,
-              languageCode,
-              requestAuthenticator,
-              timeoutConnection
-      );
+      gbfsVersionLoader =
+        new GbfsV3Loader(
+          url,
+          httpHeaders,
+          languageCode,
+          requestAuthenticator,
+          timeoutConnection
+        );
     } else {
-      gbfsVersionLoader = new GbfsV2Loader(
-              url,
-              httpHeaders,
-              languageCode,
-              requestAuthenticator,
-              timeoutConnection
-      );
+      gbfsVersionLoader =
+        new GbfsV2Loader(
+          url,
+          httpHeaders,
+          languageCode,
+          requestAuthenticator,
+          timeoutConnection
+        );
     }
   }
 
