@@ -1,4 +1,4 @@
-package org.entur.gbfs;
+package org.entur.gbfs.http;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -12,7 +12,7 @@ import org.entur.gbfs.authentication.RequestAuthenticator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-class GBFSFeedUpdater<T> {
+public class GBFSFeedUpdater<T> {
 
   private static final Logger LOG = LoggerFactory.getLogger(GBFSFeedUpdater.class);
 

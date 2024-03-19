@@ -9,6 +9,7 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import org.entur.gbfs.authentication.DummyRequestAuthenticator;
 import org.entur.gbfs.authentication.RequestAuthenticator;
+import org.entur.gbfs.http.GBFSFeedUpdater;
 import org.entur.gbfs.v2_3.gbfs.GBFS;
 import org.entur.gbfs.v2_3.gbfs.GBFSFeed;
 import org.entur.gbfs.v2_3.gbfs.GBFSFeedName;

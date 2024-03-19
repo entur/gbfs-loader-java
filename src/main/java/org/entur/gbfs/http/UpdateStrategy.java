@@ -1,4 +1,4 @@
-package org.entur.gbfs;
+package org.entur.gbfs.http;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory;
  * To avoid that aa large number of requests is scheduled at exactly the same time, we subtract
  * a random amount up to 5% of the backoff time.
  */
-class UpdateStrategy {
+public class UpdateStrategy {
 
   private static final Logger LOG = LoggerFactory.getLogger(UpdateStrategy.class);
 

@@ -1,4 +1,4 @@
-package org.entur.gbfs;
+package org.entur.gbfs.http;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
