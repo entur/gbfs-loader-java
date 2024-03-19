@@ -1,11 +1,5 @@
 package org.entur.gbfs;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import java.io.IOException;
-import java.io.InputStream;
-import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.HashMap;
@@ -14,7 +8,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import org.entur.gbfs.authentication.DummyRequestAuthenticator;
-import org.entur.gbfs.authentication.RequestAuthenticationException;
 import org.entur.gbfs.authentication.RequestAuthenticator;
 import org.entur.gbfs.v2_3.gbfs.GBFS;
 import org.entur.gbfs.v2_3.gbfs.GBFSFeed;
@@ -30,12 +23,6 @@ import org.slf4j.LoggerFactory;
 public class GbfsLoader {
 
   private static final Logger LOG = LoggerFactory.getLogger(GbfsLoader.class);
-
-  private static final ObjectMapper objectMapper = new ObjectMapper();
-
-  static {
-    objectMapper.configure(DeserializationFeature.READ_UNKNOWN_ENUM_VALUES_AS_NULL, true);
-  }
 
   /** One updater per feed type(?)*/
   private final Map<GBFSFeedName, GBFSFeedUpdater<?>> feedUpdaters = new HashMap<>();
@@ -130,7 +117,6 @@ public class GbfsLoader {
    * @param languageCode The language code to be used to look up feeds in the discovery file
    * @param requestAuthenticator An instance of RequestAuthenticator to provide authentication strategy for
    *            each request.
-   * @param timeoutConnection The optional timeout connection value, by default, the static value is applied.
    */
   public GbfsLoader(
     String url,
@@ -176,23 +162,26 @@ public class GbfsLoader {
       );
     }
 
-    if (authenticateRequest()) {
-      rawDiscoveryFileData = fetchFeed(uri, httpHeaders, timeoutConnection);
+    var discoveryFileUpdater = new GBFSFeedUpdater<>(
+      uri,
+      requestAuthenticator,
+      GBFSFeedName.GBFS.implementingClass(),
+      httpHeaders,
+      timeoutConnection
+    );
+    discoveryFileUpdater.fetchData();
 
-      try {
-        if (rawDiscoveryFileData != null) {
-          disoveryFileData = objectMapper.readValue(rawDiscoveryFileData, GBFS.class);
-        }
-      } catch (IOException e) {
-        LOG.warn("Error unmarshalling discovery feed", e);
-      }
+    rawDiscoveryFileData = discoveryFileUpdater.getRawData();
 
-      if (disoveryFileData != null) {
-        createUpdaters();
-        setupComplete.set(true);
-      } else {
-        LOG.warn("Could not fetch the feed auto-configuration file from {}", uri);
-      }
+    if (rawDiscoveryFileData != null) {
+      disoveryFileData = (GBFS) discoveryFileUpdater.getData();
+    }
+
+    if (disoveryFileData != null) {
+      createUpdaters();
+      setupComplete.set(true);
+    } else {
+      LOG.warn("Could not fetch the feed auto-configuration file from {}", uri);
     }
   }
 
@@ -218,24 +207,23 @@ public class GbfsLoader {
           "Urls: " +
           feed.getUrl() +
           ", " +
-          feedUpdaters.get(feedName).url
+          feedUpdaters.get(feedName).getUrl()
         );
       }
 
       // name is null, if the file is of unknown type, skip those
       if (feed.getName() != null) {
-        feedUpdaters.put(feedName, new GBFSFeedUpdater<>(feed));
+        feedUpdaters.put(
+          feedName,
+          new GBFSFeedUpdater<>(
+            feed.getUrl(),
+            requestAuthenticator,
+            feed.getName().implementingClass(),
+            httpHeaders,
+            timeoutConnection
+          )
+        );
       }
-    }
-  }
-
-  private boolean authenticateRequest() {
-    try {
-      this.requestAuthenticator.authenticateRequest(httpHeaders);
-      return true;
-    } catch (RequestAuthenticationException e) {
-      LOG.warn("Unable to authenticate request: {}", e.getMessage());
-      return false;
     }
   }
 
@@ -282,177 +270,10 @@ public class GbfsLoader {
   }
 
   public byte[] getRawFeed(GBFSFeedName feedName) {
-    if (feedName.equals(GBFSFeedName.GBFS)) {
-      return rawDiscoveryFileData;
-    }
     GBFSFeedUpdater<?> updater = feedUpdaters.get(feedName);
     if (updater == null) {
       return null;
     }
     return updater.getRawData();
-  }
-
-  /* private static methods */
-  private static byte[] fetchFeed(URI uri, Map<String, String> httpHeaders) {
-    return fetchFeed(uri, httpHeaders, null);
-  }
-
-  private static byte[] fetchFeed(
-    URI uri,
-    Map<String, String> httpHeaders,
-    Long timeout
-  ) {
-    try {
-      InputStream is;
-
-      String proto = uri.getScheme();
-      if (proto.equals("http") || proto.equals("https")) {
-        is = HttpUtils.getData(uri, timeout, httpHeaders);
-      } else {
-        // Local file probably, try standard java
-        is = uri.toURL().openStream();
-      }
-      if (is == null) {
-        LOG.warn("Failed to get data from url {}", uri);
-        return null;
-      }
-
-      byte[] asBytes = is.readAllBytes();
-      is.close();
-
-      return asBytes;
-    } catch (IllegalArgumentException e) {
-      LOG.warn("Error parsing GBFS feed from {}", uri, e);
-      return null;
-    } catch (JsonProcessingException e) {
-      LOG.warn("Error parsing (bad JSON) GBFS feed from {}", uri, e);
-      return null;
-    } catch (IOException e) {
-      LOG.warn("Error (bad connection) reading GBFS feed from {}", uri, e);
-      return null;
-    }
-  }
-
-  /* private static classes */
-
-  private class GBFSFeedUpdater<T> {
-
-    /** URL for the individual GBFS file */
-    private final URI url;
-
-    /** To which class should the file be deserialized to */
-    private final Class<T> implementingClass;
-
-    private T data;
-    private byte[] rawData;
-
-    private UpdateStrategy updateStrategy = new UpdateStrategy();
-
-    @SuppressWarnings("unchecked")
-    private GBFSFeedUpdater(GBFSFeed feed) {
-      url = feed.getUrl();
-      implementingClass = (Class<T>) feed.getName().implementingClass();
-    }
-
-    private T getData() {
-      return data;
-    }
-
-    public byte[] getRawData() {
-      return rawData;
-    }
-
-    private void fetchData() {
-      if (!authenticateRequest()) {
-        return;
-      }
-
-      rawData = GbfsLoader.fetchFeed(url, httpHeaders);
-
-      if (rawData == null) {
-        LOG.warn("Invalid data for {}", url);
-        updateStrategy.rescheduleAfterFailure();
-        data = null;
-        return;
-      }
-
-      try {
-        data = objectMapper.readValue(rawData, implementingClass);
-      } catch (IOException e) {
-        LOG.warn("Error unmarshalling feed", e);
-        updateStrategy.rescheduleAfterFailure();
-        data = null;
-        return;
-      }
-
-      try {
-        // Fetch lastUpdated and ttl from the resulting class. Due to type erasure we don't know the actual
-        // class, and have to use introspection to get the method references, as they do not share a supertype.
-        Integer lastUpdated = (Integer) implementingClass
-          .getMethod("getLastUpdated")
-          .invoke(data);
-        Integer ttl = (Integer) implementingClass.getMethod("getTtl").invoke(data);
-        updateStrategy.scheduleNextUpdate(lastUpdated, ttl);
-      } catch (
-        NoSuchMethodException
-        | InvocationTargetException
-        | IllegalAccessException
-        | ClassCastException e
-      ) {
-        LOG.warn("Invalid data for {}", url);
-        updateStrategy.rescheduleAfterFailure();
-      }
-    }
-
-    private boolean shouldUpdate() {
-      return updateStrategy.shouldUpdate();
-    }
-
-    /**
-     * Class to schedule nextUpdate, depending on lastUpdated, ttl and number of recently failed
-     * request attempts. In case of a failing request, e.g. because the remote site is not available
-     * or a quota is exceeded, this strategy backs off exponentially, up to a max backoff of 1 hour.
-     * To avoid that aa large number of requests is scheduled at exactly the same time, we subtract
-     * a random amount up to 5% of the backoff time.
-     */
-    private static class UpdateStrategy {
-
-      private static int MAX_BACKOFF_SECONDS = 3600;
-      private int failedAttemptsCount = 0;
-      private int nextUpdate;
-
-      private boolean shouldUpdate() {
-        return getCurrentTimeSeconds() >= nextUpdate;
-      }
-
-      public void rescheduleAfterFailure() {
-        failedAttemptsCount++;
-        int backoffSeconds = Math.min(
-          MAX_BACKOFF_SECONDS,
-          (int) Math.pow(2, failedAttemptsCount - 1)
-        );
-        // subtract a random value up to 5% to spread requests
-        int randomOffset = (int) (Math.random() * 0.05 * backoffSeconds);
-        nextUpdate = getCurrentTimeSeconds() + backoffSeconds - randomOffset;
-        LOG.info(
-          "Rescheduled nextUpdate after {} failure(s) to {}",
-          failedAttemptsCount,
-          nextUpdate
-        );
-      }
-
-      private int getCurrentTimeSeconds() {
-        return (int) (System.currentTimeMillis() / 1000);
-      }
-
-      public void scheduleNextUpdate(Integer lastUpdated, Integer ttl) {
-        failedAttemptsCount = 0;
-        if (lastUpdated == null || ttl == null) {
-          nextUpdate = getCurrentTimeSeconds();
-        } else {
-          nextUpdate = lastUpdated + ttl;
-        }
-      }
-    }
   }
 }
