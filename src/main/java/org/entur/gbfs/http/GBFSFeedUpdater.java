@@ -6,8 +6,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
+import java.net.MalformedURLException;
 import java.net.URI;
-import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.Map;
 import org.entur.gbfs.authentication.RequestAuthenticator;
@@ -17,6 +17,7 @@ import org.slf4j.LoggerFactory;
 public class GBFSFeedUpdater<T> {
 
   private static final Logger LOG = LoggerFactory.getLogger(GBFSFeedUpdater.class);
+  public static final String GET_LAST_UPDATED = "getLastUpdated";
 
   /**
    * URL for the individual GBFS file
@@ -99,17 +100,17 @@ public class GBFSFeedUpdater<T> {
 
       if (
         implementingClass
-          .getMethod("getLastUpdated")
+          .getMethod(GET_LAST_UPDATED)
           .getReturnType()
           .equals(Integer.class)
       ) {
         lastUpdated =
-          (Integer) implementingClass.getMethod("getLastUpdated").invoke(data);
+          (Integer) implementingClass.getMethod(GET_LAST_UPDATED).invoke(data);
       } else {
         Date lastUpdatedDate = (Date) implementingClass
-          .getMethod("getLastUpdated")
+          .getMethod(GET_LAST_UPDATED)
           .invoke(data);
-        lastUpdated = Long.valueOf(lastUpdatedDate.getTime() / 1000).intValue();
+        lastUpdated = Math.toIntExact(lastUpdatedDate.getTime() / 1000);
       }
 
       Integer ttl = (Integer) implementingClass.getMethod("getTtl").invoke(data);
@@ -130,31 +131,35 @@ public class GBFSFeedUpdater<T> {
   }
 
   private byte[] fetchFeed(URI uri, Map<String, String> httpHeaders) {
-    try {
-      InputStream is;
+    String proto = uri.getScheme();
 
-      String proto = uri.getScheme();
-      if (proto.equals("http") || proto.equals("https")) {
-        is = HttpUtils.getData(uri, timeout, httpHeaders);
-      } else {
-        // Local file probably, try standard java
-        is = uri.toURL().openStream();
-      }
+    if (proto.equals("http") || proto.equals("https")) {
+      return fetchFeedFromHttp(uri, httpHeaders);
+    } else {
+      return fetchFeedFromFile(uri);
+    }
+  }
+
+  private byte[] fetchFeedFromFile(URI uri) {
+    try (InputStream is = uri.toURL().openStream()) {
+      return is.readAllBytes();
+    } catch (MalformedURLException e) {
+      LOG.warn("Error reading GBFS feed from file due to malformed URL {}", uri, e);
+      return null;
+    } catch (IOException e) {
+      LOG.warn("Error reading GBFS feed from file {}", uri, e);
+      return null;
+    }
+  }
+
+  private byte[] fetchFeedFromHttp(URI uri, Map<String, String> httpHeaders) {
+    try (InputStream is = HttpUtils.getData(uri, timeout, httpHeaders)) {
       if (is == null) {
         LOG.warn("Failed to get data from url {}", uri);
         return null;
       }
 
-      byte[] asBytes = is.readAllBytes();
-      is.close();
-
-      return asBytes;
-    } catch (IllegalArgumentException e) {
-      LOG.warn("Error parsing GBFS feed from {}", uri, e);
-      return null;
-    } catch (JsonProcessingException e) {
-      LOG.warn("Error parsing (bad JSON) GBFS feed from {}", uri, e);
-      return null;
+      return is.readAllBytes();
     } catch (IOException e) {
       LOG.warn("Error (bad connection) reading GBFS feed from {}", uri, e);
       return null;
