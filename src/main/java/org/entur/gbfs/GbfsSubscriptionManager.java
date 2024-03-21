@@ -24,6 +24,10 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ForkJoinPool;
 import java.util.function.Consumer;
+import org.entur.gbfs.v2.GbfsV2Delivery;
+import org.entur.gbfs.v2.GbfsV2Subscription;
+import org.entur.gbfs.v3.GbfsV3Delivery;
+import org.entur.gbfs.v3.GbfsV3Subscription;
 
 /**
  * Manage a set of subscriptions (for different GBFS feeds)
@@ -47,12 +51,29 @@ public class GbfsSubscriptionManager {
    * @param consumer A consumer that will handle receiving updates from the loader
    * @return A string identifier
    */
-  public String subscribe(
+  public String subscribeV2(
     GbfsSubscriptionOptions options,
-    Consumer<GbfsDelivery> consumer
+    Consumer<GbfsV2Delivery> consumer
   ) {
     String id = UUID.randomUUID().toString();
-    GbfsSubscription subscription = new GbfsSubscription(options, consumer);
+    GbfsV2Subscription subscription = new GbfsV2Subscription(options, consumer);
+    subscription.init();
+
+    // Only add subscription if setup is complete
+    if (subscription.getSetupComplete()) {
+      subscriptions.put(id, subscription);
+      return id;
+    }
+
+    return null;
+  }
+
+  public String subscribeV3(
+    GbfsSubscriptionOptions options,
+    Consumer<GbfsV3Delivery> consumer
+  ) {
+    String id = UUID.randomUUID().toString();
+    GbfsV3Subscription subscription = new GbfsV3Subscription(options, consumer);
     subscription.init();
 
     // Only add subscription if setup is complete

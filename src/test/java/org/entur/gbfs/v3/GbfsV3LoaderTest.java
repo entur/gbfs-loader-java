@@ -23,24 +23,24 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * This tests that {@link org.entur.gbfs.v3.GbfsLoader} handles loading correctly,
+ * This tests that {@link GbfsV3Loader} handles loading correctly,
  */
-class GbfsLoaderTest {
+class GbfsV3LoaderTest {
 
   public static final String LANGUAGE_NB = "nb-NO";
   public static final String LANGUAGE_EN = "en";
-  private static final Logger LOG = LoggerFactory.getLogger(GbfsLoaderTest.class);
+  private static final Logger LOG = LoggerFactory.getLogger(GbfsV3LoaderTest.class);
 
   @Test
   void getV3Feed() {
-    org.entur.gbfs.v3.GbfsLoader loader = new org.entur.gbfs.v3.GbfsLoader(
+    GbfsV3Loader loader = new GbfsV3Loader(
       "file:src/test/resources/gbfs/v3/getaroundstavanger/gbfs.json"
     );
 
     validateV3Feed(loader);
   }
 
-  private void validateV3Feed(org.entur.gbfs.v3.GbfsLoader loader) {
+  private void validateV3Feed(GbfsV3Loader loader) {
     assertTrue(loader.update());
 
     GbfsValidator validator = GbfsValidatorFactory.getGbfsJsonValidator();

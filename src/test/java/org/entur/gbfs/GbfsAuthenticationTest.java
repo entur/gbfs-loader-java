@@ -6,6 +6,8 @@ import java.util.concurrent.CountDownLatch;
 import java.util.function.Consumer;
 import org.entur.gbfs.authentication.Oauth2ClientCredentialsGrantRequestAuthenticator;
 import org.entur.gbfs.authentication.RequestAuthenticator;
+import org.entur.gbfs.v2.GbfsV2Delivery;
+import org.entur.gbfs.v2.GbfsV2Loader;
 import org.entur.gbfs.v2_3.free_bike_status.GBFSFreeBikeStatus;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
@@ -24,7 +26,7 @@ class GbfsAuthenticationTest {
   @Test
   @Disabled("Test code provided to test live Oauth2 authentication")
   void testOauth2ClientCredentialsGrant() {
-    GbfsLoader loader = new GbfsLoader(
+    GbfsV2Loader loader = new GbfsV2Loader(
       TEST_URL,
       TEST_LANGUAGE_CODE,
       new Oauth2ClientCredentialsGrantRequestAuthenticator(
@@ -50,7 +52,7 @@ class GbfsAuthenticationTest {
         TEST_CLIENT_ID,
         TEST_CLIENT_PASSWORD
       );
-    String subscriber = loader.subscribe(
+    String subscriber = loader.subscribeV2(
       getTestOptions(TEST_URL, TEST_LANGUAGE_CODE, requestAuthenticator),
       getTestConsumer()
     );
@@ -71,7 +73,7 @@ class GbfsAuthenticationTest {
     return options;
   }
 
-  Consumer<GbfsDelivery> getTestConsumer() {
+  Consumer<GbfsV2Delivery> getTestConsumer() {
     return delivery -> {
       Assertions.assertNotNull(delivery);
       waiter.countDown();

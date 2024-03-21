@@ -5,6 +5,7 @@ import java.net.URISyntaxException;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ForkJoinPool;
 import java.util.function.Consumer;
+import org.entur.gbfs.v2.GbfsV2Delivery;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -16,7 +17,7 @@ class GBFSSubscriptionTest {
   void testSubscription() throws URISyntaxException, InterruptedException {
     waiter = new CountDownLatch(1);
     GbfsSubscriptionManager loader = new GbfsSubscriptionManager();
-    String subscriber = loader.subscribe(
+    String subscriber = loader.subscribeV2(
       getTestOptions("file:src/test/resources/gbfs/lillestrombysykkel/gbfs.json", "nb"),
       getTestConsumer()
     );
@@ -32,11 +33,11 @@ class GBFSSubscriptionTest {
     ForkJoinPool customThreadPool = new ForkJoinPool(parallellCount);
     waiter = new CountDownLatch(parallellCount);
     GbfsSubscriptionManager loader = new GbfsSubscriptionManager(customThreadPool);
-    String id1 = loader.subscribe(
+    String id1 = loader.subscribeV2(
       getTestOptions("file:src/test/resources/gbfs/lillestrombysykkel/gbfs.json", "nb"),
       getTestConsumer()
     );
-    String id2 = loader.subscribe(
+    String id2 = loader.subscribeV2(
       getTestOptions("file:src/test/resources/gbfs/helsinki/gbfs.json", "en"),
       getTestConsumer()
     );
@@ -47,7 +48,7 @@ class GBFSSubscriptionTest {
     customThreadPool.shutdown();
   }
 
-  Consumer<GbfsDelivery> getTestConsumer() {
+  Consumer<GbfsV2Delivery> getTestConsumer() {
     return delivery -> {
       Assertions.assertNotNull(delivery);
       Assertions.assertEquals(

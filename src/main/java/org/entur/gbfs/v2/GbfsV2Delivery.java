@@ -16,7 +16,7 @@
  *
  */
 
-package org.entur.gbfs;
+package org.entur.gbfs.v2;
 
 import org.entur.gbfs.v2_3.free_bike_status.GBFSFreeBikeStatus;
 import org.entur.gbfs.v2_3.gbfs.GBFS;
@@ -36,7 +36,7 @@ import org.entur.gbfs.validation.model.ValidationResult;
 /**
  * This class holds the data for all the GBFS files
  */
-public class GbfsDelivery {
+public class GbfsV2Delivery {
 
   private GBFS discovery;
   private GBFSGbfsVersions version;

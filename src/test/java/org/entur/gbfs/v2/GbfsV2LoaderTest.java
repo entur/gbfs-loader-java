@@ -1,4 +1,4 @@
-package org.entur.gbfs;
+package org.entur.gbfs.v2;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -34,19 +34,19 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * This tests that {@link GbfsLoader} handles loading of different versions of GBFS correctly, that the optional
+ * This tests that {@link GbfsV2Loader} handles loading of different versions of GBFS correctly, that the optional
  * language paraameter works correctly, and that the different files in a GBFS bundle are all included, with all
  * information in them.
  */
-class GbfsLoaderTest {
+class GbfsV2LoaderTest {
 
   public static final String LANGUAGE_NB = "nb";
   public static final String LANGUAGE_EN = "en";
-  private static final Logger LOG = LoggerFactory.getLogger(GbfsLoaderTest.class);
+  private static final Logger LOG = LoggerFactory.getLogger(GbfsV2LoaderTest.class);
 
   @Test
   void getV22FeedWithExplicitLanguage() {
-    GbfsLoader loader = new GbfsLoader(
+    GbfsV2Loader loader = new GbfsV2Loader(
       "file:src/test/resources/gbfs/lillestrombysykkel/gbfs.json",
       LANGUAGE_NB
     );
@@ -57,7 +57,7 @@ class GbfsLoaderTest {
   @Test
   @Disabled("We need to find a better way to test this")
   void testBackoffStrategy() {
-    GbfsLoader loader = new GbfsLoader(
+    GbfsV2Loader loader = new GbfsV2Loader(
       "file:src/test/resources/gbfs/feedwith404feeds/gbfs.json",
       LANGUAGE_NB
     );
@@ -74,7 +74,7 @@ class GbfsLoaderTest {
 
   @Test
   void getV22FeedWithNoLanguage() {
-    GbfsLoader loader = new GbfsLoader(
+    GbfsV2Loader loader = new GbfsV2Loader(
       "file:src/test/resources/gbfs/lillestrombysykkel/gbfs.json"
     );
 
@@ -86,7 +86,7 @@ class GbfsLoaderTest {
     assertThrows(
       RuntimeException.class,
       () ->
-        new GbfsLoader(
+        new GbfsV2Loader(
           "file:src/test/resources/gbfs/lillestrombysykkel/gbfs.json",
           LANGUAGE_EN
         )
@@ -95,7 +95,7 @@ class GbfsLoaderTest {
 
   @Test
   void getV10FeedWithExplicitLanguage() {
-    GbfsLoader loader = new GbfsLoader(
+    GbfsV2Loader loader = new GbfsV2Loader(
       "file:src/test/resources/gbfs/helsinki/gbfs.json",
       LANGUAGE_EN
     );
@@ -116,7 +116,7 @@ class GbfsLoaderTest {
     while (reader.readRecord()) {
       try {
         String url = reader.get("Auto-Discovery URL");
-        new GbfsLoader(url).update();
+        new GbfsV2Loader(url).update();
       } catch (Exception e) {
         exceptions.add(e);
       }
@@ -130,10 +130,10 @@ class GbfsLoaderTest {
   @Test
   @Disabled
   void testSpin() {
-    new GbfsLoader("https://gbfs.spin.pm/api/gbfs/v2_2/edmonton/gbfs").update();
+    new GbfsV2Loader("https://gbfs.spin.pm/api/gbfs/v2_2/edmonton/gbfs").update();
   }
 
-  private void validateV22Feed(GbfsLoader loader) {
+  private void validateV22Feed(GbfsV2Loader loader) {
     assertTrue(loader.update());
 
     GbfsValidator validator = GbfsValidatorFactory.getGbfsJsonValidator();
@@ -224,7 +224,7 @@ class GbfsLoaderTest {
     assertNull(loader.getFeed(GBFSGeofencingZones.class));
   }
 
-  private void validateV10Feed(GbfsLoader loader) {
+  private void validateV10Feed(GbfsV2Loader loader) {
     assertTrue(loader.update());
 
     GbfsValidator validator = GbfsValidatorFactory.getGbfsJsonValidator();

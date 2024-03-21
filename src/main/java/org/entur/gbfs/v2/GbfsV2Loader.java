@@ -1,35 +1,41 @@
-package org.entur.gbfs.v3;
+package org.entur.gbfs.v2;
 
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 import org.entur.gbfs.BaseGbfsLoader;
 import org.entur.gbfs.DuplicateFeedException;
 import org.entur.gbfs.InvalidURLException;
+import org.entur.gbfs.LanguageNotInFeedException;
 import org.entur.gbfs.authentication.DummyRequestAuthenticator;
 import org.entur.gbfs.authentication.RequestAuthenticator;
 import org.entur.gbfs.http.GBFSFeedUpdater;
-import org.entur.gbfs.v3_0_RC2.gbfs.GBFSFeed;
-import org.entur.gbfs.v3_0_RC2.gbfs.GBFSFeedName;
-import org.entur.gbfs.v3_0_RC2.gbfs.GBFSGbfs;
+import org.entur.gbfs.v2_3.gbfs.GBFS;
+import org.entur.gbfs.v2_3.gbfs.GBFSFeed;
+import org.entur.gbfs.v2_3.gbfs.GBFSFeedName;
+import org.entur.gbfs.v2_3.gbfs.GBFSFeeds;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class GbfsLoader extends BaseGbfsLoader<GBFSFeed.Name> {
+/**
+ * Class for managing the state and loading of complete GBFS datasets, and updating them according to individual feed's
+ * TTL rules.
+ */
+public class GbfsV2Loader extends BaseGbfsLoader<GBFSFeedName> {
 
-  private static final Logger LOG = LoggerFactory.getLogger(GbfsLoader.class);
+  private static final Logger LOG = LoggerFactory.getLogger(GbfsV2Loader.class);
 
   private final String url;
 
   private final Map<String, String> httpHeaders;
 
+  private final String languageCode;
+
   private final RequestAuthenticator requestAuthenticator;
 
-  private GBFSGbfs disoveryFileData;
+  private GBFS disoveryFileData;
 
   private final Long timeoutConnection;
 
@@ -38,8 +44,18 @@ public class GbfsLoader extends BaseGbfsLoader<GBFSFeed.Name> {
    *
    * @param url The URL to the GBFS discovery file
    */
-  public GbfsLoader(String url) {
-    this(url, new HashMap<>());
+  public GbfsV2Loader(String url) {
+    this(url, new HashMap<>(), null);
+  }
+
+  /**
+   * Create a new GbfsLoader
+   *
+   * @param url The URL to the GBFS discovery file
+   * @param languageCode The language code to be used to look up feeds in the discovery file
+   */
+  public GbfsV2Loader(String url, String languageCode) {
+    this(url, new HashMap<>(), languageCode);
   }
 
   /**
@@ -47,36 +63,44 @@ public class GbfsLoader extends BaseGbfsLoader<GBFSFeed.Name> {
    *
    * @param url The URL to the GBFS discovery file
    * @param httpHeaders Additional HTTP headers to be used in requests (e.g. auth headers)
+   * @param languageCode The language code to be used to look up feeds in the discovery file
    */
-  public GbfsLoader(String url, Map<String, String> httpHeaders) {
-    this(url, httpHeaders, null, null);
+  public GbfsV2Loader(String url, Map<String, String> httpHeaders, String languageCode) {
+    this(url, httpHeaders, languageCode, null, null);
   }
 
   /**
    * Create a new GbfsLoader
    *
    * @param url The URL to the GBFS discovery file
+   * @param languageCode The language code to be used to look up feeds in the discovery file
    * @param requestAuthenticator An instance of RequestAuthenticator to provide authentication strategy for
    *                             each request
    */
-  public GbfsLoader(String url, RequestAuthenticator requestAuthenticator) {
-    this(url, new HashMap<>(), requestAuthenticator, null);
+  public GbfsV2Loader(
+    String url,
+    String languageCode,
+    RequestAuthenticator requestAuthenticator
+  ) {
+    this(url, new HashMap<>(), languageCode, requestAuthenticator, null);
   }
 
   /**
    * Create a new GbfsLoader
    *
    * @param url The URL to the GBFS discovery file
+   * @param languageCode The language code to be used to look up feeds in the discovery file
    * @param requestAuthenticator An instance of RequestAuthenticator to provide authentication strategy for
    *            each request.
    * @param timeoutConnection The timeout connection value.
    */
-  public GbfsLoader(
+  public GbfsV2Loader(
     String url,
+    String languageCode,
     RequestAuthenticator requestAuthenticator,
     Long timeoutConnection
   ) {
-    this(url, new HashMap<>(), requestAuthenticator, timeoutConnection);
+    this(url, new HashMap<>(), languageCode, requestAuthenticator, timeoutConnection);
   }
 
   /**
@@ -84,12 +108,14 @@ public class GbfsLoader extends BaseGbfsLoader<GBFSFeed.Name> {
    *
    * @param url The URL to the GBFS discovery file
    * @param httpHeaders Additional HTTP headers to be used in requests (e.g. auth headers)
+   * @param languageCode The language code to be used to look up feeds in the discovery file
    * @param requestAuthenticator An instance of RequestAuthenticator to provide authentication strategy for
    *            each request.
    */
-  public GbfsLoader(
+  public GbfsV2Loader(
     String url,
     Map<String, String> httpHeaders,
+    String languageCode,
     RequestAuthenticator requestAuthenticator,
     Long timeoutConnection
   ) {
@@ -97,6 +123,7 @@ public class GbfsLoader extends BaseGbfsLoader<GBFSFeed.Name> {
       Objects.requireNonNullElseGet(requestAuthenticator, DummyRequestAuthenticator::new);
     this.url = url;
     this.httpHeaders = httpHeaders;
+    this.languageCode = languageCode;
     this.timeoutConnection = timeoutConnection;
 
     init();
@@ -118,7 +145,7 @@ public class GbfsLoader extends BaseGbfsLoader<GBFSFeed.Name> {
     var discoveryFileUpdater = new GBFSFeedUpdater<>(
       uri,
       requestAuthenticator,
-      GBFSGbfs.class,
+      GBFSFeedName.GBFS.implementingClass(),
       httpHeaders,
       timeoutConnection
     );
@@ -127,7 +154,7 @@ public class GbfsLoader extends BaseGbfsLoader<GBFSFeed.Name> {
     rawDiscoveryFileData = discoveryFileUpdater.getRawData();
 
     if (rawDiscoveryFileData != null) {
-      disoveryFileData = discoveryFileUpdater.getData();
+      disoveryFileData = (GBFS) discoveryFileUpdater.getData();
     }
 
     if (disoveryFileData != null) {
@@ -139,11 +166,19 @@ public class GbfsLoader extends BaseGbfsLoader<GBFSFeed.Name> {
   }
 
   private void createUpdaters() {
-    List<GBFSFeed> feeds = disoveryFileData.getData().getFeeds();
+    // Pick first language if none defined
+    GBFSFeeds feeds = languageCode == null
+      ? disoveryFileData.getFeedsData().values().iterator().next()
+      : disoveryFileData.getFeedsData().get(languageCode);
+    if (feeds == null) {
+      throw new LanguageNotInFeedException(
+        "Language " + languageCode + " does not exist in feed " + url
+      );
+    }
 
     // Create updater for each file
-    for (GBFSFeed feed : feeds) {
-      GBFSFeed.Name feedName = feed.getName();
+    for (GBFSFeed feed : feeds.getFeeds()) {
+      GBFSFeedName feedName = feed.getName();
       if (feedUpdaters.containsKey(feedName)) {
         throw new DuplicateFeedException(
           "Feed contains duplicate url for feed " +
@@ -161,9 +196,9 @@ public class GbfsLoader extends BaseGbfsLoader<GBFSFeed.Name> {
         feedUpdaters.put(
           feedName,
           new GBFSFeedUpdater<>(
-            URI.create(feed.getUrl()),
+            feed.getUrl(),
             requestAuthenticator,
-            GBFSFeedName.implementingClass(feedName),
+            feed.getName().implementingClass(),
             httpHeaders,
             timeoutConnection
           )
@@ -172,7 +207,7 @@ public class GbfsLoader extends BaseGbfsLoader<GBFSFeed.Name> {
     }
   }
 
-  public GBFSGbfs getDiscoveryFeed() {
+  public GBFS getDiscoveryFeed() {
     return disoveryFileData;
   }
 
@@ -187,11 +222,11 @@ public class GbfsLoader extends BaseGbfsLoader<GBFSFeed.Name> {
     return feed.cast(updater.getData());
   }
 
-  public Optional<byte[]> getRawFeed(GBFSFeed.Name feedName) {
+  public byte[] getRawFeed(GBFSFeedName feedName) {
     GBFSFeedUpdater<?> updater = feedUpdaters.get(feedName);
     if (updater == null) {
-      return Optional.empty();
+      return null;
     }
-    return Optional.of(updater.getRawData());
+    return updater.getRawData();
   }
 }
