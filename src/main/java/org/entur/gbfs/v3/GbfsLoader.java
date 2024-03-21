@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import org.entur.gbfs.BaseGbfsLoader;
+import org.entur.gbfs.DuplicateFeedException;
+import org.entur.gbfs.InvalidURLException;
 import org.entur.gbfs.authentication.DummyRequestAuthenticator;
 import org.entur.gbfs.authentication.RequestAuthenticator;
 import org.entur.gbfs.http.GBFSFeedUpdater;
@@ -109,7 +111,7 @@ public class GbfsLoader extends BaseGbfsLoader<GBFSFeed.Name> {
     try {
       uri = new URI(url);
     } catch (URISyntaxException e) {
-      throw new RuntimeException("Invalid url " + url);
+      throw new InvalidURLException("Invalid url " + url);
     }
 
     var discoveryFileUpdater = new GBFSFeedUpdater<>(
@@ -142,7 +144,7 @@ public class GbfsLoader extends BaseGbfsLoader<GBFSFeed.Name> {
     for (GBFSFeed feed : feeds) {
       GBFSFeed.Name feedName = feed.getName();
       if (feedUpdaters.containsKey(feedName)) {
-        throw new RuntimeException(
+        throw new DuplicateFeedException(
           "Feed contains duplicate url for feed " +
           feedName +
           ". " +

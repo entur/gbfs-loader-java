@@ -135,7 +135,7 @@ public class GbfsLoader extends BaseGbfsLoader<GBFSFeedName> {
     try {
       uri = new URI(url);
     } catch (URISyntaxException e) {
-      throw new RuntimeException("Invalid url " + url);
+      throw new InvalidURLException("Invalid url " + url);
     }
 
     var discoveryFileUpdater = new GBFSFeedUpdater<>(
@@ -167,7 +167,7 @@ public class GbfsLoader extends BaseGbfsLoader<GBFSFeedName> {
       ? disoveryFileData.getFeedsData().values().iterator().next()
       : disoveryFileData.getFeedsData().get(languageCode);
     if (feeds == null) {
-      throw new RuntimeException(
+      throw new LanguageNotInFeedException(
         "Language " + languageCode + " does not exist in feed " + url
       );
     }
@@ -176,7 +176,7 @@ public class GbfsLoader extends BaseGbfsLoader<GBFSFeedName> {
     for (GBFSFeed feed : feeds.getFeeds()) {
       GBFSFeedName feedName = feed.getName();
       if (feedUpdaters.containsKey(feedName)) {
-        throw new RuntimeException(
+        throw new DuplicateFeedException(
           "Feed contains duplicate url for feed " +
           feedName +
           ". " +
