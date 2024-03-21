@@ -22,6 +22,8 @@ import org.slf4j.LoggerFactory;
 
 public class HttpUtils {
 
+  private HttpUtils() {}
+
   private static final Logger LOG = LoggerFactory.getLogger(HttpUtils.class);
   private static final long TIMEOUT_CONNECTION = 5000;
   private static final int TIMEOUT_SOCKET = 5000;
@@ -81,7 +83,7 @@ public class HttpUtils {
     }
 
     if (status.getStatusCode() != 200) {
-      throw new RuntimeException(
+      throw new FailedToGetException(
         "Could not get URL: " + status.getStatusCode() + ": " + status.getReasonPhrase()
       );
     }
