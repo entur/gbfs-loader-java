@@ -34,9 +34,9 @@ public abstract class BaseGbfsLoader<S> {
         for (GBFSFeedUpdater<?> updater : feedUpdaters.values()) {
           if (updater.shouldUpdate()) {
             updater.fetchData();
-            // TODO didUpdate is set to true, once for one feed an update was initiated,
-            // no matter if successful or not(?)
-            didUpdate = true;
+            if (updater.getData() != null) {
+              didUpdate = true;
+            }
           }
         }
       } finally {

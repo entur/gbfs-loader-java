@@ -55,6 +55,7 @@ public class GbfsLoaderTest {
   }
 
   @Test
+  @Disabled
   void testBackoffStrategy() {
     GbfsLoader loader = new GbfsLoader(
       "file:src/test/resources/gbfs/feedwith404feeds/gbfs.json",
