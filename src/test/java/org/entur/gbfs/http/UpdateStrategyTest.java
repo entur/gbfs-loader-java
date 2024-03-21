@@ -12,7 +12,7 @@ class UpdateStrategyTest {
   @Test
   void testUpdateImmediately() {
     UpdateStrategy subject = new UpdateStrategy();
-    subject.scheduleNextUpdate((int) Instant.now().getEpochSecond(), 0);
+    subject.scheduleNextUpdate(null, null);
     assertTrue(subject.shouldUpdate());
   }
 
@@ -24,14 +24,17 @@ class UpdateStrategyTest {
   }
 
   @Test
-  @Disabled(
-    "This test is flaky due to rescheduleAfterFailure does not always leave enough time for the next assertion"
-  )
   void testUpdateFailed() {
     UpdateStrategy subject = new UpdateStrategy();
     subject.scheduleNextUpdate((int) Instant.now().getEpochSecond(), 0);
     assertTrue(subject.shouldUpdate());
+
+    // run rescheduleAfterFailure mulitple times to increase chance that
+    // the following assertion has "time to fail"
     subject.rescheduleAfterFailure();
+    subject.rescheduleAfterFailure();
+    subject.rescheduleAfterFailure();
+
     assertFalse(subject.shouldUpdate());
   }
 }
