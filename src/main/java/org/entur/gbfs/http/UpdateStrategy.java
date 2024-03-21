@@ -1,5 +1,6 @@
 package org.entur.gbfs.http;
 
+import java.util.Random;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,7 +15,9 @@ public class UpdateStrategy {
 
   private static final Logger LOG = LoggerFactory.getLogger(UpdateStrategy.class);
 
-  private static int MAX_BACKOFF_SECONDS = 3600;
+  private static final Random random = new Random();
+
+  private static int maxBackoffSeconds = 3600;
   private int failedAttemptsCount = 0;
   private int nextUpdate;
 
@@ -25,11 +28,11 @@ public class UpdateStrategy {
   public void rescheduleAfterFailure() {
     failedAttemptsCount++;
     int backoffSeconds = Math.min(
-      MAX_BACKOFF_SECONDS,
-      (int) Math.pow(2, failedAttemptsCount - 1)
+      maxBackoffSeconds,
+      (int) Math.pow(2, failedAttemptsCount - 1.0)
     );
     // subtract a random value up to 5% to spread requests
-    int randomOffset = (int) (Math.random() * 0.05 * backoffSeconds);
+    int randomOffset = (int) (random.nextInt() * 0.05 * backoffSeconds);
     nextUpdate = getCurrentTimeSeconds() + backoffSeconds - randomOffset;
     LOG.info(
       "Rescheduled nextUpdate after {} failure(s) to {}",
