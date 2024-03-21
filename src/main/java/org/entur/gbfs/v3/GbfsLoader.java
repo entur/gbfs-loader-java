@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import org.entur.gbfs.BaseGbfsLoader;
 import org.entur.gbfs.DuplicateFeedException;
 import org.entur.gbfs.InvalidURLException;
@@ -186,11 +187,11 @@ public class GbfsLoader extends BaseGbfsLoader<GBFSFeed.Name> {
     return feed.cast(updater.getData());
   }
 
-  public byte[] getRawFeed(GBFSFeed.Name feedName) {
+  public Optional<byte[]> getRawFeed(GBFSFeed.Name feedName) {
     GBFSFeedUpdater<?> updater = feedUpdaters.get(feedName);
     if (updater == null) {
-      return null;
+      return Optional.empty();
     }
-    return updater.getRawData();
+    return Optional.of(updater.getRawData());
   }
 }

@@ -46,7 +46,7 @@ public class GbfsLoaderTest {
     GbfsValidator validator = GbfsValidatorFactory.getGbfsJsonValidator();
     FileValidationResult validationResult = validator.validateFile(
       "system_information",
-      new ByteArrayInputStream(loader.getRawFeed(GBFSFeed.Name.SYSTEM_INFORMATION))
+      new ByteArrayInputStream(loader.getRawFeed(GBFSFeed.Name.SYSTEM_INFORMATION).get())
     );
     assertEquals(0, validationResult.getErrorsCount());
 
@@ -68,7 +68,7 @@ public class GbfsLoaderTest {
     validationResult =
       validator.validateFile(
         "vehicle_types",
-        new ByteArrayInputStream(loader.getRawFeed(GBFSFeed.Name.VEHICLE_TYPES))
+        new ByteArrayInputStream(loader.getRawFeed(GBFSFeed.Name.VEHICLE_TYPES).get())
       );
     assertEquals(0, validationResult.getErrorsCount());
 
@@ -90,7 +90,7 @@ public class GbfsLoaderTest {
     validationResult =
       validator.validateFile(
         "vehicle_status",
-        new ByteArrayInputStream(loader.getRawFeed(GBFSFeed.Name.VEHICLE_STATUS))
+        new ByteArrayInputStream(loader.getRawFeed(GBFSFeed.Name.VEHICLE_STATUS).get())
       );
     assertEquals(0, validationResult.getErrorsCount());
 
@@ -107,7 +107,9 @@ public class GbfsLoaderTest {
     validationResult =
       validator.validateFile(
         "system_pricing_plans",
-        new ByteArrayInputStream(loader.getRawFeed(GBFSFeed.Name.SYSTEM_PRICING_PLANS))
+        new ByteArrayInputStream(
+          loader.getRawFeed(GBFSFeed.Name.SYSTEM_PRICING_PLANS).get()
+        )
       );
     assertEquals(0, validationResult.getErrorsCount());
 
