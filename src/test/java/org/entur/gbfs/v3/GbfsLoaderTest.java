@@ -25,7 +25,7 @@ import org.slf4j.LoggerFactory;
 /**
  * This tests that {@link org.entur.gbfs.v3.GbfsLoader} handles loading correctly,
  */
-public class GbfsLoaderTest {
+class GbfsLoaderTest {
 
   public static final String LANGUAGE_NB = "nb-NO";
   public static final String LANGUAGE_EN = "en";

@@ -7,7 +7,7 @@ import java.time.Instant;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-public class UpdateStrategyTest {
+class UpdateStrategyTest {
 
   @Test
   void testUpdateImmediately() {

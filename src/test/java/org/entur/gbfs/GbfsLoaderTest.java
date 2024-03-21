@@ -38,7 +38,7 @@ import org.slf4j.LoggerFactory;
  * language paraameter works correctly, and that the different files in a GBFS bundle are all included, with all
  * information in them.
  */
-public class GbfsLoaderTest {
+class GbfsLoaderTest {
 
   public static final String LANGUAGE_NB = "nb";
   public static final String LANGUAGE_EN = "en";
