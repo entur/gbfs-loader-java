@@ -9,6 +9,7 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.util.Date;
 import java.util.Map;
+import java.util.Optional;
 import org.entur.gbfs.authentication.RequestAuthenticator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -73,7 +74,7 @@ public class GBFSFeedUpdater<T> {
 
   public void fetchData() {
     requestAuthenticator.authenticateRequest(httpHeaders);
-    rawData = fetchFeed(url, httpHeaders);
+    rawData = fetchFeed(url, httpHeaders).orElse(null);
 
     if (rawData == null) {
       LOG.warn("Invalid data for {}", url);
@@ -129,7 +130,7 @@ public class GBFSFeedUpdater<T> {
     return updateStrategy.shouldUpdate();
   }
 
-  private byte[] fetchFeed(URI uri, Map<String, String> httpHeaders) {
+  private Optional<byte[]> fetchFeed(URI uri, Map<String, String> httpHeaders) {
     String proto = uri.getScheme();
 
     if (proto.equals("http") || proto.equals("https")) {
@@ -139,29 +140,29 @@ public class GBFSFeedUpdater<T> {
     }
   }
 
-  private byte[] fetchFeedFromFile(URI uri) {
+  private Optional<byte[]> fetchFeedFromFile(URI uri) {
     try (InputStream is = uri.toURL().openStream()) {
-      return is.readAllBytes();
+      return Optional.of(is.readAllBytes());
     } catch (MalformedURLException e) {
       LOG.warn("Error reading GBFS feed from file due to malformed URL {}", uri, e);
-      return null;
+      return Optional.empty();
     } catch (IOException e) {
       LOG.warn("Error reading GBFS feed from file {}", uri, e);
-      return null;
+      return Optional.empty();
     }
   }
 
-  private byte[] fetchFeedFromHttp(URI uri, Map<String, String> httpHeaders) {
+  private Optional<byte[]> fetchFeedFromHttp(URI uri, Map<String, String> httpHeaders) {
     try (InputStream is = HttpUtils.getData(uri, timeout, httpHeaders)) {
       if (is == null) {
         LOG.warn("Failed to get data from url {}", uri);
-        return null;
+        return Optional.empty();
       }
 
-      return is.readAllBytes();
+      return Optional.of(is.readAllBytes());
     } catch (IOException e) {
       LOG.warn("Error (bad connection) reading GBFS feed from {}", uri, e);
-      return null;
+      return Optional.empty();
     }
   }
 }
