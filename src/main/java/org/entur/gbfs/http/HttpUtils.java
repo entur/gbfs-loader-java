@@ -44,7 +44,7 @@ public class HttpUtils {
       }
     }
     timeout = (timeout == null) ? TIMEOUT_CONNECTION : timeout;
-    HttpClient httpclient = getClient(timeout, timeout);
+    HttpClient httpclient = getClient(timeout);
     HttpResponse response = httpclient.execute(httpget);
     if (response.getStatusLine().getStatusCode() != 200) {
       LOG.warn("Got non-200 status code: {}", response.getStatusLine().getStatusCode());
@@ -63,14 +63,13 @@ public class HttpUtils {
     return getData(uri, TIMEOUT_CONNECTION, requestHeaderValues);
   }
 
-  private static HttpClient getClient(long timeoutConnection, long timeoutSocket) {
+  private static HttpClient getClient(long timeoutSocket) {
     return HttpClientBuilder
       .create()
       .setRoutePlanner(new SystemDefaultRoutePlanner(null))
       .setDefaultSocketConfig(
         SocketConfig.custom().setSoTimeout((int) timeoutSocket).build()
       )
-      .setConnectionTimeToLive(timeoutConnection, TimeUnit.MILLISECONDS)
       .setDefaultRequestConfig(
         RequestConfig.custom().setCookieSpec(CookieSpecs.STANDARD).build()
       )
