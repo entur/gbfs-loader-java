@@ -5,71 +5,106 @@ import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
-import org.entur.gbfs.GbfsVersionLoader;
+import org.entur.gbfs.BaseGbfsLoader;
 import org.entur.gbfs.authentication.DummyRequestAuthenticator;
 import org.entur.gbfs.authentication.RequestAuthenticator;
 import org.entur.gbfs.http.GBFSFeedUpdater;
-import org.entur.gbfs.v2_3.gbfs.GBFS;
 import org.entur.gbfs.v3_0_RC2.gbfs.GBFSFeed;
 import org.entur.gbfs.v3_0_RC2.gbfs.GBFSFeedName;
 import org.entur.gbfs.v3_0_RC2.gbfs.GBFSGbfs;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class GbfsV3Loader implements GbfsVersionLoader {
+public class GbfsLoader extends BaseGbfsLoader<GBFSFeed.Name> {
 
-  private static final Logger LOG = LoggerFactory.getLogger(GbfsV3Loader.class);
-
-  /** One updater per feed type(?)*/
-  private final Map<GBFSFeed.Name, GBFSFeedUpdater<?>> feedUpdaters = new HashMap<>();
+  private static final Logger LOG = LoggerFactory.getLogger(GbfsLoader.class);
 
   private final String url;
 
   private final Map<String, String> httpHeaders;
 
-  private final String languageCode;
-
   private final RequestAuthenticator requestAuthenticator;
 
   private GBFSGbfs disoveryFileData;
 
-  private final AtomicBoolean setupComplete = new AtomicBoolean(false);
-
-  private final Lock updateLock = new ReentrantLock();
-
   private final Long timeoutConnection;
 
-  public GbfsV3Loader(
+  /**
+   * Create a new GbfsLoader
+   *
+   * @param url The URL to the GBFS discovery file
+   */
+  public GbfsLoader(String url) {
+    this(url, new HashMap<>());
+  }
+
+  /**
+   * Create a new GbfsLoader
+   *
+   * @param url The URL to the GBFS discovery file
+   * @param httpHeaders Additional HTTP headers to be used in requests (e.g. auth headers)
+   */
+  public GbfsLoader(String url, Map<String, String> httpHeaders) {
+    this(url, httpHeaders, null, null);
+  }
+
+  /**
+   * Create a new GbfsLoader
+   *
+   * @param url The URL to the GBFS discovery file
+   * @param requestAuthenticator An instance of RequestAuthenticator to provide authentication strategy for
+   *                             each request
+   */
+  public GbfsLoader(String url, RequestAuthenticator requestAuthenticator) {
+    this(url, new HashMap<>(), requestAuthenticator, null);
+  }
+
+  /**
+   * Create a new GbfsLoader
+   *
+   * @param url The URL to the GBFS discovery file
+   * @param requestAuthenticator An instance of RequestAuthenticator to provide authentication strategy for
+   *            each request.
+   * @param timeoutConnection The timeout connection value.
+   */
+  public GbfsLoader(
     String url,
-    Map<String, String> httpHeaders,
-    String languageCode,
     RequestAuthenticator requestAuthenticator,
     Long timeoutConnection
   ) {
-    if (requestAuthenticator == null) {
-      this.requestAuthenticator = new DummyRequestAuthenticator();
-    } else {
-      this.requestAuthenticator = requestAuthenticator;
-    }
+    this(url, new HashMap<>(), requestAuthenticator, timeoutConnection);
+  }
 
+  /**
+   * Create a new GbfsLoader
+   *
+   * @param url The URL to the GBFS discovery file
+   * @param httpHeaders Additional HTTP headers to be used in requests (e.g. auth headers)
+   * @param requestAuthenticator An instance of RequestAuthenticator to provide authentication strategy for
+   *            each request.
+   */
+  public GbfsLoader(
+    String url,
+    Map<String, String> httpHeaders,
+    RequestAuthenticator requestAuthenticator,
+    Long timeoutConnection
+  ) {
+    this.requestAuthenticator =
+      Objects.requireNonNullElseGet(requestAuthenticator, DummyRequestAuthenticator::new);
     this.url = url;
     this.httpHeaders = httpHeaders;
-    this.languageCode = languageCode;
     this.timeoutConnection = timeoutConnection;
 
     init();
   }
 
-  public AtomicBoolean getSetupComplete() {
-    return setupComplete;
-  }
-
   public synchronized void init() {
     byte[] rawDiscoveryFileData;
-    if (setupComplete.get()) {
+    if (getSetupComplete().get()) {
       return;
     }
 
@@ -97,7 +132,7 @@ public class GbfsV3Loader implements GbfsVersionLoader {
 
     if (disoveryFileData != null) {
       createUpdaters();
-      setupComplete.set(true);
+      getSetupComplete().set(true);
     } else {
       LOG.warn("Could not fetch the feed auto-configuration file from {}", uri);
     }
@@ -137,42 +172,8 @@ public class GbfsV3Loader implements GbfsVersionLoader {
     }
   }
 
-  /**
-   * Checks if any of the feeds should be updated base on the TTL and fetches. Returns true, if any feeds were updated.
-   */
-  public boolean update() {
-    if (!setupComplete.get()) {
-      init();
-    }
-
-    boolean didUpdate = false;
-    if (updateLock.tryLock()) {
-      try {
-        for (GBFSFeedUpdater<?> updater : feedUpdaters.values()) {
-          if (updater.shouldUpdate()) {
-            updater.fetchData();
-            // TODO didUpdate is set to true, once for one feed an update was initiated,
-            // no matter if successful or not(?)
-            didUpdate = true;
-          }
-        }
-      } finally {
-        // be sure to release lock, even in case an exception is thrown
-        updateLock.unlock();
-      }
-    }
-    return didUpdate;
-  }
-
-  @Override
-  public GBFSGbfs getV3DiscoveryFeed() {
+  public GBFSGbfs getDiscoveryFeed() {
     return disoveryFileData;
-  }
-
-  @Override
-  public GBFS getDiscoveryFeed() {
-    // unsupported
-    return null;
   }
 
   /**
@@ -186,14 +187,7 @@ public class GbfsV3Loader implements GbfsVersionLoader {
     return feed.cast(updater.getData());
   }
 
-  @Override
-  public byte[] getRawFeed(org.entur.gbfs.v2_3.gbfs.GBFSFeedName feedName) {
-    // unsupported
-    return new byte[0];
-  }
-
-  @Override
-  public byte[] getRawV3Feed(GBFSFeedName feedName) {
+  public byte[] getRawFeed(GBFSFeed.Name feedName) {
     GBFSFeedUpdater<?> updater = feedUpdaters.get(feedName);
     if (updater == null) {
       return null;

@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
+import java.time.ZonedDateTime;
+import java.util.Date;
 import java.util.Map;
 import org.entur.gbfs.authentication.RequestAuthenticator;
 import org.slf4j.Logger;
@@ -92,9 +94,24 @@ public class GBFSFeedUpdater<T> {
     try {
       // Fetch lastUpdated and ttl from the resulting class. Due to type erasure we don't know the actual
       // class, and have to use introspection to get the method references, as they do not share a supertype.
-      Integer lastUpdated = (Integer) implementingClass
-        .getMethod("getLastUpdated")
-        .invoke(data);
+
+      Integer lastUpdated;
+
+      if (
+        implementingClass
+          .getMethod("getLastUpdated")
+          .getReturnType()
+          .equals(Integer.class)
+      ) {
+        lastUpdated =
+          (Integer) implementingClass.getMethod("getLastUpdated").invoke(data);
+      } else {
+        Date lastUpdatedDate = (Date) implementingClass
+          .getMethod("getLastUpdated")
+          .invoke(data);
+        lastUpdated = Long.valueOf(lastUpdatedDate.getTime() / 1000).intValue();
+      }
+
       Integer ttl = (Integer) implementingClass.getMethod("getTtl").invoke(data);
       updateStrategy.scheduleNextUpdate(lastUpdated, ttl);
     } catch (
