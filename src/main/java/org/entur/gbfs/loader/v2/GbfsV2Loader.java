@@ -109,8 +109,8 @@ public class GbfsV2Loader extends BaseGbfsLoader<GBFSFeedName, GBFS> {
   protected List<GbfsFeed<GBFSFeedName, ?>> getFeeds() {
     // Pick first language if none defined
     GBFSFeeds feeds = languageCode == null
-      ? disoveryFileData.getFeedsData().values().iterator().next()
-      : disoveryFileData.getFeedsData().get(languageCode);
+      ? getDiscoveryFeed().getFeedsData().values().iterator().next()
+      : getDiscoveryFeed().getFeedsData().get(languageCode);
     if (feeds == null) {
       throw new LanguageNotInFeedException(
         "Language " + languageCode + " does not exist in feed"

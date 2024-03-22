@@ -84,7 +84,7 @@ public class GbfsV3Loader extends BaseGbfsLoader<GBFSFeed.Name, GBFSGbfs> {
 
   @Override
   protected List<GbfsFeed<GBFSFeed.Name, ?>> getFeeds() {
-    List<GBFSFeed> feeds = disoveryFileData.getData().getFeeds();
+    List<GBFSFeed> feeds = getDiscoveryFeed().getData().getFeeds();
 
     return feeds
       .stream()

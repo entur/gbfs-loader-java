@@ -19,9 +19,9 @@ public abstract class BaseGbfsLoader<S, T> {
   private static final Logger LOG = LoggerFactory.getLogger(BaseGbfsLoader.class);
   private final AtomicBoolean setupComplete = new AtomicBoolean(false);
   private final Lock updateLock = new ReentrantLock();
-  protected final Map<S, GBFSFeedUpdater<?>> feedUpdaters = new HashMap<>();
+  private final Map<S, GBFSFeedUpdater<?>> feedUpdaters = new HashMap<>();
   private final Map<Class<?>, S> classMap = new HashMap<>();
-  protected T disoveryFileData;
+  private T disoveryFileData;
   private final GBFSFeedUpdater<T> discoveryFileUpdater;
   private final Map<String, String> httpHeaders;
   private final RequestAuthenticator requestAuthenticator;
