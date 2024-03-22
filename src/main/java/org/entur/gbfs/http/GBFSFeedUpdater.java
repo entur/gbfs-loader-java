@@ -61,25 +61,6 @@ public class GBFSFeedUpdater<T> {
     this.timeout = timeout;
   }
 
-  public GBFSFeedUpdater(
-    String url,
-    RequestAuthenticator requestAuthenticator,
-    Class<T> implementingClass,
-    Map<String, String> httpHeaders,
-    Long timeout
-  ) {
-    try {
-      this.url = new URI(url);
-    } catch (URISyntaxException e) {
-      throw new InvalidURLException("Invalid url " + url);
-    }
-
-    this.requestAuthenticator = requestAuthenticator;
-    this.implementingClass = implementingClass;
-    this.httpHeaders = httpHeaders;
-    this.timeout = timeout;
-  }
-
   public URI getUrl() {
     return url;
   }

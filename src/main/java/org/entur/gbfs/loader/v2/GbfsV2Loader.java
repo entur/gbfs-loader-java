@@ -102,7 +102,6 @@ public class GbfsV2Loader extends BaseGbfsLoader<GBFSFeedName, GBFS> {
   ) {
     super(url, httpHeaders, requestAuthenticator, timeoutConnection, GBFS.class);
     this.languageCode = languageCode;
-
     init();
   }
 

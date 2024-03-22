@@ -1,5 +1,6 @@
 package org.entur.gbfs.loader;
 
+import java.net.URI;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,12 +40,38 @@ public abstract class BaseGbfsLoader<S, T> {
     this.timeoutConnection = timeoutConnection;
     this.discoveryFileUpdater =
       new GBFSFeedUpdater<>(
-        discoveryUrl,
+        URI.create(discoveryUrl),
         this.requestAuthenticator,
         discoveryFileClass,
         httpHeaders,
         timeoutConnection
       );
+  }
+
+  public synchronized void init() {
+    if (setupComplete.get()) {
+      return;
+    }
+
+    byte[] rawDiscoveryFileData;
+
+    discoveryFileUpdater.fetchData();
+
+    rawDiscoveryFileData = discoveryFileUpdater.getRawData();
+
+    if (rawDiscoveryFileData != null) {
+      disoveryFileData = discoveryFileUpdater.getData();
+    }
+
+    if (disoveryFileData != null) {
+      createUpdaters();
+      setupComplete.set(true);
+    } else {
+      LOG.warn(
+        "Could not fetch the feed auto-configuration file from {}",
+        discoveryFileUpdater.getUrl()
+      );
+    }
   }
 
   public boolean getSetupComplete() {
@@ -76,32 +103,6 @@ public abstract class BaseGbfsLoader<S, T> {
       }
     }
     return didUpdate;
-  }
-
-  public synchronized void init() {
-    if (setupComplete.get()) {
-      return;
-    }
-
-    byte[] rawDiscoveryFileData;
-
-    discoveryFileUpdater.fetchData();
-
-    rawDiscoveryFileData = discoveryFileUpdater.getRawData();
-
-    if (rawDiscoveryFileData != null) {
-      disoveryFileData = discoveryFileUpdater.getData();
-    }
-
-    if (disoveryFileData != null) {
-      createUpdaters();
-      setupComplete.set(true);
-    } else {
-      LOG.warn(
-        "Could not fetch the feed auto-configuration file from {}",
-        discoveryFileUpdater.getUrl()
-      );
-    }
   }
 
   private void createUpdaters() {
