@@ -88,25 +88,22 @@ public class GbfsV2Subscription implements GbfsSubscription {
    */
   public void update() {
     if (loader.update()) {
-      GbfsV2Delivery delivery = new GbfsV2Delivery();
-      delivery.setDiscovery(loader.getDiscoveryFeed());
-      delivery.setVersion(loader.getFeed(GBFSGbfsVersions.class));
-      delivery.setSystemInformation(loader.getFeed(GBFSSystemInformation.class));
-      delivery.setVehicleTypes(loader.getFeed(GBFSVehicleTypes.class));
-      delivery.setSystemRegions(loader.getFeed(GBFSSystemRegions.class));
-      delivery.setStationInformation(loader.getFeed(GBFSStationInformation.class));
-      delivery.setStationStatus(loader.getFeed(GBFSStationStatus.class));
-      delivery.setFreeBikeStatus(loader.getFeed(GBFSFreeBikeStatus.class));
-      delivery.setSystemAlerts(loader.getFeed(GBFSSystemAlerts.class));
-      delivery.setSystemCalendar(loader.getFeed(GBFSSystemCalendar.class));
-      delivery.setSystemHours(loader.getFeed(GBFSSystemHours.class));
-      delivery.setSystemPricingPlans(loader.getFeed(GBFSSystemPricingPlans.class));
-      delivery.setGeofencingZones(loader.getFeed(GBFSGeofencingZones.class));
-
-      if (subscriptionOptions.isEnableValidation()) {
-        delivery.setValidationResult(validateFeeds());
-      }
-
+      GbfsV2Delivery delivery = new GbfsV2Delivery(
+        loader.getDiscoveryFeed(),
+        loader.getFeed(GBFSGbfsVersions.class),
+        loader.getFeed(GBFSSystemInformation.class),
+        loader.getFeed(GBFSVehicleTypes.class),
+        loader.getFeed(GBFSStationInformation.class),
+        loader.getFeed(GBFSStationStatus.class),
+        loader.getFeed(GBFSFreeBikeStatus.class),
+        loader.getFeed(GBFSSystemHours.class),
+        loader.getFeed(GBFSSystemCalendar.class),
+        loader.getFeed(GBFSSystemRegions.class),
+        loader.getFeed(GBFSSystemPricingPlans.class),
+        loader.getFeed(GBFSSystemAlerts.class),
+        loader.getFeed(GBFSGeofencingZones.class),
+        subscriptionOptions.isEnableValidation() ? validateFeeds() : null
+      );
       consumer.accept(delivery);
     }
   }

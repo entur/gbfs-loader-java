@@ -53,7 +53,7 @@ class GBFSSubscriptionTest {
       Assertions.assertNotNull(delivery);
       Assertions.assertEquals(
         0,
-        delivery.getValidationResult().getSummary().getErrorsCount()
+        delivery.validationResult().getSummary().getErrorsCount()
       );
       waiter.countDown();
     };

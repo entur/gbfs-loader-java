@@ -34,114 +34,17 @@ import org.entur.gbfs.validation.model.ValidationResult;
 /**
  * This class holds the data for all the GBFS files
  */
-public class GbfsV3Delivery {
-
-  private GBFSGbfs discovery;
-  private GBFSGbfsVersions version;
-  private GBFSSystemInformation systemInformation;
-  private GBFSVehicleTypes vehicleTypes;
-  private GBFSStationInformation stationInformation;
-  private GBFSStationStatus stationStatus;
-  private GBFSVehicleStatus vehicleStatus;
-  private GBFSSystemRegions systemRegions;
-  private GBFSSystemPricingPlans systemPricingPlans;
-  private GBFSSystemAlerts systemAlerts;
-  private GBFSGeofencingZones geofencingZones;
-  private ValidationResult validationResult;
-
-  public GBFSGbfs getDiscovery() {
-    return discovery;
-  }
-
-  public void setDiscovery(GBFSGbfs discovery) {
-    this.discovery = discovery;
-  }
-
-  public GBFSGbfsVersions getVersion() {
-    return version;
-  }
-
-  public void setVersion(GBFSGbfsVersions version) {
-    this.version = version;
-  }
-
-  public GBFSSystemInformation getSystemInformation() {
-    return systemInformation;
-  }
-
-  public void setSystemInformation(GBFSSystemInformation systemInformation) {
-    this.systemInformation = systemInformation;
-  }
-
-  public GBFSVehicleTypes getVehicleTypes() {
-    return vehicleTypes;
-  }
-
-  public void setVehicleTypes(GBFSVehicleTypes vehicleTypes) {
-    this.vehicleTypes = vehicleTypes;
-  }
-
-  public GBFSStationInformation getStationInformation() {
-    return stationInformation;
-  }
-
-  public void setStationInformation(GBFSStationInformation stationInformation) {
-    this.stationInformation = stationInformation;
-  }
-
-  public GBFSStationStatus getStationStatus() {
-    return stationStatus;
-  }
-
-  public void setStationStatus(GBFSStationStatus stationStatus) {
-    this.stationStatus = stationStatus;
-  }
-
-  public GBFSVehicleStatus getVehicleStatus() {
-    return vehicleStatus;
-  }
-
-  public void setVehicleStatus(GBFSVehicleStatus vehicleStatus) {
-    this.vehicleStatus = vehicleStatus;
-  }
-
-  public GBFSSystemRegions getSystemRegions() {
-    return systemRegions;
-  }
-
-  public void setSystemRegions(GBFSSystemRegions systemRegions) {
-    this.systemRegions = systemRegions;
-  }
-
-  public GBFSSystemPricingPlans getSystemPricingPlans() {
-    return systemPricingPlans;
-  }
-
-  public void setSystemPricingPlans(GBFSSystemPricingPlans systemPricingPlans) {
-    this.systemPricingPlans = systemPricingPlans;
-  }
-
-  public GBFSSystemAlerts getSystemAlerts() {
-    return systemAlerts;
-  }
-
-  public void setSystemAlerts(GBFSSystemAlerts systemAlerts) {
-    this.systemAlerts = systemAlerts;
-  }
-
-  public GBFSGeofencingZones getGeofencingZones() {
-    return geofencingZones;
-  }
-
-  public void setGeofencingZones(GBFSGeofencingZones geofencingZones) {
-    this.geofencingZones = geofencingZones;
-  }
-
-  public ValidationResult getValidationResult() {
-    return validationResult;
-  }
-
-  public void setValidationResult(ValidationResult validationResult) {
-    this.validationResult = validationResult;
-  }
-}
+public record GbfsV3Delivery(
+  GBFSGbfs discovery,
+  GBFSGbfsVersions version,
+  GBFSSystemInformation systemInformation,
+  GBFSVehicleTypes vehicleTypes,
+  GBFSStationInformation stationInformation,
+  GBFSStationStatus stationStatus,
+  GBFSVehicleStatus vehicleStatus,
+  GBFSSystemRegions systemRegions,
+  GBFSSystemPricingPlans systemPricingPlans,
+  GBFSSystemAlerts systemAlerts,
+  GBFSGeofencingZones geofencingZones,
+  ValidationResult validationResult
+) {}

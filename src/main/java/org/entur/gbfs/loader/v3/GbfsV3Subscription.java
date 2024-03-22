@@ -85,23 +85,20 @@ public class GbfsV3Subscription implements GbfsSubscription {
    */
   public void update() {
     if (loader.update()) {
-      GbfsV3Delivery delivery = new GbfsV3Delivery();
-      delivery.setDiscovery(loader.getDiscoveryFeed());
-      delivery.setVersion(loader.getFeed(GBFSGbfsVersions.class));
-      delivery.setSystemInformation(loader.getFeed(GBFSSystemInformation.class));
-      delivery.setVehicleTypes(loader.getFeed(GBFSVehicleTypes.class));
-      delivery.setSystemRegions(loader.getFeed(GBFSSystemRegions.class));
-      delivery.setStationInformation(loader.getFeed(GBFSStationInformation.class));
-      delivery.setStationStatus(loader.getFeed(GBFSStationStatus.class));
-      delivery.setVehicleStatus(loader.getFeed(GBFSVehicleStatus.class));
-      delivery.setSystemAlerts(loader.getFeed(GBFSSystemAlerts.class));
-      delivery.setSystemPricingPlans(loader.getFeed(GBFSSystemPricingPlans.class));
-      delivery.setGeofencingZones(loader.getFeed(GBFSGeofencingZones.class));
-
-      if (subscriptionOptions.isEnableValidation()) {
-        delivery.setValidationResult(validateFeeds());
-      }
-
+      GbfsV3Delivery delivery = new GbfsV3Delivery(
+        loader.getDiscoveryFeed(),
+        loader.getFeed(GBFSGbfsVersions.class),
+        loader.getFeed(GBFSSystemInformation.class),
+        loader.getFeed(GBFSVehicleTypes.class),
+        loader.getFeed(GBFSStationInformation.class),
+        loader.getFeed(GBFSStationStatus.class),
+        loader.getFeed(GBFSVehicleStatus.class),
+        loader.getFeed(GBFSSystemRegions.class),
+        loader.getFeed(GBFSSystemPricingPlans.class),
+        loader.getFeed(GBFSSystemAlerts.class),
+        loader.getFeed(GBFSGeofencingZones.class),
+        subscriptionOptions.isEnableValidation() ? validateFeeds() : null
+      );
       consumer.accept(delivery);
     }
   }

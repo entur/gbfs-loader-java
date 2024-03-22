@@ -36,136 +36,19 @@ import org.entur.gbfs.validation.model.ValidationResult;
 /**
  * This class holds the data for all the GBFS files
  */
-public class GbfsV2Delivery {
-
-  private GBFS discovery;
-  private GBFSGbfsVersions version;
-  private GBFSSystemInformation systemInformation;
-  private GBFSVehicleTypes vehicleTypes;
-  private GBFSStationInformation stationInformation;
-  private GBFSStationStatus stationStatus;
-  private GBFSFreeBikeStatus freeBikeStatus;
-  private GBFSSystemHours systemHours;
-  private GBFSSystemCalendar systemCalendar;
-  private GBFSSystemRegions systemRegions;
-  private GBFSSystemPricingPlans systemPricingPlans;
-  private GBFSSystemAlerts systemAlerts;
-  private GBFSGeofencingZones geofencingZones;
-  private ValidationResult validationResult;
-
-  public void setFeed(GBFS feed) {
-    setDiscovery((GBFS) feed);
-  }
-
-  public GBFS getDiscovery() {
-    return discovery;
-  }
-
-  public void setDiscovery(GBFS discovery) {
-    this.discovery = discovery;
-  }
-
-  public GBFSGbfsVersions getVersion() {
-    return version;
-  }
-
-  public void setVersion(GBFSGbfsVersions version) {
-    this.version = version;
-  }
-
-  public GBFSSystemInformation getSystemInformation() {
-    return systemInformation;
-  }
-
-  public void setSystemInformation(GBFSSystemInformation systemInformation) {
-    this.systemInformation = systemInformation;
-  }
-
-  public GBFSVehicleTypes getVehicleTypes() {
-    return vehicleTypes;
-  }
-
-  public void setVehicleTypes(GBFSVehicleTypes vehicleTypes) {
-    this.vehicleTypes = vehicleTypes;
-  }
-
-  public GBFSStationInformation getStationInformation() {
-    return stationInformation;
-  }
-
-  public void setStationInformation(GBFSStationInformation stationInformation) {
-    this.stationInformation = stationInformation;
-  }
-
-  public GBFSStationStatus getStationStatus() {
-    return stationStatus;
-  }
-
-  public void setStationStatus(GBFSStationStatus stationStatus) {
-    this.stationStatus = stationStatus;
-  }
-
-  public GBFSFreeBikeStatus getFreeBikeStatus() {
-    return freeBikeStatus;
-  }
-
-  public void setFreeBikeStatus(GBFSFreeBikeStatus freeBikeStatus) {
-    this.freeBikeStatus = freeBikeStatus;
-  }
-
-  public GBFSSystemHours getSystemHours() {
-    return systemHours;
-  }
-
-  public void setSystemHours(GBFSSystemHours systemHours) {
-    this.systemHours = systemHours;
-  }
-
-  public GBFSSystemCalendar getSystemCalendar() {
-    return systemCalendar;
-  }
-
-  public void setSystemCalendar(GBFSSystemCalendar systemCalendar) {
-    this.systemCalendar = systemCalendar;
-  }
-
-  public GBFSSystemRegions getSystemRegions() {
-    return systemRegions;
-  }
-
-  public void setSystemRegions(GBFSSystemRegions systemRegions) {
-    this.systemRegions = systemRegions;
-  }
-
-  public GBFSSystemPricingPlans getSystemPricingPlans() {
-    return systemPricingPlans;
-  }
-
-  public void setSystemPricingPlans(GBFSSystemPricingPlans systemPricingPlans) {
-    this.systemPricingPlans = systemPricingPlans;
-  }
-
-  public GBFSSystemAlerts getSystemAlerts() {
-    return systemAlerts;
-  }
-
-  public void setSystemAlerts(GBFSSystemAlerts systemAlerts) {
-    this.systemAlerts = systemAlerts;
-  }
-
-  public GBFSGeofencingZones getGeofencingZones() {
-    return geofencingZones;
-  }
-
-  public void setGeofencingZones(GBFSGeofencingZones geofencingZones) {
-    this.geofencingZones = geofencingZones;
-  }
-
-  public ValidationResult getValidationResult() {
-    return validationResult;
-  }
-
-  public void setValidationResult(ValidationResult validationResult) {
-    this.validationResult = validationResult;
-  }
-}
+public record GbfsV2Delivery(
+  GBFS discovery,
+  GBFSGbfsVersions version,
+  GBFSSystemInformation systemInformation,
+  GBFSVehicleTypes vehicleTypes,
+  GBFSStationInformation stationInformation,
+  GBFSStationStatus stationStatus,
+  GBFSFreeBikeStatus freeBikeStatus,
+  GBFSSystemHours systemHours,
+  GBFSSystemCalendar systemCalendar,
+  GBFSSystemRegions systemRegions,
+  GBFSSystemPricingPlans systemPricingPlans,
+  GBFSSystemAlerts systemAlerts,
+  GBFSGeofencingZones geofencingZones,
+  ValidationResult validationResult
+) {}
