@@ -16,8 +16,6 @@ import org.slf4j.LoggerFactory;
 
 public class GbfsV3Loader extends BaseGbfsLoader<GBFSFeed.Name, GBFSGbfs> {
 
-  private static final Logger LOG = LoggerFactory.getLogger(GbfsV3Loader.class);
-
   /**
    * Create a new GbfsLoader
    *

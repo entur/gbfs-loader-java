@@ -104,7 +104,7 @@ class GbfsV2LoaderTest {
   }
 
   @Test
-  @Disabled
+  @Disabled("Run when needed")
   void fetchAllPublicFeeds() throws IOException {
     InputStream is = HttpUtils.getData(
       "https://raw.githubusercontent.com/NABSA/gbfs/master/systems.csv"
@@ -128,9 +128,11 @@ class GbfsV2LoaderTest {
   }
 
   @Test
-  @Disabled
+  @Disabled("Run when needed")
   void testSpin() {
-    new GbfsV2Loader("https://gbfs.spin.pm/api/gbfs/v2_2/edmonton/gbfs").update();
+    assertDoesNotThrow(() -> {
+      new GbfsV2Loader("https://gbfs.spin.pm/api/gbfs/v2_2/edmonton/gbfs").update();
+    });
   }
 
   private void validateV22Feed(GbfsV2Loader loader) {
