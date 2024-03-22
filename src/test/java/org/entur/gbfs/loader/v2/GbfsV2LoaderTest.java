@@ -1,4 +1,4 @@
-package org.entur.gbfs.v2;
+package org.entur.gbfs.loader.v2;
 
 import static org.junit.jupiter.api.Assertions.*;
 

@@ -16,7 +16,7 @@
  *
  */
 
-package org.entur.gbfs.v2;
+package org.entur.gbfs.loader.v2;
 
 import org.entur.gbfs.v2_3.free_bike_status.GBFSFreeBikeStatus;
 import org.entur.gbfs.v2_3.gbfs.GBFS;

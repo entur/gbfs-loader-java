@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Date;
 import java.util.Map;
 import java.util.Optional;
@@ -54,6 +55,25 @@ public class GBFSFeedUpdater<T> {
     Long timeout
   ) {
     this.url = url;
+    this.requestAuthenticator = requestAuthenticator;
+    this.implementingClass = implementingClass;
+    this.httpHeaders = httpHeaders;
+    this.timeout = timeout;
+  }
+
+  public GBFSFeedUpdater(
+    String url,
+    RequestAuthenticator requestAuthenticator,
+    Class<T> implementingClass,
+    Map<String, String> httpHeaders,
+    Long timeout
+  ) {
+    try {
+      this.url = new URI(url);
+    } catch (URISyntaxException e) {
+      throw new InvalidURLException("Invalid url " + url);
+    }
+
     this.requestAuthenticator = requestAuthenticator;
     this.implementingClass = implementingClass;
     this.httpHeaders = httpHeaders;

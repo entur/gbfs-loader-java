@@ -1,4 +1,4 @@
-package org.entur.gbfs;
+package org.entur.gbfs.http;
 
 public class InvalidURLException extends RuntimeException {
 

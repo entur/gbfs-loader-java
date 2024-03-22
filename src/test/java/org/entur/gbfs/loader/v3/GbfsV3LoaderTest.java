@@ -1,4 +1,4 @@
-package org.entur.gbfs.v3;
+package org.entur.gbfs.loader.v3;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -46,7 +46,7 @@ class GbfsV3LoaderTest {
     GbfsValidator validator = GbfsValidatorFactory.getGbfsJsonValidator();
     FileValidationResult validationResult = validator.validateFile(
       "system_information",
-      new ByteArrayInputStream(loader.getRawFeed(GBFSFeed.Name.SYSTEM_INFORMATION).get())
+      new ByteArrayInputStream(loader.getRawFeed(GBFSFeed.Name.SYSTEM_INFORMATION))
     );
     assertEquals(0, validationResult.getErrorsCount());
 
@@ -68,7 +68,7 @@ class GbfsV3LoaderTest {
     validationResult =
       validator.validateFile(
         "vehicle_types",
-        new ByteArrayInputStream(loader.getRawFeed(GBFSFeed.Name.VEHICLE_TYPES).get())
+        new ByteArrayInputStream(loader.getRawFeed(GBFSFeed.Name.VEHICLE_TYPES))
       );
     assertEquals(0, validationResult.getErrorsCount());
 
@@ -90,7 +90,7 @@ class GbfsV3LoaderTest {
     validationResult =
       validator.validateFile(
         "vehicle_status",
-        new ByteArrayInputStream(loader.getRawFeed(GBFSFeed.Name.VEHICLE_STATUS).get())
+        new ByteArrayInputStream(loader.getRawFeed(GBFSFeed.Name.VEHICLE_STATUS))
       );
     assertEquals(0, validationResult.getErrorsCount());
 
@@ -107,9 +107,7 @@ class GbfsV3LoaderTest {
     validationResult =
       validator.validateFile(
         "system_pricing_plans",
-        new ByteArrayInputStream(
-          loader.getRawFeed(GBFSFeed.Name.SYSTEM_PRICING_PLANS).get()
-        )
+        new ByteArrayInputStream(loader.getRawFeed(GBFSFeed.Name.SYSTEM_PRICING_PLANS))
       );
     assertEquals(0, validationResult.getErrorsCount());
 

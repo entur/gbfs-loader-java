@@ -16,7 +16,7 @@
  *
  */
 
-package org.entur.gbfs.v3;
+package org.entur.gbfs.loader.v3;
 
 import org.entur.gbfs.v3_0_RC2.gbfs.GBFSGbfs;
 import org.entur.gbfs.v3_0_RC2.gbfs_versions.GBFSGbfsVersions;

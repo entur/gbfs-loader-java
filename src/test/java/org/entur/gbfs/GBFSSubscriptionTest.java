@@ -5,7 +5,7 @@ import java.net.URISyntaxException;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ForkJoinPool;
 import java.util.function.Consumer;
-import org.entur.gbfs.v2.GbfsV2Delivery;
+import org.entur.gbfs.loader.v2.GbfsV2Delivery;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

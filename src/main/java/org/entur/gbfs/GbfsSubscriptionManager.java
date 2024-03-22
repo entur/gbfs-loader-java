@@ -24,10 +24,11 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ForkJoinPool;
 import java.util.function.Consumer;
-import org.entur.gbfs.v2.GbfsV2Delivery;
-import org.entur.gbfs.v2.GbfsV2Subscription;
-import org.entur.gbfs.v3.GbfsV3Delivery;
-import org.entur.gbfs.v3.GbfsV3Subscription;
+import org.entur.gbfs.loader.GbfsSubscription;
+import org.entur.gbfs.loader.v2.GbfsV2Delivery;
+import org.entur.gbfs.loader.v2.GbfsV2Subscription;
+import org.entur.gbfs.loader.v3.GbfsV3Delivery;
+import org.entur.gbfs.loader.v3.GbfsV3Subscription;
 
 /**
  * Manage a set of subscriptions for different GBFS feeds.

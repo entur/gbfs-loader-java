@@ -1,4 +1,4 @@
-package org.entur.gbfs;
+package org.entur.gbfs.loader;
 
 public class DuplicateFeedException extends RuntimeException {
 

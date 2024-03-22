@@ -16,7 +16,7 @@
  *
  */
 
-package org.entur.gbfs.v2;
+package org.entur.gbfs.loader.v2;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -24,8 +24,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
-import org.entur.gbfs.GbfsSubscription;
 import org.entur.gbfs.GbfsSubscriptionOptions;
+import org.entur.gbfs.loader.GbfsSubscription;
 import org.entur.gbfs.v2_3.free_bike_status.GBFSFreeBikeStatus;
 import org.entur.gbfs.v2_3.gbfs.GBFSFeedName;
 import org.entur.gbfs.v2_3.gbfs_versions.GBFSGbfsVersions;
@@ -79,7 +79,7 @@ public class GbfsV2Subscription implements GbfsSubscription {
    * @return True if the subscription setup is complete
    */
   public boolean getSetupComplete() {
-    return loader.getSetupComplete().get();
+    return loader.getSetupComplete();
   }
 
   /**

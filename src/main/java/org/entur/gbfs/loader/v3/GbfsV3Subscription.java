@@ -16,7 +16,7 @@
  *
  */
 
-package org.entur.gbfs.v3;
+package org.entur.gbfs.loader.v3;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -25,6 +25,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
 import org.entur.gbfs.GbfsSubscriptionOptions;
+import org.entur.gbfs.loader.GbfsSubscription;
 import org.entur.gbfs.v3_0_RC2.gbfs.GBFSFeed;
 import org.entur.gbfs.v3_0_RC2.gbfs_versions.GBFSGbfsVersions;
 import org.entur.gbfs.v3_0_RC2.geofencing_zones.GBFSGeofencingZones;
@@ -43,7 +44,7 @@ import org.entur.gbfs.validation.model.ValidationResult;
 /**
  * Class to represent a subscription to GBFS feeds for a single system
  */
-public class GbfsV3Subscription implements org.entur.gbfs.GbfsSubscription {
+public class GbfsV3Subscription implements GbfsSubscription {
 
   private final GbfsSubscriptionOptions subscriptionOptions;
   private final Consumer<GbfsV3Delivery> consumer;
@@ -75,7 +76,7 @@ public class GbfsV3Subscription implements org.entur.gbfs.GbfsSubscription {
    * @return True if the subscription setup is complete
    */
   public boolean getSetupComplete() {
-    return loader.getSetupComplete().get();
+    return loader.getSetupComplete();
   }
 
   /**
@@ -110,7 +111,7 @@ public class GbfsV3Subscription implements org.entur.gbfs.GbfsSubscription {
     Arrays
       .stream(GBFSFeed.Name.values())
       .forEach(feedName -> {
-        byte[] rawFeed = loader.getRawFeed(feedName).orElse(null);
+        byte[] rawFeed = loader.getRawFeed(feedName);
         if (rawFeed != null) {
           feeds.put(feedName.value(), new ByteArrayInputStream(rawFeed));
         }
