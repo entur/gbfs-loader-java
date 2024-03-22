@@ -3,10 +3,12 @@ package org.entur.gbfs.loader.v3;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.ByteArrayInputStream;
 import java.util.List;
+import org.entur.gbfs.loader.DuplicateFeedException;
 import org.entur.gbfs.v3_0_RC2.gbfs.GBFSFeed;
 import org.entur.gbfs.v3_0_RC2.geofencing_zones.GBFSGeofencingZones;
 import org.entur.gbfs.v3_0_RC2.system_information.GBFSSystemInformation;
@@ -117,5 +119,17 @@ class GbfsV3LoaderTest {
     assertEquals(40, pricingPlans.getData().getPlans().size());
 
     assertNull(loader.getFeed(GBFSGeofencingZones.class));
+  }
+
+  @Test
+  void testDuplicateFeedThrows() {
+    assertThrows(
+      DuplicateFeedException.class,
+      () -> {
+        GbfsV3Loader loader = new GbfsV3Loader(
+          "file:src/test/resources/gbfs/v3/duplicatefeed/gbfs.json"
+        );
+      }
+    );
   }
 }
