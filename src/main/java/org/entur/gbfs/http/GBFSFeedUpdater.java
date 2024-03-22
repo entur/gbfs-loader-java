@@ -7,7 +7,6 @@ import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.Date;
 import java.util.Map;
 import java.util.Optional;
@@ -73,7 +72,11 @@ public class GBFSFeedUpdater<T> {
     return rawData;
   }
 
-  public void fetchData() {
+  public boolean update() {
+    if (!shouldUpdate()) {
+      return false;
+    }
+
     requestAuthenticator.authenticateRequest(httpHeaders);
     rawData = fetchFeed(url, httpHeaders).orElse(null);
 
@@ -81,7 +84,7 @@ public class GBFSFeedUpdater<T> {
       LOG.warn("Invalid data for {}", url);
       updateStrategy.rescheduleAfterFailure();
       data = null;
-      return;
+      return false;
     }
 
     try {
@@ -90,7 +93,7 @@ public class GBFSFeedUpdater<T> {
       LOG.warn("Error unmarshalling feed", e);
       updateStrategy.rescheduleAfterFailure();
       data = null;
-      return;
+      return false;
     }
 
     try {
@@ -116,6 +119,7 @@ public class GBFSFeedUpdater<T> {
 
       Integer ttl = (Integer) implementingClass.getMethod("getTtl").invoke(data);
       updateStrategy.scheduleNextUpdate(lastUpdated, ttl);
+      return true;
     } catch (
       NoSuchMethodException
       | InvocationTargetException
@@ -124,10 +128,11 @@ public class GBFSFeedUpdater<T> {
     ) {
       LOG.warn("Invalid data for {}", url);
       updateStrategy.rescheduleAfterFailure();
+      return false;
     }
   }
 
-  public boolean shouldUpdate() {
+  private boolean shouldUpdate() {
     return updateStrategy.shouldUpdate();
   }
 

@@ -55,7 +55,7 @@ public abstract class BaseGbfsLoader<S, T> {
 
     byte[] rawDiscoveryFileData;
 
-    discoveryFileUpdater.fetchData();
+    discoveryFileUpdater.update();
 
     rawDiscoveryFileData = discoveryFileUpdater.getRawData();
 
@@ -90,12 +90,7 @@ public abstract class BaseGbfsLoader<S, T> {
     if (updateLock.tryLock()) {
       try {
         for (GBFSFeedUpdater<?> updater : feedUpdaters.values()) {
-          if (updater.shouldUpdate()) {
-            updater.fetchData();
-            if (updater.getData() != null) {
-              didUpdate = true;
-            }
-          }
+          didUpdate = updater.update();
         }
       } finally {
         // be sure to release lock, even in case an exception is thrown
