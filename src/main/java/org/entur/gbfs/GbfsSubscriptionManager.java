@@ -30,7 +30,10 @@ import org.entur.gbfs.v3.GbfsV3Delivery;
 import org.entur.gbfs.v3.GbfsV3Subscription;
 
 /**
- * Manage a set of subscriptions (for different GBFS feeds)
+ * Manage a set of subscriptions for different GBFS feeds.
+ * A subscription consumes atomic updates of a set of GBFS files belonging to
+ * a single system.
+ * The subscription manager has subscription methods for v2 and v3 GBFS feeds.
  */
 public class GbfsSubscriptionManager {
 
@@ -45,7 +48,10 @@ public class GbfsSubscriptionManager {
   }
 
   /**
-   * Start a subscription on a GBFS feed delivery
+   * Start a subscription on a GBFS v2.x feed
+   *
+   * Since v2.x is backwards-compatible with v1.x, v1.x feeds can also be
+   * consumed with this subscription.
    *
    * @param options Options
    * @param consumer A consumer that will handle receiving updates from the loader
@@ -55,34 +61,21 @@ public class GbfsSubscriptionManager {
     GbfsSubscriptionOptions options,
     Consumer<GbfsV2Delivery> consumer
   ) {
-    String id = UUID.randomUUID().toString();
-    GbfsV2Subscription subscription = new GbfsV2Subscription(options, consumer);
-    subscription.init();
-
-    // Only add subscription if setup is complete
-    if (subscription.getSetupComplete()) {
-      subscriptions.put(id, subscription);
-      return id;
-    }
-
-    return null;
+    return subscribe(new GbfsV2Subscription(options, consumer));
   }
 
+  /**
+   * Start a subscription on a GBFS v3.x feed
+   *
+   * @param options Options
+   * @param consumer A consumer that will handle receiving updates from the loader}
+   * @return A string identifier
+   */
   public String subscribeV3(
     GbfsSubscriptionOptions options,
     Consumer<GbfsV3Delivery> consumer
   ) {
-    String id = UUID.randomUUID().toString();
-    GbfsV3Subscription subscription = new GbfsV3Subscription(options, consumer);
-    subscription.init();
-
-    // Only add subscription if setup is complete
-    if (subscription.getSetupComplete()) {
-      subscriptions.put(id, subscription);
-      return id;
-    }
-
-    return null;
+    return subscribe(new GbfsV3Subscription(options, consumer));
   }
 
   /**
@@ -98,11 +91,25 @@ public class GbfsSubscriptionManager {
   }
 
   /**
-   * Stop a subscription on a GBFS feed delivery
+   * Stop a subscription on a GBFS feed
    *
    * @param identifier An identifier returned by subscribe method.
    */
   public void unsubscribe(String identifier) {
     subscriptions.remove(identifier);
+  }
+
+  private String subscribe(GbfsSubscription subscription) {
+    String id = UUID.randomUUID().toString();
+
+    subscription.init();
+
+    // Only add subscription if setup is complete
+    if (subscription.getSetupComplete()) {
+      subscriptions.put(id, subscription);
+      return id;
+    }
+
+    return null;
   }
 }

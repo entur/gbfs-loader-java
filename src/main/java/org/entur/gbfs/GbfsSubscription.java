@@ -1,9 +1,10 @@
 package org.entur.gbfs;
 
 public interface GbfsSubscription {
-  public void init();
 
-  public boolean getSetupComplete();
+  void init();
 
-  public void update();
+  boolean getSetupComplete();
+
+  void update();
 }
