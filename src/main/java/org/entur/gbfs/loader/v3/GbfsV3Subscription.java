@@ -64,10 +64,10 @@ public class GbfsV3Subscription implements GbfsSubscription {
   public void init() {
     loader =
       new GbfsV3Loader(
-        subscriptionOptions.getDiscoveryURI().toString(),
-        subscriptionOptions.getHeaders(),
-        subscriptionOptions.getRequestAuthenticator(),
-        subscriptionOptions.getTimeout()
+        subscriptionOptions.discoveryURI().toString(),
+        subscriptionOptions.headers(),
+        subscriptionOptions.requestAuthenticator(),
+        subscriptionOptions.timeout()
       );
   }
 
@@ -97,7 +97,7 @@ public class GbfsV3Subscription implements GbfsSubscription {
         loader.getFeed(GBFSSystemPricingPlans.class),
         loader.getFeed(GBFSSystemAlerts.class),
         loader.getFeed(GBFSGeofencingZones.class),
-        subscriptionOptions.isEnableValidation() ? validateFeeds() : null
+        subscriptionOptions.enableValidation() ? validateFeeds() : null
       );
       consumer.accept(delivery);
     }

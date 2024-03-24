@@ -50,9 +50,10 @@ public class GbfsSubscriptionManager {
 
   /**
    * Start a subscription on a GBFS v2.x feed
-   *
+   * <p>
    * Since v2.x is backwards-compatible with v1.x, v1.x feeds can also be
    * consumed with this subscription.
+   * </p>
    *
    * @param options Options
    * @param consumer A consumer that will handle receiving updates from the loader

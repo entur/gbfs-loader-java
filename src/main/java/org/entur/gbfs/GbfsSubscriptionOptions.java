@@ -19,76 +19,18 @@
 package org.entur.gbfs;
 
 import java.net.URI;
-import java.util.HashMap;
 import java.util.Map;
 import org.entur.gbfs.authentication.RequestAuthenticator;
 
 /**
  * Options for a Gbfs Subscription
  */
-public class GbfsSubscriptionOptions {
-
-  private URI discoveryURI;
-  private String languageCode;
-  private long minimumTtl;
-  private Map<String, String> headers = new HashMap<>();
-  private RequestAuthenticator requestAuthenticator;
-  private Long timeout;
-  private boolean enableValidation;
-
-  public URI getDiscoveryURI() {
-    return discoveryURI;
-  }
-
-  public void setDiscoveryURI(URI discoveryURI) {
-    this.discoveryURI = discoveryURI;
-  }
-
-  public String getLanguageCode() {
-    return languageCode;
-  }
-
-  public void setLanguageCode(String languageCode) {
-    this.languageCode = languageCode;
-  }
-
-  public long getMinimumTtl() {
-    return minimumTtl;
-  }
-
-  public void setMinimumTtl(long minimumTtl) {
-    this.minimumTtl = minimumTtl;
-  }
-
-  public Map<String, String> getHeaders() {
-    return headers;
-  }
-
-  public void setHeaders(Map<String, String> headers) {
-    this.headers = headers;
-  }
-
-  public RequestAuthenticator getRequestAuthenticator() {
-    return requestAuthenticator;
-  }
-
-  public void setRequestAuthenticator(RequestAuthenticator requestAuthenticator) {
-    this.requestAuthenticator = requestAuthenticator;
-  }
-
-  public Long getTimeout() {
-    return timeout;
-  }
-
-  public void setTimeout(Long timeout) {
-    this.timeout = timeout;
-  }
-
-  public boolean isEnableValidation() {
-    return enableValidation;
-  }
-
-  public void setEnableValidation(boolean enableValidation) {
-    this.enableValidation = enableValidation;
-  }
-}
+public record GbfsSubscriptionOptions(
+  URI discoveryURI,
+  String languageCode,
+  Long minimumTtl,
+  Map<String, String> headers,
+  RequestAuthenticator requestAuthenticator,
+  Long timeout,
+  Boolean enableValidation
+) {}

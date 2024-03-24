@@ -62,11 +62,15 @@ class GBFSSubscriptionTest {
 
   GbfsSubscriptionOptions getTestOptions(String url, String languageCode)
     throws URISyntaxException {
-    GbfsSubscriptionOptions options = new GbfsSubscriptionOptions();
-    options.setDiscoveryURI(new URI(url));
-    options.setLanguageCode(languageCode);
-    options.setEnableValidation(true);
-    return options;
+    return new GbfsSubscriptionOptions(
+      new URI(url),
+      languageCode,
+      null,
+      null,
+      null,
+      null,
+      true
+    );
   }
 
   @Test
@@ -94,9 +98,6 @@ class GBFSSubscriptionTest {
   }
 
   GbfsSubscriptionOptions getV3TestOptions(String url) throws URISyntaxException {
-    GbfsSubscriptionOptions options = new GbfsSubscriptionOptions();
-    options.setDiscoveryURI(new URI(url));
-    options.setEnableValidation(true);
-    return options;
+    return new GbfsSubscriptionOptions(new URI(url), null, null, null, null, null, true);
   }
 }

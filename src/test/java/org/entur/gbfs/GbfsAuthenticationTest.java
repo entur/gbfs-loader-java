@@ -66,11 +66,15 @@ class GbfsAuthenticationTest {
     String languageCode,
     RequestAuthenticator requestAuthenticator
   ) throws URISyntaxException {
-    GbfsSubscriptionOptions options = new GbfsSubscriptionOptions();
-    options.setDiscoveryURI(new URI(url));
-    options.setLanguageCode(languageCode);
-    options.setRequestAuthenticator(requestAuthenticator);
-    return options;
+    return new GbfsSubscriptionOptions(
+      new URI(url),
+      languageCode,
+      null,
+      null,
+      requestAuthenticator,
+      null,
+      null
+    );
   }
 
   Consumer<GbfsV2Delivery> getTestConsumer() {
