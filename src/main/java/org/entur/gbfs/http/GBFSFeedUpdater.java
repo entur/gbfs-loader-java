@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.Map;
 import java.util.Optional;
 import org.entur.gbfs.authentication.RequestAuthenticator;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,7 +35,9 @@ public class GBFSFeedUpdater<T> {
   private T data;
   private byte[] rawData = null;
 
-  private final UpdateStrategy updateStrategy = new UpdateStrategy();
+  private final UpdateStrategy updateStrategy;
+
+  private final GBFSHttpClient httpClient;
 
   private final Map<String, String> httpHeaders;
 
@@ -47,17 +50,39 @@ public class GBFSFeedUpdater<T> {
   private final Long timeout;
 
   public GBFSFeedUpdater(
-    URI url,
-    RequestAuthenticator requestAuthenticator,
-    Class<T> implementingClass,
+    @NotNull URI url,
+    @NotNull RequestAuthenticator requestAuthenticator,
+    @NotNull Class<T> implementingClass,
     Map<String, String> httpHeaders,
     Long timeout
+  ) {
+    this(
+      url,
+      requestAuthenticator,
+      implementingClass,
+      httpHeaders,
+      timeout,
+      new GBFSHttpClient(),
+      new UpdateStrategy()
+    );
+  }
+
+  protected GBFSFeedUpdater(
+    @NotNull URI url,
+    @NotNull RequestAuthenticator requestAuthenticator,
+    @NotNull Class<T> implementingClass,
+    Map<String, String> httpHeaders,
+    Long timeout,
+    @NotNull GBFSHttpClient httpClient,
+    @NotNull UpdateStrategy updateStrategy
   ) {
     this.url = url;
     this.requestAuthenticator = requestAuthenticator;
     this.implementingClass = implementingClass;
     this.httpHeaders = httpHeaders;
     this.timeout = timeout;
+    this.httpClient = httpClient;
+    this.updateStrategy = updateStrategy;
   }
 
   public URI getUrl() {
@@ -124,7 +149,8 @@ public class GBFSFeedUpdater<T> {
       NoSuchMethodException
       | InvocationTargetException
       | IllegalAccessException
-      | ClassCastException e
+      | ClassCastException
+      | NullPointerException e
     ) {
       LOG.warn("Invalid data for {}", url);
       updateStrategy.rescheduleAfterFailure();
@@ -159,7 +185,7 @@ public class GBFSFeedUpdater<T> {
   }
 
   private Optional<byte[]> fetchFeedFromHttp(URI uri, Map<String, String> httpHeaders) {
-    try (InputStream is = HttpUtils.getData(uri, timeout, httpHeaders)) {
+    try (InputStream is = httpClient.getData(uri, timeout, httpHeaders)) {
       if (is == null) {
         LOG.warn("Failed to get data from url {}", uri);
         return Optional.empty();

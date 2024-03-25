@@ -10,7 +10,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-import org.entur.gbfs.http.HttpUtils;
+import org.entur.gbfs.http.GBFSHttpClient;
 import org.entur.gbfs.v2_3.free_bike_status.GBFSFreeBikeStatus;
 import org.entur.gbfs.v2_3.gbfs.GBFSFeedName;
 import org.entur.gbfs.v2_3.geofencing_zones.GBFSGeofencingZones;
@@ -106,9 +106,8 @@ class GbfsV2LoaderTest {
   @Test
   @Disabled("Run when needed")
   void fetchAllPublicFeeds() throws IOException {
-    InputStream is = HttpUtils.getData(
-      "https://raw.githubusercontent.com/NABSA/gbfs/master/systems.csv"
-    );
+    InputStream is = new GBFSHttpClient()
+      .getData("https://raw.githubusercontent.com/NABSA/gbfs/master/systems.csv");
     CsvReader reader = new CsvReader(is, StandardCharsets.UTF_8);
     reader.readHeaders();
     List<Exception> exceptions = new ArrayList<>();

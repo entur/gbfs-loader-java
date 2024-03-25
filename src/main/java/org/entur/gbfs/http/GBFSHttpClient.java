@@ -16,22 +16,20 @@ import org.apache.http.impl.conn.SystemDefaultRoutePlanner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class HttpUtils {
+public class GBFSHttpClient {
 
-  private HttpUtils() {}
-
-  private static final Logger LOG = LoggerFactory.getLogger(HttpUtils.class);
+  private static final Logger LOG = LoggerFactory.getLogger(GBFSHttpClient.class);
   private static final long TIMEOUT_CONNECTION = 5000;
 
-  public static InputStream getData(URI uri) throws IOException {
+  public InputStream getData(URI uri) throws IOException {
     return getData(uri, null);
   }
 
-  public static InputStream getData(String uri) throws IOException {
+  public InputStream getData(String uri) throws IOException {
     return getData(URI.create(uri));
   }
 
-  public static InputStream getData(
+  public InputStream getData(
     URI uri,
     Long timeout,
     Map<String, String> requestHeaderValues
@@ -57,12 +55,12 @@ public class HttpUtils {
     return entity.getContent();
   }
 
-  public static InputStream getData(URI uri, Map<String, String> requestHeaderValues)
+  public InputStream getData(URI uri, Map<String, String> requestHeaderValues)
     throws IOException {
     return getData(uri, TIMEOUT_CONNECTION, requestHeaderValues);
   }
 
-  private static HttpClient getClient(long timeoutSocket) {
+  private HttpClient getClient(long timeoutSocket) {
     return HttpClientBuilder
       .create()
       .setRoutePlanner(new SystemDefaultRoutePlanner(null))
