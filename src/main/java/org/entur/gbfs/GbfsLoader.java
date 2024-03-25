@@ -4,6 +4,7 @@ import java.util.Map;
 import org.entur.gbfs.authentication.RequestAuthenticator;
 import org.entur.gbfs.loader.v2.GbfsV2Loader;
 import org.entur.gbfs.loader.v3.GbfsV3Loader;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * This class provides direct access to loaders for v2 and v3.
@@ -22,7 +23,7 @@ public class GbfsLoader {
   public GbfsV2Loader gbfsV2Loader(
     String url,
     Map<String, String> httpHeaders,
-    String languageCode,
+    @NotNull String languageCode,
     RequestAuthenticator requestAuthenticator,
     Long timeoutConnection
   ) {

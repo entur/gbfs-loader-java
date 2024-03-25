@@ -21,16 +21,29 @@ package org.entur.gbfs;
 import java.net.URI;
 import java.util.Map;
 import org.entur.gbfs.authentication.RequestAuthenticator;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Options for a Gbfs Subscription
+ * @param discoveryURI The URI of the GBFS discovery file (gbfs.json)
+ * @param languageCode The language code used as a key to look up GBFS files
+ *                     in gbfs.json. For v3.x feeds this can be null, but is
+ *                     required for v2.x feeds
+ * @param minimumTtl Override GBFS files' ttl values with a minimum value.
+ * @param headers Headers that will be added to http requests when fetching
+ *                GBFS files
+ * @param requestAuthenticator An instance of {@link org.entur.gbfs.authentication.RequestAuthenticator}
+ *                             for authentication of http requests for GBFS files.
+ * @param timeout Custom timeout value for http requests
+ * @param enableValidation Will perform validation on all fetched data. The validation
+ *                         result can be read in the consumer
  */
 public record GbfsSubscriptionOptions(
   URI discoveryURI,
-  String languageCode,
-  Long minimumTtl,
-  Map<String, String> headers,
-  RequestAuthenticator requestAuthenticator,
-  Long timeout,
-  Boolean enableValidation
+  @Nullable String languageCode,
+  @Nullable Long minimumTtl,
+  @Nullable Map<String, String> headers,
+  @Nullable RequestAuthenticator requestAuthenticator,
+  @Nullable Long timeout,
+  @Nullable Boolean enableValidation
 ) {}
