@@ -97,7 +97,9 @@ public class GbfsV3Subscription implements GbfsSubscription {
         loader.getFeed(GBFSSystemPricingPlans.class),
         loader.getFeed(GBFSSystemAlerts.class),
         loader.getFeed(GBFSGeofencingZones.class),
-        subscriptionOptions.enableValidation() ? validateFeeds() : null
+        Boolean.TRUE.equals(subscriptionOptions.enableValidation())
+          ? validateFeeds()
+          : null
       );
       consumer.accept(delivery);
     }
@@ -108,10 +110,11 @@ public class GbfsV3Subscription implements GbfsSubscription {
     Arrays
       .stream(GBFSFeed.Name.values())
       .forEach(feedName -> {
-        byte[] rawFeed = loader.getRawFeed(feedName);
-        if (rawFeed != null) {
-          feeds.put(feedName.value(), new ByteArrayInputStream(rawFeed));
-        }
+        loader
+          .getRawFeed(feedName)
+          .ifPresent(rawFeed ->
+            feeds.put(feedName.value(), new ByteArrayInputStream(rawFeed))
+          );
       });
     GbfsValidator validator = GbfsValidatorFactory.getGbfsJsonValidator();
     return validator.validate(feeds);

@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -57,7 +58,7 @@ public abstract class BaseGbfsLoader<S, T> {
 
     discoveryFileUpdater.update();
 
-    rawDiscoveryFileData = discoveryFileUpdater.getRawData();
+    rawDiscoveryFileData = discoveryFileUpdater.getRawData().orElse(null);
 
     if (rawDiscoveryFileData != null) {
       disoveryFileData = discoveryFileUpdater.getData();
@@ -150,10 +151,10 @@ public abstract class BaseGbfsLoader<S, T> {
     return feed.cast(updater.getData());
   }
 
-  public byte[] getRawFeed(S feedName) {
+  public Optional<byte[]> getRawFeed(S feedName) {
     GBFSFeedUpdater<?> updater = feedUpdaters.get(feedName);
     if (updater == null) {
-      return null;
+      return Optional.empty();
     }
     return updater.getRawData();
   }

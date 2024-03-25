@@ -11,8 +11,6 @@ import org.entur.gbfs.loader.GbfsFeed;
 import org.entur.gbfs.v3_0_RC2.gbfs.GBFSFeed;
 import org.entur.gbfs.v3_0_RC2.gbfs.GBFSFeedName;
 import org.entur.gbfs.v3_0_RC2.gbfs.GBFSGbfs;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class GbfsV3Loader extends BaseGbfsLoader<GBFSFeed.Name, GBFSGbfs> {
 

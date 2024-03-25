@@ -141,7 +141,7 @@ class GbfsV2LoaderTest {
     GbfsValidator validator = GbfsValidatorFactory.getGbfsJsonValidator();
     FileValidationResult validationResult = validator.validateFile(
       "system_information",
-      new ByteArrayInputStream(loader.getRawFeed(GBFSFeedName.SystemInformation))
+      new ByteArrayInputStream(loader.getRawFeed(GBFSFeedName.SystemInformation).get())
     );
     assertEquals(0, validationResult.getErrorsCount());
 
@@ -160,7 +160,7 @@ class GbfsV2LoaderTest {
     validationResult =
       validator.validateFile(
         "vehicle_types",
-        new ByteArrayInputStream(loader.getRawFeed(GBFSFeedName.VehicleTypes))
+        new ByteArrayInputStream(loader.getRawFeed(GBFSFeedName.VehicleTypes).get())
       );
     assertEquals(0, validationResult.getErrorsCount());
 
@@ -176,7 +176,7 @@ class GbfsV2LoaderTest {
     validationResult =
       validator.validateFile(
         "station_information",
-        new ByteArrayInputStream(loader.getRawFeed(GBFSFeedName.StationInformation))
+        new ByteArrayInputStream(loader.getRawFeed(GBFSFeedName.StationInformation).get())
       );
     assertEquals(0, validationResult.getErrorsCount());
 
@@ -194,7 +194,7 @@ class GbfsV2LoaderTest {
     validationResult =
       validator.validateFile(
         "station_status",
-        new ByteArrayInputStream(loader.getRawFeed(GBFSFeedName.StationStatus))
+        new ByteArrayInputStream(loader.getRawFeed(GBFSFeedName.StationStatus).get())
       );
     assertEquals(0, validationResult.getErrorsCount());
 
@@ -214,7 +214,7 @@ class GbfsV2LoaderTest {
     validationResult =
       validator.validateFile(
         "system_pricing_plans",
-        new ByteArrayInputStream(loader.getRawFeed(GBFSFeedName.SystemPricingPlans))
+        new ByteArrayInputStream(loader.getRawFeed(GBFSFeedName.SystemPricingPlans).get())
       );
     assertEquals(0, validationResult.getErrorsCount());
 
@@ -232,7 +232,7 @@ class GbfsV2LoaderTest {
     GbfsValidator validator = GbfsValidatorFactory.getGbfsJsonValidator();
     FileValidationResult validationResult = validator.validateFile(
       "system_information",
-      new ByteArrayInputStream(loader.getRawFeed(GBFSFeedName.SystemInformation))
+      new ByteArrayInputStream(loader.getRawFeed(GBFSFeedName.SystemInformation).get())
     );
     assertEquals(0, validationResult.getErrorsCount());
 
@@ -253,7 +253,7 @@ class GbfsV2LoaderTest {
     validationResult =
       validator.validateFile(
         "station_information",
-        new ByteArrayInputStream(loader.getRawFeed(GBFSFeedName.StationInformation))
+        new ByteArrayInputStream(loader.getRawFeed(GBFSFeedName.StationInformation).get())
       );
     assertEquals(0, validationResult.getErrorsCount());
 
@@ -273,7 +273,7 @@ class GbfsV2LoaderTest {
     validationResult =
       validator.validateFile(
         "station_status",
-        new ByteArrayInputStream(loader.getRawFeed(GBFSFeedName.StationStatus))
+        new ByteArrayInputStream(loader.getRawFeed(GBFSFeedName.StationStatus).get())
       );
     assertEquals(0, validationResult.getErrorsCount());
 

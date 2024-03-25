@@ -32,7 +32,7 @@ public class GBFSFeedUpdater<T> {
   private final RequestAuthenticator requestAuthenticator;
 
   private T data;
-  private byte[] rawData;
+  private byte[] rawData = null;
 
   private final UpdateStrategy updateStrategy = new UpdateStrategy();
 
@@ -68,8 +68,8 @@ public class GBFSFeedUpdater<T> {
     return data;
   }
 
-  public byte[] getRawData() {
-    return rawData;
+  public Optional<byte[]> getRawData() {
+    return Optional.ofNullable(rawData);
   }
 
   public boolean update() {
