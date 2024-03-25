@@ -114,13 +114,13 @@ public class GbfsV2Subscription implements GbfsSubscription {
     Map<String, InputStream> feeds = new HashMap<>();
     Arrays
       .stream(GBFSFeedName.values())
-      .forEach(feedName -> {
+      .forEach(feedName ->
         loader
           .getRawFeed(feedName)
           .ifPresent(rawFeed ->
             feeds.put(feedName.value(), new ByteArrayInputStream(rawFeed))
-          );
-      });
+          )
+      );
     GbfsValidator validator = GbfsValidatorFactory.getGbfsJsonValidator();
     return validator.validate(feeds);
   }
