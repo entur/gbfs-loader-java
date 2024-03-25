@@ -8,6 +8,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import org.entur.gbfs.authentication.RequestAuthenticator;
@@ -39,7 +40,7 @@ public class GBFSFeedUpdater<T> {
 
   private final GBFSHttpClient httpClient;
 
-  private final Map<String, String> httpHeaders;
+  private Map<String, String> httpHeaders = new HashMap<>();
 
   private static final ObjectMapper objectMapper = new ObjectMapper();
 
@@ -79,7 +80,9 @@ public class GBFSFeedUpdater<T> {
     this.url = url;
     this.requestAuthenticator = requestAuthenticator;
     this.implementingClass = implementingClass;
-    this.httpHeaders = httpHeaders;
+    if (httpHeaders != null) {
+      this.httpHeaders = httpHeaders;
+    }
     this.timeout = timeout;
     this.httpClient = httpClient;
     this.updateStrategy = updateStrategy;
