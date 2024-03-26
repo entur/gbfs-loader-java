@@ -5,10 +5,12 @@ import java.net.URISyntaxException;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ForkJoinPool;
 import java.util.function.Consumer;
+import org.entur.gbfs.loader.v2.GbfsV2Delivery;
+import org.entur.gbfs.loader.v3.GbfsV3Delivery;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public class GBFSSubscriptionTest {
+class GBFSSubscriptionTest {
 
   private CountDownLatch waiter;
 
@@ -16,7 +18,7 @@ public class GBFSSubscriptionTest {
   void testSubscription() throws URISyntaxException, InterruptedException {
     waiter = new CountDownLatch(1);
     GbfsSubscriptionManager loader = new GbfsSubscriptionManager();
-    String subscriber = loader.subscribe(
+    String subscriber = loader.subscribeV2(
       getTestOptions("file:src/test/resources/gbfs/lillestrombysykkel/gbfs.json", "nb"),
       getTestConsumer()
     );
@@ -32,11 +34,11 @@ public class GBFSSubscriptionTest {
     ForkJoinPool customThreadPool = new ForkJoinPool(parallellCount);
     waiter = new CountDownLatch(parallellCount);
     GbfsSubscriptionManager loader = new GbfsSubscriptionManager(customThreadPool);
-    String id1 = loader.subscribe(
+    String id1 = loader.subscribeV2(
       getTestOptions("file:src/test/resources/gbfs/lillestrombysykkel/gbfs.json", "nb"),
       getTestConsumer()
     );
-    String id2 = loader.subscribe(
+    String id2 = loader.subscribeV2(
       getTestOptions("file:src/test/resources/gbfs/helsinki/gbfs.json", "en"),
       getTestConsumer()
     );
@@ -47,12 +49,12 @@ public class GBFSSubscriptionTest {
     customThreadPool.shutdown();
   }
 
-  Consumer<GbfsDelivery> getTestConsumer() {
+  Consumer<GbfsV2Delivery> getTestConsumer() {
     return delivery -> {
       Assertions.assertNotNull(delivery);
       Assertions.assertEquals(
         0,
-        delivery.getValidationResult().getSummary().getErrorsCount()
+        delivery.validationResult().getSummary().getErrorsCount()
       );
       waiter.countDown();
     };
@@ -60,10 +62,42 @@ public class GBFSSubscriptionTest {
 
   GbfsSubscriptionOptions getTestOptions(String url, String languageCode)
     throws URISyntaxException {
-    GbfsSubscriptionOptions options = new GbfsSubscriptionOptions();
-    options.setDiscoveryURI(new URI(url));
-    options.setLanguageCode(languageCode);
-    options.setEnableValidation(true);
-    return options;
+    return new GbfsSubscriptionOptions(
+      new URI(url),
+      languageCode,
+      null,
+      null,
+      null,
+      null,
+      true
+    );
+  }
+
+  @Test
+  void testV3Subscription() throws URISyntaxException, InterruptedException {
+    waiter = new CountDownLatch(1);
+    GbfsSubscriptionManager loader = new GbfsSubscriptionManager();
+    String subscriber = loader.subscribeV3(
+      getV3TestOptions("file:src/test/resources/gbfs/v3/getaroundstavanger/gbfs.json"),
+      getV3TestConsumer()
+    );
+    loader.update();
+    waiter.await();
+    loader.unsubscribe(subscriber);
+  }
+
+  Consumer<GbfsV3Delivery> getV3TestConsumer() {
+    return delivery -> {
+      Assertions.assertNotNull(delivery);
+      Assertions.assertEquals(
+        0,
+        delivery.validationResult().getSummary().getErrorsCount()
+      );
+      waiter.countDown();
+    };
+  }
+
+  GbfsSubscriptionOptions getV3TestOptions(String url) throws URISyntaxException {
+    return new GbfsSubscriptionOptions(new URI(url), null, null, null, null, null, true);
   }
 }

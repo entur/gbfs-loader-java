@@ -1,0 +1,729 @@
+{
+  "last_updated": "2024-03-21T09:27:44.383Z",
+  "ttl": 0,
+  "version": "3.0-RC2",
+  "data": {
+    "plans": [
+      {
+        "plan_id": "YGA:PricingPlan:1322175",
+        "name": [
+          {
+            "text": "Gjennomsnittspris per time",
+            "language": "nb-NO"
+          }
+        ],
+        "currency": "NOK",
+        "price": 126.0,
+        "is_taxable": false,
+        "description": [
+          {
+            "text": "Gjennomsnittspris per time kr 126.\nGjennomsnittspris per dag kr 1 011.",
+            "language": "nb-NO"
+          }
+        ]
+      },
+      {
+        "plan_id": "YGA:PricingPlan:1294099",
+        "name": [
+          {
+            "text": "Gjennomsnittspris per time",
+            "language": "nb-NO"
+          }
+        ],
+        "currency": "NOK",
+        "price": 109.0,
+        "is_taxable": false,
+        "description": [
+          {
+            "text": "Gjennomsnittspris per time kr 109.\nGjennomsnittspris per dag kr 863.",
+            "language": "nb-NO"
+          }
+        ]
+      },
+      {
+        "plan_id": "YGA:PricingPlan:1290685",
+        "name": [
+          {
+            "text": "Gjennomsnittspris per time",
+            "language": "nb-NO"
+          }
+        ],
+        "currency": "NOK",
+        "price": 115.0,
+        "is_taxable": false,
+        "description": [
+          {
+            "text": "Gjennomsnittspris per time kr 115.\nGjennomsnittspris per dag kr 913.",
+            "language": "nb-NO"
+          }
+        ]
+      },
+      {
+        "plan_id": "YGA:PricingPlan:1218349",
+        "name": [
+          {
+            "text": "Gjennomsnittspris per time",
+            "language": "nb-NO"
+          }
+        ],
+        "currency": "NOK",
+        "price": 68.0,
+        "is_taxable": false,
+        "description": [
+          {
+            "text": "Gjennomsnittspris per time kr 68.\nGjennomsnittspris per dag kr 525.",
+            "language": "nb-NO"
+          }
+        ]
+      },
+      {
+        "plan_id": "YGA:PricingPlan:1243375",
+        "name": [
+          {
+            "text": "Gjennomsnittspris per time",
+            "language": "nb-NO"
+          }
+        ],
+        "currency": "NOK",
+        "price": 44.0,
+        "is_taxable": false,
+        "description": [
+          {
+            "text": "Gjennomsnittspris per time kr 44.\nGjennomsnittspris per dag kr 327.",
+            "language": "nb-NO"
+          }
+        ]
+      },
+      {
+        "plan_id": "YGA:PricingPlan:1291852",
+        "name": [
+          {
+            "text": "Gjennomsnittspris per time",
+            "language": "nb-NO"
+          }
+        ],
+        "currency": "NOK",
+        "price": 103.0,
+        "is_taxable": false,
+        "description": [
+          {
+            "text": "Gjennomsnittspris per time kr 103.\nGjennomsnittspris per dag kr 813.",
+            "language": "nb-NO"
+          }
+        ]
+      },
+      {
+        "plan_id": "YGA:PricingPlan:1289438",
+        "name": [
+          {
+            "text": "Gjennomsnittspris per time",
+            "language": "nb-NO"
+          }
+        ],
+        "currency": "NOK",
+        "price": 115.0,
+        "is_taxable": false,
+        "description": [
+          {
+            "text": "Gjennomsnittspris per time kr 115.\nGjennomsnittspris per dag kr 913.",
+            "language": "nb-NO"
+          }
+        ]
+      },
+      {
+        "plan_id": "YGA:PricingPlan:1325767",
+        "name": [
+          {
+            "text": "Gjennomsnittspris per time",
+            "language": "nb-NO"
+          }
+        ],
+        "currency": "NOK",
+        "price": 43.0,
+        "is_taxable": false,
+        "description": [
+          {
+            "text": "Gjennomsnittspris per time kr 43.\nGjennomsnittspris per dag kr 317.",
+            "language": "nb-NO"
+          }
+        ]
+      },
+      {
+        "plan_id": "YGA:PricingPlan:1189341",
+        "name": [
+          {
+            "text": "Gjennomsnittspris per time",
+            "language": "nb-NO"
+          }
+        ],
+        "currency": "NOK",
+        "price": 58.0,
+        "is_taxable": false,
+        "description": [
+          {
+            "text": "Gjennomsnittspris per time kr 58.\nGjennomsnittspris per dag kr 437.",
+            "language": "nb-NO"
+          }
+        ]
+      },
+      {
+        "plan_id": "YGA:PricingPlan:1125810",
+        "name": [
+          {
+            "text": "Gjennomsnittspris per time",
+            "language": "nb-NO"
+          }
+        ],
+        "currency": "NOK",
+        "price": 84.0,
+        "is_taxable": false,
+        "description": [
+          {
+            "text": "Gjennomsnittspris per time kr 84.\nGjennomsnittspris per dag kr 657.",
+            "language": "nb-NO"
+          }
+        ]
+      },
+      {
+        "plan_id": "YGA:PricingPlan:1339806",
+        "name": [
+          {
+            "text": "Gjennomsnittspris per time",
+            "language": "nb-NO"
+          }
+        ],
+        "currency": "NOK",
+        "price": 69.0,
+        "is_taxable": false,
+        "description": [
+          {
+            "text": "Gjennomsnittspris per time kr 69.\nGjennomsnittspris per dag kr 537.",
+            "language": "nb-NO"
+          }
+        ]
+      },
+      {
+        "plan_id": "YGA:PricingPlan:1356544",
+        "name": [
+          {
+            "text": "Gjennomsnittspris per time",
+            "language": "nb-NO"
+          }
+        ],
+        "currency": "NOK",
+        "price": 100.0,
+        "is_taxable": false,
+        "description": [
+          {
+            "text": "Gjennomsnittspris per time kr 100.\nGjennomsnittspris per dag kr 781.",
+            "language": "nb-NO"
+          }
+        ]
+      },
+      {
+        "plan_id": "YGA:PricingPlan:1303299",
+        "name": [
+          {
+            "text": "Gjennomsnittspris per time",
+            "language": "nb-NO"
+          }
+        ],
+        "currency": "NOK",
+        "price": 63.0,
+        "is_taxable": false,
+        "description": [
+          {
+            "text": "Gjennomsnittspris per time kr 63.\nGjennomsnittspris per dag kr 485.",
+            "language": "nb-NO"
+          }
+        ]
+      },
+      {
+        "plan_id": "YGA:PricingPlan:932504",
+        "name": [
+          {
+            "text": "Gjennomsnittspris per time",
+            "language": "nb-NO"
+          }
+        ],
+        "currency": "NOK",
+        "price": 63.0,
+        "is_taxable": false,
+        "description": [
+          {
+            "text": "Gjennomsnittspris per time kr 63.\nGjennomsnittspris per dag kr 483.",
+            "language": "nb-NO"
+          }
+        ]
+      },
+      {
+        "plan_id": "YGA:PricingPlan:1417400",
+        "name": [
+          {
+            "text": "Gjennomsnittspris per time",
+            "language": "nb-NO"
+          }
+        ],
+        "currency": "NOK",
+        "price": 85.0,
+        "is_taxable": false,
+        "description": [
+          {
+            "text": "Gjennomsnittspris per time kr 85.\nGjennomsnittspris per dag kr 664.",
+            "language": "nb-NO"
+          }
+        ]
+      },
+      {
+        "plan_id": "YGA:PricingPlan:1290696",
+        "name": [
+          {
+            "text": "Gjennomsnittspris per time",
+            "language": "nb-NO"
+          }
+        ],
+        "currency": "NOK",
+        "price": 69.0,
+        "is_taxable": false,
+        "description": [
+          {
+            "text": "Gjennomsnittspris per time kr 69.\nGjennomsnittspris per dag kr 535.",
+            "language": "nb-NO"
+          }
+        ]
+      },
+      {
+        "plan_id": "YGA:PricingPlan:1134278",
+        "name": [
+          {
+            "text": "Gjennomsnittspris per time",
+            "language": "nb-NO"
+          }
+        ],
+        "currency": "NOK",
+        "price": 81.0,
+        "is_taxable": false,
+        "description": [
+          {
+            "text": "Gjennomsnittspris per time kr 81.\nGjennomsnittspris per dag kr 637.",
+            "language": "nb-NO"
+          }
+        ]
+      },
+      {
+        "plan_id": "YGA:PricingPlan:1370167",
+        "name": [
+          {
+            "text": "Gjennomsnittspris per time",
+            "language": "nb-NO"
+          }
+        ],
+        "currency": "NOK",
+        "price": 101.0,
+        "is_taxable": false,
+        "description": [
+          {
+            "text": "Gjennomsnittspris per time kr 101.\nGjennomsnittspris per dag kr 798.",
+            "language": "nb-NO"
+          }
+        ]
+      },
+      {
+        "plan_id": "YGA:PricingPlan:1352797",
+        "name": [
+          {
+            "text": "Gjennomsnittspris per time",
+            "language": "nb-NO"
+          }
+        ],
+        "currency": "NOK",
+        "price": 83.0,
+        "is_taxable": false,
+        "description": [
+          {
+            "text": "Gjennomsnittspris per time kr 83.\nGjennomsnittspris per dag kr 645.",
+            "language": "nb-NO"
+          }
+        ]
+      },
+      {
+        "plan_id": "YGA:PricingPlan:1039532",
+        "name": [
+          {
+            "text": "Gjennomsnittspris per time",
+            "language": "nb-NO"
+          }
+        ],
+        "currency": "NOK",
+        "price": 59.0,
+        "is_taxable": false,
+        "description": [
+          {
+            "text": "Gjennomsnittspris per time kr 59.\nGjennomsnittspris per dag kr 447.",
+            "language": "nb-NO"
+          }
+        ]
+      },
+      {
+        "plan_id": "YGA:PricingPlan:1419148",
+        "name": [
+          {
+            "text": "Gjennomsnittspris per time",
+            "language": "nb-NO"
+          }
+        ],
+        "currency": "NOK",
+        "price": 87.0,
+        "is_taxable": false,
+        "description": [
+          {
+            "text": "Gjennomsnittspris per time kr 87.\nGjennomsnittspris per dag kr 675.",
+            "language": "nb-NO"
+          }
+        ]
+      },
+      {
+        "plan_id": "YGA:PricingPlan:1353260",
+        "name": [
+          {
+            "text": "Gjennomsnittspris per time",
+            "language": "nb-NO"
+          }
+        ],
+        "currency": "NOK",
+        "price": 84.0,
+        "is_taxable": false,
+        "description": [
+          {
+            "text": "Gjennomsnittspris per time kr 84.\nGjennomsnittspris per dag kr 647.",
+            "language": "nb-NO"
+          }
+        ]
+      },
+      {
+        "plan_id": "YGA:PricingPlan:1291865",
+        "name": [
+          {
+            "text": "Gjennomsnittspris per time",
+            "language": "nb-NO"
+          }
+        ],
+        "currency": "NOK",
+        "price": 111.0,
+        "is_taxable": false,
+        "description": [
+          {
+            "text": "Gjennomsnittspris per time kr 111.\nGjennomsnittspris per dag kr 874.",
+            "language": "nb-NO"
+          }
+        ]
+      },
+      {
+        "plan_id": "YGA:PricingPlan:1274067",
+        "name": [
+          {
+            "text": "Gjennomsnittspris per time",
+            "language": "nb-NO"
+          }
+        ],
+        "currency": "NOK",
+        "price": 61.0,
+        "is_taxable": false,
+        "description": [
+          {
+            "text": "Gjennomsnittspris per time kr 61.\nGjennomsnittspris per dag kr 465.",
+            "language": "nb-NO"
+          }
+        ]
+      },
+      {
+        "plan_id": "YGA:PricingPlan:1290719",
+        "name": [
+          {
+            "text": "Gjennomsnittspris per time",
+            "language": "nb-NO"
+          }
+        ],
+        "currency": "NOK",
+        "price": 96.0,
+        "is_taxable": false,
+        "description": [
+          {
+            "text": "Gjennomsnittspris per time kr 96.\nGjennomsnittspris per dag kr 745.",
+            "language": "nb-NO"
+          }
+        ]
+      },
+      {
+        "plan_id": "YGA:PricingPlan:1298455",
+        "name": [
+          {
+            "text": "Gjennomsnittspris per time",
+            "language": "nb-NO"
+          }
+        ],
+        "currency": "NOK",
+        "price": 85.0,
+        "is_taxable": false,
+        "description": [
+          {
+            "text": "Gjennomsnittspris per time kr 85.\nGjennomsnittspris per dag kr 664.",
+            "language": "nb-NO"
+          }
+        ]
+      },
+      {
+        "plan_id": "YGA:PricingPlan:1115593",
+        "name": [
+          {
+            "text": "Gjennomsnittspris per time",
+            "language": "nb-NO"
+          }
+        ],
+        "currency": "NOK",
+        "price": 82.0,
+        "is_taxable": false,
+        "description": [
+          {
+            "text": "Gjennomsnittspris per time kr 82.\nGjennomsnittspris per dag kr 646.",
+            "language": "nb-NO"
+          }
+        ]
+      },
+      {
+        "plan_id": "YGA:PricingPlan:1134499",
+        "name": [
+          {
+            "text": "Gjennomsnittspris per time",
+            "language": "nb-NO"
+          }
+        ],
+        "currency": "NOK",
+        "price": 85.0,
+        "is_taxable": false,
+        "description": [
+          {
+            "text": "Gjennomsnittspris per time kr 85.\nGjennomsnittspris per dag kr 667.",
+            "language": "nb-NO"
+          }
+        ]
+      },
+      {
+        "plan_id": "YGA:PricingPlan:1416509",
+        "name": [
+          {
+            "text": "Gjennomsnittspris per time",
+            "language": "nb-NO"
+          }
+        ],
+        "currency": "NOK",
+        "price": 67.0,
+        "is_taxable": false,
+        "description": [
+          {
+            "text": "Gjennomsnittspris per time kr 67.\nGjennomsnittspris per dag kr 515.",
+            "language": "nb-NO"
+          }
+        ]
+      },
+      {
+        "plan_id": "YGA:PricingPlan:1291846",
+        "name": [
+          {
+            "text": "Gjennomsnittspris per time",
+            "language": "nb-NO"
+          }
+        ],
+        "currency": "NOK",
+        "price": 99.0,
+        "is_taxable": false,
+        "description": [
+          {
+            "text": "Gjennomsnittspris per time kr 99.\nGjennomsnittspris per dag kr 774.",
+            "language": "nb-NO"
+          }
+        ]
+      },
+      {
+        "plan_id": "YGA:PricingPlan:1370172",
+        "name": [
+          {
+            "text": "Gjennomsnittspris per time",
+            "language": "nb-NO"
+          }
+        ],
+        "currency": "NOK",
+        "price": 110.0,
+        "is_taxable": false,
+        "description": [
+          {
+            "text": "Gjennomsnittspris per time kr 110.\nGjennomsnittspris per dag kr 868.",
+            "language": "nb-NO"
+          }
+        ]
+      },
+      {
+        "plan_id": "YGA:PricingPlan:1298463",
+        "name": [
+          {
+            "text": "Gjennomsnittspris per time",
+            "language": "nb-NO"
+          }
+        ],
+        "currency": "NOK",
+        "price": 98.0,
+        "is_taxable": false,
+        "description": [
+          {
+            "text": "Gjennomsnittspris per time kr 98.\nGjennomsnittspris per dag kr 764.",
+            "language": "nb-NO"
+          }
+        ]
+      },
+      {
+        "plan_id": "YGA:PricingPlan:1305911",
+        "name": [
+          {
+            "text": "Gjennomsnittspris per time",
+            "language": "nb-NO"
+          }
+        ],
+        "currency": "NOK",
+        "price": 85.0,
+        "is_taxable": false,
+        "description": [
+          {
+            "text": "Gjennomsnittspris per time kr 85.\nGjennomsnittspris per dag kr 664.",
+            "language": "nb-NO"
+          }
+        ]
+      },
+      {
+        "plan_id": "YGA:PricingPlan:1370175",
+        "name": [
+          {
+            "text": "Gjennomsnittspris per time",
+            "language": "nb-NO"
+          }
+        ],
+        "currency": "NOK",
+        "price": 110.0,
+        "is_taxable": false,
+        "description": [
+          {
+            "text": "Gjennomsnittspris per time kr 110.\nGjennomsnittspris per dag kr 868.",
+            "language": "nb-NO"
+          }
+        ]
+      },
+      {
+        "plan_id": "YGA:PricingPlan:1290689",
+        "name": [
+          {
+            "text": "Gjennomsnittspris per time",
+            "language": "nb-NO"
+          }
+        ],
+        "currency": "NOK",
+        "price": 83.0,
+        "is_taxable": false,
+        "description": [
+          {
+            "text": "Gjennomsnittspris per time kr 83.\nGjennomsnittspris per dag kr 645.",
+            "language": "nb-NO"
+          }
+        ]
+      },
+      {
+        "plan_id": "YGA:PricingPlan:1337061",
+        "name": [
+          {
+            "text": "Gjennomsnittspris per time",
+            "language": "nb-NO"
+          }
+        ],
+        "currency": "NOK",
+        "price": 68.0,
+        "is_taxable": false,
+        "description": [
+          {
+            "text": "Gjennomsnittspris per time kr 68.\nGjennomsnittspris per dag kr 517.",
+            "language": "nb-NO"
+          }
+        ]
+      },
+      {
+        "plan_id": "YGA:PricingPlan:975060",
+        "name": [
+          {
+            "text": "Gjennomsnittspris per time",
+            "language": "nb-NO"
+          }
+        ],
+        "currency": "NOK",
+        "price": 65.0,
+        "is_taxable": false,
+        "description": [
+          {
+            "text": "Gjennomsnittspris per time kr 65.\nGjennomsnittspris per dag kr 497.",
+            "language": "nb-NO"
+          }
+        ]
+      },
+      {
+        "plan_id": "YGA:PricingPlan:1217190",
+        "name": [
+          {
+            "text": "Gjennomsnittspris per time",
+            "language": "nb-NO"
+          }
+        ],
+        "currency": "NOK",
+        "price": 61.0,
+        "is_taxable": false,
+        "description": [
+          {
+            "text": "Gjennomsnittspris per time kr 61.\nGjennomsnittspris per dag kr 465.",
+            "language": "nb-NO"
+          }
+        ]
+      },
+      {
+        "plan_id": "YGA:PricingPlan:1298458",
+        "name": [
+          {
+            "text": "Gjennomsnittspris per time",
+            "language": "nb-NO"
+          }
+        ],
+        "currency": "NOK",
+        "price": 98.0,
+        "is_taxable": false,
+        "description": [
+          {
+            "text": "Gjennomsnittspris per time kr 98.\nGjennomsnittspris per dag kr 764.",
+            "language": "nb-NO"
+          }
+        ]
+      },
+      {
+        "plan_id": "YGA:PricingPlan:1285445",
+        "name": [
+          {
+            "text": "Gjennomsnittspris per time",
+            "language": "nb-NO"
+          }
+        ],
+        "currency": "NOK",
+        "price": 89.0,
+        "is_taxable": false,
+        "description": [
+          {
+            "text": "Gjennomsnittspris per time kr 89.\nGjennomsnittspris per dag kr 695.",
+            "language": "nb-NO"
+          }
+        ]
+      }
+    ]
+  }
+}

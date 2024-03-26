@@ -16,7 +16,7 @@
  *
  */
 
-package org.entur.gbfs;
+package org.entur.gbfs.loader.v2;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -24,6 +24,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
+import org.entur.gbfs.GbfsSubscriptionOptions;
+import org.entur.gbfs.loader.GbfsSubscription;
 import org.entur.gbfs.v2_3.free_bike_status.GBFSFreeBikeStatus;
 import org.entur.gbfs.v2_3.gbfs.GBFSFeedName;
 import org.entur.gbfs.v2_3.gbfs_versions.GBFSGbfsVersions;
@@ -44,15 +46,15 @@ import org.entur.gbfs.validation.model.ValidationResult;
 /**
  * Class to represent a subscription to GBFS feeds for a single system
  */
-public class GbfsSubscription {
+public class GbfsV2Subscription implements GbfsSubscription {
 
   private final GbfsSubscriptionOptions subscriptionOptions;
-  private final Consumer<GbfsDelivery> consumer;
-  private GbfsLoader loader;
+  private final Consumer<GbfsV2Delivery> consumer;
+  private GbfsV2Loader loader;
 
-  public GbfsSubscription(
+  public GbfsV2Subscription(
     GbfsSubscriptionOptions subscriptionOptions,
-    Consumer<GbfsDelivery> consumer
+    Consumer<GbfsV2Delivery> consumer
   ) {
     this.subscriptionOptions = subscriptionOptions;
     this.consumer = consumer;
@@ -63,12 +65,12 @@ public class GbfsSubscription {
    */
   public void init() {
     loader =
-      new GbfsLoader(
-        subscriptionOptions.getDiscoveryURI().toString(),
-        subscriptionOptions.getHeaders(),
-        subscriptionOptions.getLanguageCode(),
-        subscriptionOptions.getRequestAuthenticator(), //
-        subscriptionOptions.getTimeout()
+      new GbfsV2Loader(
+        subscriptionOptions.discoveryURI().toString(),
+        subscriptionOptions.headers(),
+        subscriptionOptions.languageCode(),
+        subscriptionOptions.requestAuthenticator(), //
+        subscriptionOptions.timeout()
       );
   }
 
@@ -77,7 +79,7 @@ public class GbfsSubscription {
    * @return True if the subscription setup is complete
    */
   public boolean getSetupComplete() {
-    return loader.getSetupComplete().get();
+    return loader.getSetupComplete();
   }
 
   /**
@@ -86,25 +88,24 @@ public class GbfsSubscription {
    */
   public void update() {
     if (loader.update()) {
-      GbfsDelivery delivery = new GbfsDelivery();
-      delivery.setDiscovery(loader.getDiscoveryFeed());
-      delivery.setVersion(loader.getFeed(GBFSGbfsVersions.class));
-      delivery.setSystemInformation(loader.getFeed(GBFSSystemInformation.class));
-      delivery.setVehicleTypes(loader.getFeed(GBFSVehicleTypes.class));
-      delivery.setSystemRegions(loader.getFeed(GBFSSystemRegions.class));
-      delivery.setStationInformation(loader.getFeed(GBFSStationInformation.class));
-      delivery.setStationStatus(loader.getFeed(GBFSStationStatus.class));
-      delivery.setFreeBikeStatus(loader.getFeed(GBFSFreeBikeStatus.class));
-      delivery.setSystemAlerts(loader.getFeed(GBFSSystemAlerts.class));
-      delivery.setSystemCalendar(loader.getFeed(GBFSSystemCalendar.class));
-      delivery.setSystemHours(loader.getFeed(GBFSSystemHours.class));
-      delivery.setSystemPricingPlans(loader.getFeed(GBFSSystemPricingPlans.class));
-      delivery.setGeofencingZones(loader.getFeed(GBFSGeofencingZones.class));
-
-      if (subscriptionOptions.isEnableValidation()) {
-        delivery.setValidationResult(validateFeeds());
-      }
-
+      GbfsV2Delivery delivery = new GbfsV2Delivery(
+        loader.getDiscoveryFeed(),
+        loader.getFeed(GBFSGbfsVersions.class),
+        loader.getFeed(GBFSSystemInformation.class),
+        loader.getFeed(GBFSVehicleTypes.class),
+        loader.getFeed(GBFSStationInformation.class),
+        loader.getFeed(GBFSStationStatus.class),
+        loader.getFeed(GBFSFreeBikeStatus.class),
+        loader.getFeed(GBFSSystemHours.class),
+        loader.getFeed(GBFSSystemCalendar.class),
+        loader.getFeed(GBFSSystemRegions.class),
+        loader.getFeed(GBFSSystemPricingPlans.class),
+        loader.getFeed(GBFSSystemAlerts.class),
+        loader.getFeed(GBFSGeofencingZones.class),
+        Boolean.TRUE.equals(subscriptionOptions.enableValidation())
+          ? validateFeeds()
+          : null
+      );
       consumer.accept(delivery);
     }
   }
@@ -113,15 +114,13 @@ public class GbfsSubscription {
     Map<String, InputStream> feeds = new HashMap<>();
     Arrays
       .stream(GBFSFeedName.values())
-      .forEach(feedName -> {
-        byte[] rawFeed = loader.getRawFeed(feedName);
-        if (rawFeed != null) {
-          feeds.put(
-            feedName.value(),
-            new ByteArrayInputStream(loader.getRawFeed(feedName))
-          );
-        }
-      });
+      .forEach(feedName ->
+        loader
+          .getRawFeed(feedName)
+          .ifPresent(rawFeed ->
+            feeds.put(feedName.value(), new ByteArrayInputStream(rawFeed))
+          )
+      );
     GbfsValidator validator = GbfsValidatorFactory.getGbfsJsonValidator();
     return validator.validate(feeds);
   }

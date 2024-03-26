@@ -1,0 +1,529 @@
+{
+  "last_updated": "2024-03-21T09:27:38.821Z",
+  "ttl": 0,
+  "version": "3.0-RC2",
+  "data": {
+    "vehicles": [
+      {
+        "vehicle_id": "YGA:Vehicle:1322175",
+        "lat": 58.943897,
+        "lon": 5.72725,
+        "is_reserved": false,
+        "is_disabled": false,
+        "rental_uris": {
+          "web": "https://no.getaround.com/bilutleie/stavanger/citroen-jumpy-1322175"
+        },
+        "vehicle_type_id": "YGA:VehicleType:car-generic-electric",
+        "current_range_meters": 200000,
+        "pricing_plan_id": "YGA:PricingPlan:1322175"
+      },
+      {
+        "vehicle_id": "YGA:Vehicle:1294099",
+        "lat": 58.967144,
+        "lon": 5.746547,
+        "is_reserved": false,
+        "is_disabled": false,
+        "rental_uris": {
+          "web": "https://no.getaround.com/bilutleie/storhaug/opel-vivaro-1294099"
+        },
+        "vehicle_type_id": "YGA:VehicleType:car-generic-combustion_diesel",
+        "current_range_meters": 873000,
+        "pricing_plan_id": "YGA:PricingPlan:1294099"
+      },
+      {
+        "vehicle_id": "YGA:Vehicle:1290685",
+        "lat": 58.96862,
+        "lon": 5.728269,
+        "is_reserved": false,
+        "is_disabled": false,
+        "rental_uris": {
+          "web": "https://no.getaround.com/bilutleie/stavanger/nissan-e-nv200-varebil-1290685"
+        },
+        "vehicle_type_id": "YGA:VehicleType:car-generic-electric",
+        "current_range_meters": 200000,
+        "pricing_plan_id": "YGA:PricingPlan:1290685"
+      },
+      {
+        "vehicle_id": "YGA:Vehicle:1218349",
+        "lat": 58.989399,
+        "lon": 5.698776,
+        "is_reserved": false,
+        "is_disabled": false,
+        "rental_uris": {
+          "web": "https://no.getaround.com/bilutleie/stavanger/volkswagen-golf-1218349"
+        },
+        "vehicle_type_id": "YGA:VehicleType:car-generic-electric",
+        "current_range_meters": 102000,
+        "pricing_plan_id": "YGA:PricingPlan:1218349"
+      },
+      {
+        "vehicle_id": "YGA:Vehicle:1243375",
+        "lat": 58.944618,
+        "lon": 5.749869,
+        "is_reserved": false,
+        "is_disabled": false,
+        "rental_uris": {
+          "web": "https://no.getaround.com/bilutleie/stavanger/toyota-aygo-1243375"
+        },
+        "vehicle_type_id": "YGA:VehicleType:car-generic-combustion",
+        "current_range_meters": 280000,
+        "pricing_plan_id": "YGA:PricingPlan:1243375"
+      },
+      {
+        "vehicle_id": "YGA:Vehicle:1291852",
+        "lat": 58.948257,
+        "lon": 5.74159,
+        "is_reserved": false,
+        "is_disabled": false,
+        "rental_uris": {
+          "web": "https://no.getaround.com/bilutleie/stavanger/nissan-e-nv200-varebil-1291852"
+        },
+        "vehicle_type_id": "YGA:VehicleType:car-generic-electric",
+        "current_range_meters": 200000,
+        "pricing_plan_id": "YGA:PricingPlan:1291852"
+      },
+      {
+        "vehicle_id": "YGA:Vehicle:1289438",
+        "lat": 58.966606,
+        "lon": 5.737311,
+        "is_reserved": false,
+        "is_disabled": false,
+        "rental_uris": {
+          "web": "https://no.getaround.com/bilutleie/stavanger/nissan-e-nv200-varebil-1289438"
+        },
+        "vehicle_type_id": "YGA:VehicleType:car-generic-electric",
+        "current_range_meters": 42000,
+        "pricing_plan_id": "YGA:PricingPlan:1289438"
+      },
+      {
+        "vehicle_id": "YGA:Vehicle:1325767",
+        "lat": 58.948956,
+        "lon": 5.728686,
+        "is_reserved": false,
+        "is_disabled": false,
+        "rental_uris": {
+          "web": "https://no.getaround.com/bilutleie/stavanger/citroen-c1-1325767"
+        },
+        "vehicle_type_id": "YGA:VehicleType:car-generic-combustion",
+        "current_range_meters": 280000,
+        "pricing_plan_id": "YGA:PricingPlan:1325767"
+      },
+      {
+        "vehicle_id": "YGA:Vehicle:1189341",
+        "lat": 58.962273,
+        "lon": 5.74656,
+        "is_reserved": false,
+        "is_disabled": false,
+        "rental_uris": {
+          "web": "https://no.getaround.com/bilutleie/stavanger/volkswagen-up-1189341"
+        },
+        "vehicle_type_id": "YGA:VehicleType:car-generic-combustion",
+        "current_range_meters": 350000,
+        "pricing_plan_id": "YGA:PricingPlan:1189341"
+      },
+      {
+        "vehicle_id": "YGA:Vehicle:1125810",
+        "lat": 58.982925,
+        "lon": 5.690598,
+        "is_reserved": false,
+        "is_disabled": false,
+        "rental_uris": {
+          "web": "https://no.getaround.com/bilutleie/stavanger/peugeot-partner-1125810"
+        },
+        "vehicle_type_id": "YGA:VehicleType:car-generic-combustion_diesel",
+        "current_range_meters": 563999,
+        "pricing_plan_id": "YGA:PricingPlan:1125810"
+      },
+      {
+        "vehicle_id": "YGA:Vehicle:1339806",
+        "lat": 58.979111,
+        "lon": 5.709149,
+        "is_reserved": false,
+        "is_disabled": false,
+        "rental_uris": {
+          "web": "https://no.getaround.com/bilutleie/stavanger/opel-combo-1339806"
+        },
+        "vehicle_type_id": "YGA:VehicleType:car-generic-combustion_diesel",
+        "current_range_meters": 600000,
+        "pricing_plan_id": "YGA:PricingPlan:1339806"
+      },
+      {
+        "vehicle_id": "YGA:Vehicle:1356544",
+        "lat": 58.967144,
+        "lon": 5.746547,
+        "is_reserved": false,
+        "is_disabled": false,
+        "rental_uris": {
+          "web": "https://no.getaround.com/bilutleie/storhaug/volkswagen-tiguan-1356544"
+        },
+        "vehicle_type_id": "YGA:VehicleType:car-generic-combustion_diesel",
+        "current_range_meters": 640000,
+        "pricing_plan_id": "YGA:PricingPlan:1356544"
+      },
+      {
+        "vehicle_id": "YGA:Vehicle:1303299",
+        "lat": 58.965874,
+        "lon": 5.749974,
+        "is_reserved": false,
+        "is_disabled": false,
+        "rental_uris": {
+          "web": "https://no.getaround.com/bilutleie/stavanger/peugeot-308-sw-1303299"
+        },
+        "vehicle_type_id": "YGA:VehicleType:car-generic-combustion",
+        "current_range_meters": 355100,
+        "pricing_plan_id": "YGA:PricingPlan:1303299"
+      },
+      {
+        "vehicle_id": "YGA:Vehicle:932504",
+        "lat": 58.946301,
+        "lon": 5.74643,
+        "is_reserved": false,
+        "is_disabled": false,
+        "rental_uris": {
+          "web": "https://no.getaround.com/bilutleie/stavanger/volvo-v40-932504"
+        },
+        "vehicle_type_id": "YGA:VehicleType:car-generic-combustion_diesel",
+        "current_range_meters": 539400,
+        "pricing_plan_id": "YGA:PricingPlan:932504"
+      },
+      {
+        "vehicle_id": "YGA:Vehicle:1417400",
+        "lat": 58.961266,
+        "lon": 5.726731,
+        "is_reserved": false,
+        "is_disabled": false,
+        "rental_uris": {
+          "web": "https://no.getaround.com/bilutleie/stavanger/nissan-leaf-1417400"
+        },
+        "vehicle_type_id": "YGA:VehicleType:car-generic-electric",
+        "current_range_meters": 188000,
+        "pricing_plan_id": "YGA:PricingPlan:1417400"
+      },
+      {
+        "vehicle_id": "YGA:Vehicle:1290696",
+        "lat": 58.960258,
+        "lon": 5.753023,
+        "is_reserved": false,
+        "is_disabled": false,
+        "rental_uris": {
+          "web": "https://no.getaround.com/bilutleie/stavanger/volkswagen-up-1290696"
+        },
+        "vehicle_type_id": "YGA:VehicleType:car-generic-electric",
+        "current_range_meters": 196000,
+        "pricing_plan_id": "YGA:PricingPlan:1290696"
+      },
+      {
+        "vehicle_id": "YGA:Vehicle:1134278",
+        "lat": 58.982929,
+        "lon": 5.690655,
+        "is_reserved": false,
+        "is_disabled": false,
+        "rental_uris": {
+          "web": "https://no.getaround.com/bilutleie/stavanger/citroen-berlingo-1134278"
+        },
+        "vehicle_type_id": "YGA:VehicleType:car-generic-combustion_diesel",
+        "current_range_meters": 600000,
+        "pricing_plan_id": "YGA:PricingPlan:1134278"
+      },
+      {
+        "vehicle_id": "YGA:Vehicle:1370167",
+        "lat": 58.973309,
+        "lon": 5.719438,
+        "is_reserved": false,
+        "is_disabled": false,
+        "rental_uris": {
+          "web": "https://no.getaround.com/bilutleie/stavanger/hyundai-kona-electric-1370167"
+        },
+        "vehicle_type_id": "YGA:VehicleType:car-generic-electric",
+        "current_range_meters": 184000,
+        "pricing_plan_id": "YGA:PricingPlan:1370167"
+      },
+      {
+        "vehicle_id": "YGA:Vehicle:1352797",
+        "lat": 58.968517,
+        "lon": 5.725587,
+        "is_reserved": false,
+        "is_disabled": false,
+        "rental_uris": {
+          "web": "https://no.getaround.com/bilutleie/stavanger/nissan-juke-1352797"
+        },
+        "vehicle_type_id": "YGA:VehicleType:car-generic-combustion",
+        "current_range_meters": 409400,
+        "pricing_plan_id": "YGA:PricingPlan:1352797"
+      },
+      {
+        "vehicle_id": "YGA:Vehicle:1039532",
+        "lat": 58.948536,
+        "lon": 5.718278,
+        "is_reserved": false,
+        "is_disabled": false,
+        "rental_uris": {
+          "web": "https://no.getaround.com/bilutleie/stavanger/toyota-yaris-1039532"
+        },
+        "vehicle_type_id": "YGA:VehicleType:car-generic-combustion",
+        "current_range_meters": 420000,
+        "pricing_plan_id": "YGA:PricingPlan:1039532"
+      },
+      {
+        "vehicle_id": "YGA:Vehicle:1419148",
+        "lat": 58.966705,
+        "lon": 5.74056,
+        "is_reserved": false,
+        "is_disabled": false,
+        "rental_uris": {
+          "web": "https://no.getaround.com/bilutleie/storhaug/skoda-fabia-1419148"
+        },
+        "vehicle_type_id": "YGA:VehicleType:car-generic-combustion",
+        "current_range_meters": 360000,
+        "pricing_plan_id": "YGA:PricingPlan:1419148"
+      },
+      {
+        "vehicle_id": "YGA:Vehicle:1353260",
+        "lat": 58.957832,
+        "lon": 5.69756,
+        "is_reserved": false,
+        "is_disabled": false,
+        "rental_uris": {
+          "web": "https://no.getaround.com/bilutleie/stavanger/toyota-auris-1353260"
+        },
+        "vehicle_type_id": "YGA:VehicleType:car-generic-hybrid",
+        "current_range_meters": 440000,
+        "pricing_plan_id": "YGA:PricingPlan:1353260"
+      },
+      {
+        "vehicle_id": "YGA:Vehicle:1291865",
+        "lat": 58.967964,
+        "lon": 5.743375,
+        "is_reserved": false,
+        "is_disabled": false,
+        "rental_uris": {
+          "web": "https://no.getaround.com/bilutleie/stavanger/mg-mg5-1291865"
+        },
+        "vehicle_type_id": "YGA:VehicleType:car-generic-electric",
+        "current_range_meters": 168000,
+        "pricing_plan_id": "YGA:PricingPlan:1291865"
+      },
+      {
+        "vehicle_id": "YGA:Vehicle:1274067",
+        "lat": 58.97781,
+        "lon": 5.710606,
+        "is_reserved": false,
+        "is_disabled": false,
+        "rental_uris": {
+          "web": "https://no.getaround.com/bilutleie/stavanger/volkswagen-up-1274067"
+        },
+        "vehicle_type_id": "YGA:VehicleType:car-generic-combustion",
+        "current_range_meters": 350000,
+        "pricing_plan_id": "YGA:PricingPlan:1274067"
+      },
+      {
+        "vehicle_id": "YGA:Vehicle:1290719",
+        "lat": 58.967964,
+        "lon": 5.743375,
+        "is_reserved": false,
+        "is_disabled": false,
+        "rental_uris": {
+          "web": "https://no.getaround.com/bilutleie/stavanger/nissan-leaf-1290719"
+        },
+        "vehicle_type_id": "YGA:VehicleType:car-generic-electric",
+        "current_range_meters": 80000,
+        "pricing_plan_id": "YGA:PricingPlan:1290719"
+      },
+      {
+        "vehicle_id": "YGA:Vehicle:1298455",
+        "lat": 58.948257,
+        "lon": 5.74159,
+        "is_reserved": false,
+        "is_disabled": false,
+        "rental_uris": {
+          "web": "https://no.getaround.com/bilutleie/stavanger/nissan-leaf-1298455"
+        },
+        "vehicle_type_id": "YGA:VehicleType:car-generic-electric",
+        "current_range_meters": 196000,
+        "pricing_plan_id": "YGA:PricingPlan:1298455"
+      },
+      {
+        "vehicle_id": "YGA:Vehicle:1115593",
+        "lat": 58.984325,
+        "lon": 5.685679,
+        "is_reserved": false,
+        "is_disabled": false,
+        "rental_uris": {
+          "web": "https://no.getaround.com/bilutleie/stavanger/kia-e-niro-1115593"
+        },
+        "vehicle_type_id": "YGA:VehicleType:car-generic-electric",
+        "current_range_meters": 166000,
+        "pricing_plan_id": "YGA:PricingPlan:1115593"
+      },
+      {
+        "vehicle_id": "YGA:Vehicle:1134499",
+        "lat": 58.929401,
+        "lon": 5.75063,
+        "is_reserved": false,
+        "is_disabled": false,
+        "rental_uris": {
+          "web": "https://no.getaround.com/bilutleie/stavanger/opel-combo-1134499"
+        },
+        "vehicle_type_id": "YGA:VehicleType:car-generic-combustion_diesel",
+        "current_range_meters": 600000,
+        "pricing_plan_id": "YGA:PricingPlan:1134499"
+      },
+      {
+        "vehicle_id": "YGA:Vehicle:1416509",
+        "lat": 58.971691,
+        "lon": 5.725462,
+        "is_reserved": false,
+        "is_disabled": false,
+        "rental_uris": {
+          "web": "https://no.getaround.com/bilutleie/stavanger/bmw-i3-1416509"
+        },
+        "vehicle_type_id": "YGA:VehicleType:car-generic-electric",
+        "current_range_meters": 110000,
+        "pricing_plan_id": "YGA:PricingPlan:1416509"
+      },
+      {
+        "vehicle_id": "YGA:Vehicle:1291846",
+        "lat": 58.966606,
+        "lon": 5.737311,
+        "is_reserved": false,
+        "is_disabled": false,
+        "rental_uris": {
+          "web": "https://no.getaround.com/bilutleie/stavanger/peugeot-208-1291846"
+        },
+        "vehicle_type_id": "YGA:VehicleType:car-generic-electric",
+        "current_range_meters": 26000,
+        "pricing_plan_id": "YGA:PricingPlan:1291846"
+      },
+      {
+        "vehicle_id": "YGA:Vehicle:1370172",
+        "lat": 58.884331,
+        "lon": 5.728894,
+        "is_reserved": false,
+        "is_disabled": false,
+        "rental_uris": {
+          "web": "https://no.getaround.com/bilutleie/sandnes/hyundai-kona-electric-1370172"
+        },
+        "vehicle_type_id": "YGA:VehicleType:car-generic-electric",
+        "current_range_meters": 200000,
+        "pricing_plan_id": "YGA:PricingPlan:1370172"
+      },
+      {
+        "vehicle_id": "YGA:Vehicle:1298463",
+        "lat": 58.96862,
+        "lon": 5.728269,
+        "is_reserved": false,
+        "is_disabled": false,
+        "rental_uris": {
+          "web": "https://no.getaround.com/bilutleie/stavanger/nissan-leaf-1298463"
+        },
+        "vehicle_type_id": "YGA:VehicleType:car-generic-electric",
+        "current_range_meters": 200000,
+        "pricing_plan_id": "YGA:PricingPlan:1298463"
+      },
+      {
+        "vehicle_id": "YGA:Vehicle:1305911",
+        "lat": 58.973309,
+        "lon": 5.719438,
+        "is_reserved": false,
+        "is_disabled": false,
+        "rental_uris": {
+          "web": "https://no.getaround.com/bilutleie/stavanger/skoda-citigo-e-1305911"
+        },
+        "vehicle_type_id": "YGA:VehicleType:car-generic-electric",
+        "current_range_meters": 160000,
+        "pricing_plan_id": "YGA:PricingPlan:1305911"
+      },
+      {
+        "vehicle_id": "YGA:Vehicle:1370175",
+        "lat": 58.943897,
+        "lon": 5.72725,
+        "is_reserved": false,
+        "is_disabled": false,
+        "rental_uris": {
+          "web": "https://no.getaround.com/bilutleie/stavanger/hyundai-kona-electric-1370175"
+        },
+        "vehicle_type_id": "YGA:VehicleType:car-generic-electric",
+        "current_range_meters": 160000,
+        "pricing_plan_id": "YGA:PricingPlan:1370175"
+      },
+      {
+        "vehicle_id": "YGA:Vehicle:1290689",
+        "lat": 58.966606,
+        "lon": 5.737311,
+        "is_reserved": false,
+        "is_disabled": false,
+        "rental_uris": {
+          "web": "https://no.getaround.com/bilutleie/stavanger/seat-mii-1290689"
+        },
+        "vehicle_type_id": "YGA:VehicleType:car-generic-electric",
+        "current_range_meters": 200000,
+        "pricing_plan_id": "YGA:PricingPlan:1290689"
+      },
+      {
+        "vehicle_id": "YGA:Vehicle:1337061",
+        "lat": 58.973267,
+        "lon": 5.718067,
+        "is_reserved": false,
+        "is_disabled": false,
+        "rental_uris": {
+          "web": "https://no.getaround.com/bilutleie/stavanger/kia-picanto-1337061"
+        },
+        "vehicle_type_id": "YGA:VehicleType:car-generic-combustion",
+        "current_range_meters": 280000,
+        "pricing_plan_id": "YGA:PricingPlan:1337061"
+      },
+      {
+        "vehicle_id": "YGA:Vehicle:975060",
+        "lat": 58.953701,
+        "lon": 5.681887,
+        "is_reserved": false,
+        "is_disabled": false,
+        "rental_uris": {
+          "web": "https://no.getaround.com/bilutleie/hafrsfjord/renault-kangoo-express-975060"
+        },
+        "vehicle_type_id": "YGA:VehicleType:car-generic-electric",
+        "current_range_meters": 160000,
+        "pricing_plan_id": "YGA:PricingPlan:975060"
+      },
+      {
+        "vehicle_id": "YGA:Vehicle:1217190",
+        "lat": 58.981388,
+        "lon": 5.709154,
+        "is_reserved": false,
+        "is_disabled": false,
+        "rental_uris": {
+          "web": "https://no.getaround.com/bilutleie/stavanger/volkswagen-up-1217190"
+        },
+        "vehicle_type_id": "YGA:VehicleType:car-generic-combustion",
+        "current_range_meters": 350000,
+        "pricing_plan_id": "YGA:PricingPlan:1217190"
+      },
+      {
+        "vehicle_id": "YGA:Vehicle:1298458",
+        "lat": 58.966606,
+        "lon": 5.737311,
+        "is_reserved": false,
+        "is_disabled": false,
+        "rental_uris": {
+          "web": "https://no.getaround.com/bilutleie/stavanger/nissan-leaf-1298458"
+        },
+        "vehicle_type_id": "YGA:VehicleType:car-generic-electric",
+        "current_range_meters": 138000,
+        "pricing_plan_id": "YGA:PricingPlan:1298458"
+      },
+      {
+        "vehicle_id": "YGA:Vehicle:1285445",
+        "lat": 58.970184,
+        "lon": 5.722723,
+        "is_reserved": false,
+        "is_disabled": false,
+        "rental_uris": {
+          "web": "https://no.getaround.com/bilutleie/stavanger/volkswagen-e-up-1285445"
+        },
+        "vehicle_type_id": "YGA:VehicleType:car-generic-electric",
+        "current_range_meters": 160000,
+        "pricing_plan_id": "YGA:PricingPlan:1285445"
+      }
+    ]
+  }
+}

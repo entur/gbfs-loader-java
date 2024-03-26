@@ -10,6 +10,7 @@ import java.util.Map;
  * Implementations provided:
  * @see Oauth2ClientCredentialsGrantRequestAuthenticator
  * @see BearerTokenRequestAuthenticator
+ * @see HttpHeadersRequestAuthenticator
  *
  * You may create your own implementation for custom authentication schemes
  */

@@ -1,0 +1,37 @@
+{
+  "last_updated": "2024-03-21T09:27:31.114Z",
+  "ttl": 0,
+  "version": "3.0-RC2",
+  "data": {
+    "vehicle_types": [
+      {
+        "vehicle_type_id": "YGA:VehicleType:car-generic-combustion",
+        "form_factor": "car",
+        "propulsion_type": "combustion",
+        "max_range_meters": 400000,
+        "return_constraint": "roundtrip_station"
+      },
+      {
+        "vehicle_type_id": "YGA:VehicleType:car-generic-combustion_diesel",
+        "form_factor": "car",
+        "propulsion_type": "combustion_diesel",
+        "max_range_meters": 600000,
+        "return_constraint": "roundtrip_station"
+      },
+      {
+        "vehicle_type_id": "YGA:VehicleType:car-generic-electric",
+        "form_factor": "car",
+        "propulsion_type": "electric",
+        "max_range_meters": 200000,
+        "return_constraint": "roundtrip_station"
+      },
+      {
+        "vehicle_type_id": "YGA:VehicleType:car-generic-hybrid",
+        "form_factor": "car",
+        "propulsion_type": "hybrid",
+        "max_range_meters": 500000,
+        "return_constraint": "roundtrip_station"
+      }
+    ]
+  }
+}

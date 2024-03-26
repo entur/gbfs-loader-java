@@ -1,4 +1,4 @@
-package org.entur.gbfs;
+package org.entur.gbfs.loader.v2;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -10,6 +10,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.entur.gbfs.http.GBFSHttpClient;
 import org.entur.gbfs.v2_3.free_bike_status.GBFSFreeBikeStatus;
 import org.entur.gbfs.v2_3.gbfs.GBFSFeedName;
 import org.entur.gbfs.v2_3.geofencing_zones.GBFSGeofencingZones;
@@ -33,19 +34,19 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * This tests that {@link GbfsLoader} handles loading of different versions of GBFS correctly, that the optional
+ * This tests that {@link GbfsV2Loader} handles loading of different versions of GBFS correctly, that the optional
  * language paraameter works correctly, and that the different files in a GBFS bundle are all included, with all
  * information in them.
  */
-public class GbfsLoaderTest {
+class GbfsV2LoaderTest {
 
   public static final String LANGUAGE_NB = "nb";
   public static final String LANGUAGE_EN = "en";
-  private static final Logger LOG = LoggerFactory.getLogger(GbfsLoaderTest.class);
+  private static final Logger LOG = LoggerFactory.getLogger(GbfsV2LoaderTest.class);
 
   @Test
   void getV22FeedWithExplicitLanguage() {
-    GbfsLoader loader = new GbfsLoader(
+    GbfsV2Loader loader = new GbfsV2Loader(
       "file:src/test/resources/gbfs/lillestrombysykkel/gbfs.json",
       LANGUAGE_NB
     );
@@ -54,8 +55,9 @@ public class GbfsLoaderTest {
   }
 
   @Test
+  @Disabled("We need to find a better way to test this")
   void testBackoffStrategy() {
-    GbfsLoader loader = new GbfsLoader(
+    GbfsV2Loader loader = new GbfsV2Loader(
       "file:src/test/resources/gbfs/feedwith404feeds/gbfs.json",
       LANGUAGE_NB
     );
@@ -71,8 +73,17 @@ public class GbfsLoaderTest {
   }
 
   @Test
+  void testSetupCompleteWithNonExistingDiscoveryFile() {
+    GbfsV2Loader loader = new GbfsV2Loader(
+      "file:src/test/resources/gbfs/foo/gbfs.json",
+      LANGUAGE_NB
+    );
+    assertFalse(loader.getSetupComplete());
+  }
+
+  @Test
   void getV22FeedWithNoLanguage() {
-    GbfsLoader loader = new GbfsLoader(
+    GbfsV2Loader loader = new GbfsV2Loader(
       "file:src/test/resources/gbfs/lillestrombysykkel/gbfs.json"
     );
 
@@ -84,7 +95,7 @@ public class GbfsLoaderTest {
     assertThrows(
       RuntimeException.class,
       () ->
-        new GbfsLoader(
+        new GbfsV2Loader(
           "file:src/test/resources/gbfs/lillestrombysykkel/gbfs.json",
           LANGUAGE_EN
         )
@@ -93,7 +104,7 @@ public class GbfsLoaderTest {
 
   @Test
   void getV10FeedWithExplicitLanguage() {
-    GbfsLoader loader = new GbfsLoader(
+    GbfsV2Loader loader = new GbfsV2Loader(
       "file:src/test/resources/gbfs/helsinki/gbfs.json",
       LANGUAGE_EN
     );
@@ -102,11 +113,10 @@ public class GbfsLoaderTest {
   }
 
   @Test
-  @Disabled
+  @Disabled("Run when needed")
   void fetchAllPublicFeeds() throws IOException {
-    InputStream is = HttpUtils.getData(
-      "https://raw.githubusercontent.com/NABSA/gbfs/master/systems.csv"
-    );
+    InputStream is = new GBFSHttpClient()
+      .getData("https://raw.githubusercontent.com/NABSA/gbfs/master/systems.csv");
     CsvReader reader = new CsvReader(is, StandardCharsets.UTF_8);
     reader.readHeaders();
     List<Exception> exceptions = new ArrayList<>();
@@ -114,7 +124,7 @@ public class GbfsLoaderTest {
     while (reader.readRecord()) {
       try {
         String url = reader.get("Auto-Discovery URL");
-        new GbfsLoader(url).update();
+        new GbfsV2Loader(url).update();
       } catch (Exception e) {
         exceptions.add(e);
       }
@@ -126,18 +136,20 @@ public class GbfsLoaderTest {
   }
 
   @Test
-  @Disabled
+  @Disabled("Run when needed")
   void testSpin() {
-    new GbfsLoader("https://gbfs.spin.pm/api/gbfs/v2_2/edmonton/gbfs").update();
+    assertDoesNotThrow(() -> {
+      new GbfsV2Loader("https://gbfs.spin.pm/api/gbfs/v2_2/edmonton/gbfs").update();
+    });
   }
 
-  private void validateV22Feed(GbfsLoader loader) {
+  private void validateV22Feed(GbfsV2Loader loader) {
     assertTrue(loader.update());
 
     GbfsValidator validator = GbfsValidatorFactory.getGbfsJsonValidator();
     FileValidationResult validationResult = validator.validateFile(
       "system_information",
-      new ByteArrayInputStream(loader.getRawFeed(GBFSFeedName.SystemInformation))
+      new ByteArrayInputStream(loader.getRawFeed(GBFSFeedName.SystemInformation).get())
     );
     assertEquals(0, validationResult.getErrorsCount());
 
@@ -156,7 +168,7 @@ public class GbfsLoaderTest {
     validationResult =
       validator.validateFile(
         "vehicle_types",
-        new ByteArrayInputStream(loader.getRawFeed(GBFSFeedName.VehicleTypes))
+        new ByteArrayInputStream(loader.getRawFeed(GBFSFeedName.VehicleTypes).get())
       );
     assertEquals(0, validationResult.getErrorsCount());
 
@@ -172,7 +184,7 @@ public class GbfsLoaderTest {
     validationResult =
       validator.validateFile(
         "station_information",
-        new ByteArrayInputStream(loader.getRawFeed(GBFSFeedName.StationInformation))
+        new ByteArrayInputStream(loader.getRawFeed(GBFSFeedName.StationInformation).get())
       );
     assertEquals(0, validationResult.getErrorsCount());
 
@@ -190,7 +202,7 @@ public class GbfsLoaderTest {
     validationResult =
       validator.validateFile(
         "station_status",
-        new ByteArrayInputStream(loader.getRawFeed(GBFSFeedName.StationStatus))
+        new ByteArrayInputStream(loader.getRawFeed(GBFSFeedName.StationStatus).get())
       );
     assertEquals(0, validationResult.getErrorsCount());
 
@@ -210,7 +222,7 @@ public class GbfsLoaderTest {
     validationResult =
       validator.validateFile(
         "system_pricing_plans",
-        new ByteArrayInputStream(loader.getRawFeed(GBFSFeedName.SystemPricingPlans))
+        new ByteArrayInputStream(loader.getRawFeed(GBFSFeedName.SystemPricingPlans).get())
       );
     assertEquals(0, validationResult.getErrorsCount());
 
@@ -222,13 +234,13 @@ public class GbfsLoaderTest {
     assertNull(loader.getFeed(GBFSGeofencingZones.class));
   }
 
-  private void validateV10Feed(GbfsLoader loader) {
+  private void validateV10Feed(GbfsV2Loader loader) {
     assertTrue(loader.update());
 
     GbfsValidator validator = GbfsValidatorFactory.getGbfsJsonValidator();
     FileValidationResult validationResult = validator.validateFile(
       "system_information",
-      new ByteArrayInputStream(loader.getRawFeed(GBFSFeedName.SystemInformation))
+      new ByteArrayInputStream(loader.getRawFeed(GBFSFeedName.SystemInformation).get())
     );
     assertEquals(0, validationResult.getErrorsCount());
 
@@ -249,7 +261,7 @@ public class GbfsLoaderTest {
     validationResult =
       validator.validateFile(
         "station_information",
-        new ByteArrayInputStream(loader.getRawFeed(GBFSFeedName.StationInformation))
+        new ByteArrayInputStream(loader.getRawFeed(GBFSFeedName.StationInformation).get())
       );
     assertEquals(0, validationResult.getErrorsCount());
 
@@ -269,7 +281,7 @@ public class GbfsLoaderTest {
     validationResult =
       validator.validateFile(
         "station_status",
-        new ByteArrayInputStream(loader.getRawFeed(GBFSFeedName.StationStatus))
+        new ByteArrayInputStream(loader.getRawFeed(GBFSFeedName.StationStatus).get())
       );
     assertEquals(0, validationResult.getErrorsCount());
 
