@@ -54,17 +54,8 @@ public abstract class BaseGbfsLoader<S, T> {
       return;
     }
 
-    byte[] rawDiscoveryFileData;
-
-    discoveryFileUpdater.update();
-
-    rawDiscoveryFileData = discoveryFileUpdater.getRawData().orElse(null);
-
-    if (rawDiscoveryFileData != null) {
+    if (discoveryFileUpdater.fetchOnce()) {
       disoveryFileData = discoveryFileUpdater.getData();
-    }
-
-    if (disoveryFileData != null) {
       createUpdaters();
       setupComplete.set(true);
     } else {

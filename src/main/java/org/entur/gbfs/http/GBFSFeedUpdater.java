@@ -100,6 +100,17 @@ public class GBFSFeedUpdater<T> {
     return Optional.ofNullable(rawData);
   }
 
+  public boolean fetchOnce() {
+    requestAuthenticator.authenticateRequest(httpHeaders);
+    rawData = fetchFeed(url, httpHeaders).orElse(null);
+
+    if (!validateRawData(rawData)) {
+      return false;
+    }
+
+    return deserializeData(rawData);
+  }
+
   public boolean update() {
     if (!shouldUpdate()) {
       return false;
@@ -108,57 +119,22 @@ public class GBFSFeedUpdater<T> {
     requestAuthenticator.authenticateRequest(httpHeaders);
     rawData = fetchFeed(url, httpHeaders).orElse(null);
 
-    if (rawData == null) {
-      LOG.warn("Invalid data for {}", url);
-      updateStrategy.rescheduleAfterFailure();
-      data = null;
-      return false;
-    }
-
-    try {
-      data = objectMapper.readValue(rawData, implementingClass);
-    } catch (IOException e) {
-      LOG.warn("Error unmarshalling feed", e);
-      updateStrategy.rescheduleAfterFailure();
-      data = null;
-      return false;
-    }
-
-    try {
-      // Fetch lastUpdated and ttl from the resulting class. Due to type erasure we don't know the actual
-      // class, and have to use introspection to get the method references, as they do not share a supertype.
-
-      Integer lastUpdated;
-
-      if (
-        implementingClass
-          .getMethod(GET_LAST_UPDATED)
-          .getReturnType()
-          .equals(Integer.class)
-      ) {
-        lastUpdated =
-          (Integer) implementingClass.getMethod(GET_LAST_UPDATED).invoke(data);
-      } else {
-        Date lastUpdatedDate = (Date) implementingClass
-          .getMethod(GET_LAST_UPDATED)
-          .invoke(data);
-        lastUpdated = Math.toIntExact(lastUpdatedDate.getTime() / 1000);
-      }
-
-      Integer ttl = (Integer) implementingClass.getMethod("getTtl").invoke(data);
-      updateStrategy.scheduleNextUpdate(lastUpdated, ttl);
-      return true;
-    } catch (
-      NoSuchMethodException
-      | InvocationTargetException
-      | IllegalAccessException
-      | ClassCastException
-      | NullPointerException e
-    ) {
-      LOG.warn("Invalid data for {}", url);
+    if (!validateRawData(rawData)) {
       updateStrategy.rescheduleAfterFailure();
       return false;
     }
+
+    if (!deserializeData(rawData)) {
+      updateStrategy.rescheduleAfterFailure();
+      return false;
+    }
+
+    if (!scheduleNextUpdate()) {
+      updateStrategy.rescheduleAfterFailure();
+      return false;
+    }
+
+    return true;
   }
 
   private boolean shouldUpdate() {
@@ -198,6 +174,64 @@ public class GBFSFeedUpdater<T> {
     } catch (IOException e) {
       LOG.warn("Error (bad connection) reading GBFS feed from {}", uri, e);
       return Optional.empty();
+    }
+  }
+
+  private boolean validateRawData(byte[] rawData) {
+    if (rawData == null) {
+      LOG.warn("Invalid data for {}", url);
+      data = null;
+      return false;
+    }
+
+    return true;
+  }
+
+  private boolean deserializeData(byte[] rawData) {
+    try {
+      data = objectMapper.readValue(rawData, implementingClass);
+      return true;
+    } catch (IOException e) {
+      LOG.warn("Error unmarshalling feed", e);
+      data = null;
+      return false;
+    }
+  }
+
+  private boolean scheduleNextUpdate() {
+    try {
+      // Fetch lastUpdated and ttl from the resulting class. Due to type erasure we don't know the actual
+      // class, and have to use introspection to get the method references, as they do not share a supertype.
+
+      Integer lastUpdated;
+
+      if (
+        implementingClass
+          .getMethod(GET_LAST_UPDATED)
+          .getReturnType()
+          .equals(Integer.class)
+      ) {
+        lastUpdated =
+          (Integer) implementingClass.getMethod(GET_LAST_UPDATED).invoke(data);
+      } else {
+        Date lastUpdatedDate = (Date) implementingClass
+          .getMethod(GET_LAST_UPDATED)
+          .invoke(data);
+        lastUpdated = Math.toIntExact(lastUpdatedDate.getTime() / 1000);
+      }
+
+      Integer ttl = (Integer) implementingClass.getMethod("getTtl").invoke(data);
+      updateStrategy.scheduleNextUpdate(lastUpdated, ttl);
+      return true;
+    } catch (
+      NoSuchMethodException
+      | InvocationTargetException
+      | IllegalAccessException
+      | ClassCastException
+      | NullPointerException e
+    ) {
+      LOG.warn("Invalid data for {}", url);
+      return false;
     }
   }
 }
