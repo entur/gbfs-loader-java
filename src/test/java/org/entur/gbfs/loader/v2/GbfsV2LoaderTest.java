@@ -73,6 +73,15 @@ class GbfsV2LoaderTest {
   }
 
   @Test
+  void testSetupCompleteWithNonExistingDiscoveryFile() {
+    GbfsV2Loader loader = new GbfsV2Loader(
+      "file:src/test/resources/gbfs/foo/gbfs.json",
+      LANGUAGE_NB
+    );
+    assertFalse(loader.getSetupComplete());
+  }
+
+  @Test
   void getV22FeedWithNoLanguage() {
     GbfsV2Loader loader = new GbfsV2Loader(
       "file:src/test/resources/gbfs/lillestrombysykkel/gbfs.json"
