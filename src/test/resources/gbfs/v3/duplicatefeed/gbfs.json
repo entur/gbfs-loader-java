@@ -1,0 +1,17 @@
+{
+  "last_updated": "2024-03-21T09:25:53.343Z",
+  "ttl": 0,
+  "version": "3.0-RC2",
+  "data": {
+    "feeds": [
+      {
+        "name": "system_information",
+        "url": "file:src/test/resources/gbfs/v3/duplicatefeed/foo.json"
+      },
+      {
+        "name": "system_information",
+        "url": "file:src/test/resources/gbfs/v3/duplicatefeed/bar.json"
+      }
+    ]
+  }
+}
