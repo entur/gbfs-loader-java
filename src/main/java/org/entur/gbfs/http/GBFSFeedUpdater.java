@@ -190,12 +190,11 @@ public class GBFSFeedUpdater<T> {
   private boolean deserializeData(byte[] rawData) {
     try {
       data = objectMapper.readValue(rawData, implementingClass);
-      return true;
     } catch (IOException e) {
       LOG.warn("Error unmarshalling feed", e);
       data = null;
-      return false;
     }
+    return data != null;
   }
 
   private boolean scheduleNextUpdate() {
