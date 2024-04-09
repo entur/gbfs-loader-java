@@ -54,7 +54,7 @@ public class Oauth2ClientCredentialsGrantRequestAuthenticator
   public void authenticateRequest(Map<String, String> httpHeaders)
     throws RequestAuthenticationException {
     try {
-      if (token == null || token.expirationDate().after(DateTime.now())) {
+      if (token == null || token.expirationDate().before(DateTime.now())) {
         token = new ClientCredentialsGrant(client, scope).accessToken(executor);
       }
       httpHeaders.put("Authorization", String.format("Bearer %s", token.accessToken()));
