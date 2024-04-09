@@ -51,7 +51,7 @@ public class Oauth2ClientCredentialsGrantRequestAuthenticator
   }
 
   @Override
-  public void authenticateRequest(Map<String, String> httpHeaders)
+  public synchronized void authenticateRequest(Map<String, String> httpHeaders)
     throws RequestAuthenticationException {
     try {
       if (token == null || token.expirationDate().before(DateTime.now())) {
