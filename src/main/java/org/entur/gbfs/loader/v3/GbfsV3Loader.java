@@ -8,9 +8,9 @@ import java.util.stream.Collectors;
 import org.entur.gbfs.authentication.RequestAuthenticator;
 import org.entur.gbfs.loader.BaseGbfsLoader;
 import org.entur.gbfs.loader.GbfsFeed;
-import org.entur.gbfs.v3_0_RC2.gbfs.GBFSFeed;
-import org.entur.gbfs.v3_0_RC2.gbfs.GBFSFeedName;
-import org.entur.gbfs.v3_0_RC2.gbfs.GBFSGbfs;
+import org.entur.gbfs.v3_0.gbfs.GBFSFeed;
+import org.entur.gbfs.v3_0.gbfs.GBFSFeedName;
+import org.entur.gbfs.v3_0.gbfs.GBFSGbfs;
 
 public class GbfsV3Loader extends BaseGbfsLoader<GBFSFeed.Name, GBFSGbfs> {
 
