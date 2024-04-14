@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import org.entur.gbfs.authentication.DummyRequestAuthenticator;
-import org.entur.gbfs.v3_0_RC2.gbfs.GBFSGbfs;
+import org.entur.gbfs.v3_0.gbfs.GBFSGbfs;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
