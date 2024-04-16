@@ -82,7 +82,9 @@ public abstract class BaseGbfsLoader<S, T> {
     if (updateLock.tryLock()) {
       try {
         for (GBFSFeedUpdater<?> updater : feedUpdaters.values()) {
-          didUpdate = updater.update();
+          if (updater.update()) {
+            didUpdate = true;
+          }
         }
       } finally {
         // be sure to release lock, even in case an exception is thrown
