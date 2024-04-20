@@ -1,10 +1,6 @@
 package org.entur.gbfs.loader.v3;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.ByteArrayInputStream;
 import java.util.List;
@@ -51,6 +47,8 @@ class GbfsV3LoaderTest {
       new ByteArrayInputStream(loader.getRawFeed(GBFSFeed.Name.SYSTEM_INFORMATION).get())
     );
     assertEquals(0, validationResult.getErrorsCount());
+
+    assertFalse(loader.getRawFeed(GBFSFeed.Name.GBFS).isEmpty());
 
     GBFSSystemInformation systemInformation = loader.getFeed(GBFSSystemInformation.class);
     assertNotNull(systemInformation);

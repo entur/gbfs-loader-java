@@ -153,6 +153,8 @@ class GbfsV2LoaderTest {
     );
     assertEquals(0, validationResult.getErrorsCount());
 
+    assertFalse(loader.getRawFeed(GBFSFeedName.GBFS).isEmpty());
+
     GBFSSystemInformation systemInformation = loader.getFeed(GBFSSystemInformation.class);
     assertNotNull(systemInformation);
     assertEquals("lillestrombysykkel", systemInformation.getData().getSystemId());

@@ -145,10 +145,16 @@ public abstract class BaseGbfsLoader<S, T> {
   }
 
   public Optional<byte[]> getRawFeed(S feedName) {
+    if (feedName == getDiscoveryFeedName()) {
+      return discoveryFileUpdater.getRawData();
+    }
+
     GBFSFeedUpdater<?> updater = feedUpdaters.get(feedName);
     if (updater == null) {
       return Optional.empty();
     }
     return updater.getRawData();
   }
+
+  protected abstract S getDiscoveryFeedName();
 }
