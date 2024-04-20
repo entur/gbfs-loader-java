@@ -125,4 +125,9 @@ public class GbfsV2Loader extends BaseGbfsLoader<GBFSFeedName, GBFS> {
       )
       .collect(Collectors.toList());
   }
+
+  @Override
+  protected GBFSFeedName getDiscoveryFeedName() {
+    return GBFSFeedName.GBFS;
+  }
 }
