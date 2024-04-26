@@ -131,7 +131,7 @@ class GbfsV3LoaderTest {
   @Test
   void testIncompleteFeed() {
     GbfsV3Loader loader = new GbfsV3Loader(
-      "file:src/test/resources/gbfs/v3/duplicatefeed/gbfs.json"
+      "file:src/test/resources/gbfs/v3/incomplete/gbfs.json"
     );
     assertFalse(loader.getSetupComplete());
   }
