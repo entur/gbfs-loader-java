@@ -4,7 +4,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.ByteArrayInputStream;
 import java.util.List;
-import org.entur.gbfs.loader.DuplicateFeedException;
 import org.entur.gbfs.v3_0.gbfs.GBFSFeed;
 import org.entur.gbfs.v3_0.geofencing_zones.GBFSGeofencingZones;
 import org.entur.gbfs.v3_0.system_information.GBFSSystemInformation;
@@ -123,13 +122,17 @@ class GbfsV3LoaderTest {
 
   @Test
   void testDuplicateFeedThrows() {
-    assertThrows(
-      DuplicateFeedException.class,
-      () -> {
-        GbfsV3Loader loader = new GbfsV3Loader(
-          "file:src/test/resources/gbfs/v3/duplicatefeed/gbfs.json"
-        );
-      }
+    GbfsV3Loader loader = new GbfsV3Loader(
+      "file:src/test/resources/gbfs/v3/duplicatefeed/gbfs.json"
     );
+    assertFalse(loader.getSetupComplete());
+  }
+
+  @Test
+  void testIncompleteFeed() {
+    GbfsV3Loader loader = new GbfsV3Loader(
+      "file:src/test/resources/gbfs/v3/incomplete/gbfs.json"
+    );
+    assertFalse(loader.getSetupComplete());
   }
 }
