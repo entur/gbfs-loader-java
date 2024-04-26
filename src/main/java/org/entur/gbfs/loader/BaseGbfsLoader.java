@@ -56,8 +56,13 @@ public abstract class BaseGbfsLoader<S, T> {
 
     if (discoveryFileUpdater.fetchOnce()) {
       disoveryFileData = discoveryFileUpdater.getData();
-      createUpdaters();
-      setupComplete.set(true);
+
+      try {
+        createUpdaters();
+        setupComplete.set(true);
+      } catch (RuntimeException e) {
+        LOG.warn("Caught exception while creating updaters message={}", e.getMessage());
+      }
     } else {
       LOG.warn(
         "Could not fetch the feed auto-configuration file from {}",

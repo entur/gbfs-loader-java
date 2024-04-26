@@ -92,14 +92,11 @@ class GbfsV2LoaderTest {
 
   @Test
   void getV22FeedWithWrongLanguage() {
-    assertThrows(
-      RuntimeException.class,
-      () ->
-        new GbfsV2Loader(
-          "file:src/test/resources/gbfs/lillestrombysykkel/gbfs.json",
-          LANGUAGE_EN
-        )
+    GbfsV2Loader loader = new GbfsV2Loader(
+      "file:src/test/resources/gbfs/lillestrombysykkel/gbfs.json",
+      LANGUAGE_EN
     );
+    assertFalse(loader.getSetupComplete());
   }
 
   @Test
