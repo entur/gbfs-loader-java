@@ -4,18 +4,18 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.ByteArrayInputStream;
 import java.util.List;
-import org.entur.gbfs.v3_0.gbfs.GBFSFeed;
-import org.entur.gbfs.v3_0.geofencing_zones.GBFSGeofencingZones;
-import org.entur.gbfs.v3_0.system_information.GBFSSystemInformation;
-import org.entur.gbfs.v3_0.system_pricing_plans.GBFSSystemPricingPlans;
-import org.entur.gbfs.v3_0.vehicle_status.GBFSVehicle;
-import org.entur.gbfs.v3_0.vehicle_status.GBFSVehicleStatus;
-import org.entur.gbfs.v3_0.vehicle_types.GBFSVehicleType;
-import org.entur.gbfs.v3_0.vehicle_types.GBFSVehicleTypes;
 import org.entur.gbfs.validation.GbfsValidator;
 import org.entur.gbfs.validation.GbfsValidatorFactory;
 import org.entur.gbfs.validation.model.FileValidationResult;
 import org.junit.jupiter.api.Test;
+import org.mobilitydata.gbfs.v3_0.gbfs.GBFSFeed;
+import org.mobilitydata.gbfs.v3_0.geofencing_zones.GBFSGeofencingZones;
+import org.mobilitydata.gbfs.v3_0.system_information.GBFSSystemInformation;
+import org.mobilitydata.gbfs.v3_0.system_pricing_plans.GBFSSystemPricingPlans;
+import org.mobilitydata.gbfs.v3_0.vehicle_status.GBFSVehicle;
+import org.mobilitydata.gbfs.v3_0.vehicle_status.GBFSVehicleStatus;
+import org.mobilitydata.gbfs.v3_0.vehicle_types.GBFSVehicleType;
+import org.mobilitydata.gbfs.v3_0.vehicle_types.GBFSVehicleTypes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

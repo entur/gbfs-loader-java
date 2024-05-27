@@ -26,20 +26,20 @@ import java.util.Map;
 import java.util.function.Consumer;
 import org.entur.gbfs.GbfsSubscriptionOptions;
 import org.entur.gbfs.loader.GbfsSubscription;
-import org.entur.gbfs.v3_0.gbfs.GBFSFeed;
-import org.entur.gbfs.v3_0.gbfs_versions.GBFSGbfsVersions;
-import org.entur.gbfs.v3_0.geofencing_zones.GBFSGeofencingZones;
-import org.entur.gbfs.v3_0.station_information.GBFSStationInformation;
-import org.entur.gbfs.v3_0.station_status.GBFSStationStatus;
-import org.entur.gbfs.v3_0.system_alerts.GBFSSystemAlerts;
-import org.entur.gbfs.v3_0.system_information.GBFSSystemInformation;
-import org.entur.gbfs.v3_0.system_pricing_plans.GBFSSystemPricingPlans;
-import org.entur.gbfs.v3_0.system_regions.GBFSSystemRegions;
-import org.entur.gbfs.v3_0.vehicle_status.GBFSVehicleStatus;
-import org.entur.gbfs.v3_0.vehicle_types.GBFSVehicleTypes;
 import org.entur.gbfs.validation.GbfsValidator;
 import org.entur.gbfs.validation.GbfsValidatorFactory;
 import org.entur.gbfs.validation.model.ValidationResult;
+import org.mobilitydata.gbfs.v3_0.gbfs.GBFSFeed;
+import org.mobilitydata.gbfs.v3_0.gbfs_versions.GBFSGbfsVersions;
+import org.mobilitydata.gbfs.v3_0.geofencing_zones.GBFSGeofencingZones;
+import org.mobilitydata.gbfs.v3_0.station_information.GBFSStationInformation;
+import org.mobilitydata.gbfs.v3_0.station_status.GBFSStationStatus;
+import org.mobilitydata.gbfs.v3_0.system_alerts.GBFSSystemAlerts;
+import org.mobilitydata.gbfs.v3_0.system_information.GBFSSystemInformation;
+import org.mobilitydata.gbfs.v3_0.system_pricing_plans.GBFSSystemPricingPlans;
+import org.mobilitydata.gbfs.v3_0.system_regions.GBFSSystemRegions;
+import org.mobilitydata.gbfs.v3_0.vehicle_status.GBFSVehicleStatus;
+import org.mobilitydata.gbfs.v3_0.vehicle_types.GBFSVehicleTypes;
 
 /**
  * Class to represent a subscription to GBFS feeds for a single system
