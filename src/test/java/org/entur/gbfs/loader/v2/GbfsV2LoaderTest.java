@@ -148,7 +148,7 @@ class GbfsV2LoaderTest {
       "system_information",
       new ByteArrayInputStream(loader.getRawFeed(GBFSFeedName.SystemInformation).get())
     );
-    assertEquals(0, validationResult.getErrorsCount());
+    assertEquals(0, validationResult.errorsCount());
 
     assertFalse(loader.getRawFeed(GBFSFeedName.GBFS).isEmpty());
 
@@ -169,7 +169,7 @@ class GbfsV2LoaderTest {
         "vehicle_types",
         new ByteArrayInputStream(loader.getRawFeed(GBFSFeedName.VehicleTypes).get())
       );
-    assertEquals(0, validationResult.getErrorsCount());
+    assertEquals(0, validationResult.errorsCount());
 
     GBFSVehicleTypes vehicleTypes = loader.getFeed(GBFSVehicleTypes.class);
     assertNotNull(vehicleTypes);
@@ -185,7 +185,7 @@ class GbfsV2LoaderTest {
         "station_information",
         new ByteArrayInputStream(loader.getRawFeed(GBFSFeedName.StationInformation).get())
       );
-    assertEquals(0, validationResult.getErrorsCount());
+    assertEquals(0, validationResult.errorsCount());
 
     GBFSStationInformation stationInformation = loader.getFeed(
       GBFSStationInformation.class
@@ -203,7 +203,7 @@ class GbfsV2LoaderTest {
         "station_status",
         new ByteArrayInputStream(loader.getRawFeed(GBFSFeedName.StationStatus).get())
       );
-    assertEquals(0, validationResult.getErrorsCount());
+    assertEquals(0, validationResult.errorsCount());
 
     GBFSStationStatus stationStatus = loader.getFeed(GBFSStationStatus.class);
     assertNotNull(stationStatus);
@@ -223,7 +223,7 @@ class GbfsV2LoaderTest {
         "system_pricing_plans",
         new ByteArrayInputStream(loader.getRawFeed(GBFSFeedName.SystemPricingPlans).get())
       );
-    assertEquals(0, validationResult.getErrorsCount());
+    assertEquals(0, validationResult.errorsCount());
 
     GBFSSystemPricingPlans pricingPlans = loader.getFeed(GBFSSystemPricingPlans.class);
 
@@ -241,7 +241,7 @@ class GbfsV2LoaderTest {
       "system_information",
       new ByteArrayInputStream(loader.getRawFeed(GBFSFeedName.SystemInformation).get())
     );
-    assertEquals(0, validationResult.getErrorsCount());
+    assertEquals(0, validationResult.errorsCount());
 
     GBFSSystemInformation systemInformation = loader.getFeed(GBFSSystemInformation.class);
     assertNotNull(systemInformation);
@@ -262,7 +262,7 @@ class GbfsV2LoaderTest {
         "station_information",
         new ByteArrayInputStream(loader.getRawFeed(GBFSFeedName.StationInformation).get())
       );
-    assertEquals(0, validationResult.getErrorsCount());
+    assertEquals(0, validationResult.errorsCount());
 
     GBFSStationInformation stationInformation = loader.getFeed(
       GBFSStationInformation.class
@@ -282,7 +282,7 @@ class GbfsV2LoaderTest {
         "station_status",
         new ByteArrayInputStream(loader.getRawFeed(GBFSFeedName.StationStatus).get())
       );
-    assertEquals(0, validationResult.getErrorsCount());
+    assertEquals(0, validationResult.errorsCount());
 
     GBFSStationStatus stationStatus = loader.getFeed(GBFSStationStatus.class);
     assertNotNull(stationStatus);

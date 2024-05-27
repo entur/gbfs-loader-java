@@ -45,7 +45,7 @@ class GbfsV3LoaderTest {
       "system_information",
       new ByteArrayInputStream(loader.getRawFeed(GBFSFeed.Name.SYSTEM_INFORMATION).get())
     );
-    assertEquals(0, validationResult.getErrorsCount());
+    assertEquals(0, validationResult.errorsCount());
 
     assertFalse(loader.getRawFeed(GBFSFeed.Name.GBFS).isEmpty());
 
@@ -69,7 +69,7 @@ class GbfsV3LoaderTest {
         "vehicle_types",
         new ByteArrayInputStream(loader.getRawFeed(GBFSFeed.Name.VEHICLE_TYPES).get())
       );
-    assertEquals(0, validationResult.getErrorsCount());
+    assertEquals(0, validationResult.errorsCount());
 
     GBFSVehicleTypes vehicleTypes = loader.getFeed(GBFSVehicleTypes.class);
     assertNotNull(vehicleTypes);
@@ -91,7 +91,7 @@ class GbfsV3LoaderTest {
         "vehicle_status",
         new ByteArrayInputStream(loader.getRawFeed(GBFSFeed.Name.VEHICLE_STATUS).get())
       );
-    assertEquals(0, validationResult.getErrorsCount());
+    assertEquals(0, validationResult.errorsCount());
 
     GBFSVehicleStatus vehicleStatus = loader.getFeed(GBFSVehicleStatus.class);
     assertNotNull(vehicleStatus);
@@ -110,7 +110,7 @@ class GbfsV3LoaderTest {
           loader.getRawFeed(GBFSFeed.Name.SYSTEM_PRICING_PLANS).get()
         )
       );
-    assertEquals(0, validationResult.getErrorsCount());
+    assertEquals(0, validationResult.errorsCount());
 
     GBFSSystemPricingPlans pricingPlans = loader.getFeed(GBFSSystemPricingPlans.class);
 
