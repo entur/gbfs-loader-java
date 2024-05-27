@@ -46,9 +46,9 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <jdk.version>17</jdk.version>
 
-        <gbfs-java-model.version>3.1.0</gbfs-java-model.version>
-        <gbfs-validator-java.version>1.0.26</gbfs-validator-java.version>
-        <jackson-databind.version>2.17.0</jackson-databind.version>
+        <gbfs-java-model.version>3.1.4</gbfs-java-model.version>
+        <gbfs-validator-java.version>1.1.3</gbfs-validator-java.version>
+        <jackson-databind.version>2.17.1</jackson-databind.version>
         <slf4j.version>1.7.36</slf4j.version>
         <httpclient-version>4.5.14</httpclient-version>
         <oauth2-essentials.version>0.22.1</oauth2-essentials.version>
@@ -64,7 +64,7 @@
         <maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
         <maven-dependency-plugin.version>3.1.2</maven-dependency-plugin.version>
         <maven-compiler-plugin.version>3.13.0</maven-compiler-plugin.version>
-        <maven-jar-plugin.version>3.3.0</maven-jar-plugin.version>
+        <maven-jar-plugin.version>3.4.1</maven-jar-plugin.version>
         <maven-clean-plugin.version>3.3.2</maven-clean-plugin.version>
         <maven-install-plugin.version>2.5.2</maven-install-plugin.version>
         <maven-site-plugin.version>3.12.1</maven-site-plugin.version>
@@ -83,7 +83,7 @@
         <argLine />
 
         <!-- Unit test frameworks versions -->
-        <assertj.core.version>3.25.3</assertj.core.version>
+        <assertj.core.version>3.26.0</assertj.core.version>
         <junit.version>5.10.2</junit.version>
 
         <!-- GPG configuration for jar signing-->
@@ -177,13 +177,13 @@
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
-            <version>5.3.1</version>
+            <version>5.12.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.jetbrains</groupId>
             <artifactId>annotations</artifactId>
-            <version>24.0.0</version>
+            <version>24.1.0</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>
