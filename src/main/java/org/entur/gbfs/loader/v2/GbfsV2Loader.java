@@ -8,9 +8,9 @@ import org.entur.gbfs.authentication.RequestAuthenticator;
 import org.entur.gbfs.loader.BaseGbfsLoader;
 import org.entur.gbfs.loader.GbfsFeed;
 import org.entur.gbfs.loader.LanguageNotInFeedException;
-import org.entur.gbfs.v2_3.gbfs.GBFS;
-import org.entur.gbfs.v2_3.gbfs.GBFSFeedName;
-import org.entur.gbfs.v2_3.gbfs.GBFSFeeds;
+import org.mobilitydata.gbfs.v2_3.gbfs.GBFS;
+import org.mobilitydata.gbfs.v2_3.gbfs.GBFSFeedName;
+import org.mobilitydata.gbfs.v2_3.gbfs.GBFSFeeds;
 
 /**
  * Class for managing the state and loading of complete GBFS datasets, and updating them according to individual feed's
