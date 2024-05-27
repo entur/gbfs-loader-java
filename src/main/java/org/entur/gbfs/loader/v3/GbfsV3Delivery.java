@@ -18,6 +18,7 @@
 
 package org.entur.gbfs.loader.v3;
 
+import org.entur.gbfs.validation.model.ValidationResult;
 import org.mobilitydata.gbfs.v3_0.gbfs.GBFSGbfs;
 import org.mobilitydata.gbfs.v3_0.gbfs_versions.GBFSGbfsVersions;
 import org.mobilitydata.gbfs.v3_0.geofencing_zones.GBFSGeofencingZones;
@@ -29,7 +30,6 @@ import org.mobilitydata.gbfs.v3_0.system_pricing_plans.GBFSSystemPricingPlans;
 import org.mobilitydata.gbfs.v3_0.system_regions.GBFSSystemRegions;
 import org.mobilitydata.gbfs.v3_0.vehicle_status.GBFSVehicleStatus;
 import org.mobilitydata.gbfs.v3_0.vehicle_types.GBFSVehicleTypes;
-import org.entur.gbfs.validation.model.ValidationResult;
 
 /**
  * This class holds the data for all the GBFS files

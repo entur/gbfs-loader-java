@@ -9,9 +9,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import org.entur.gbfs.authentication.DummyRequestAuthenticator;
-import org.mobilitydata.gbfs.v3_0.gbfs.GBFSGbfs;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mobilitydata.gbfs.v3_0.gbfs.GBFSGbfs;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 

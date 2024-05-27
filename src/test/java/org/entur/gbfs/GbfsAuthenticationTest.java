@@ -8,10 +8,10 @@ import org.entur.gbfs.authentication.Oauth2ClientCredentialsGrantRequestAuthenti
 import org.entur.gbfs.authentication.RequestAuthenticator;
 import org.entur.gbfs.loader.v2.GbfsV2Delivery;
 import org.entur.gbfs.loader.v2.GbfsV2Loader;
-import org.mobilitydata.gbfs.v2_3.free_bike_status.GBFSFreeBikeStatus;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.mobilitydata.gbfs.v2_3.free_bike_status.GBFSFreeBikeStatus;
 
 class GbfsAuthenticationTest {
 

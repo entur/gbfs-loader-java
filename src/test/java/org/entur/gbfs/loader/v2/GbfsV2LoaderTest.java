@@ -11,6 +11,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.entur.gbfs.http.GBFSHttpClient;
+import org.entur.gbfs.validation.GbfsValidator;
+import org.entur.gbfs.validation.GbfsValidatorFactory;
+import org.entur.gbfs.validation.model.FileValidationResult;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import org.mobilitydata.gbfs.v2_3.free_bike_status.GBFSFreeBikeStatus;
 import org.mobilitydata.gbfs.v2_3.gbfs.GBFSFeedName;
 import org.mobilitydata.gbfs.v2_3.geofencing_zones.GBFSGeofencingZones;
@@ -25,11 +30,6 @@ import org.mobilitydata.gbfs.v2_3.system_pricing_plans.GBFSSystemPricingPlans;
 import org.mobilitydata.gbfs.v2_3.system_regions.GBFSSystemRegions;
 import org.mobilitydata.gbfs.v2_3.vehicle_types.GBFSVehicleType;
 import org.mobilitydata.gbfs.v2_3.vehicle_types.GBFSVehicleTypes;
-import org.entur.gbfs.validation.GbfsValidator;
-import org.entur.gbfs.validation.GbfsValidatorFactory;
-import org.entur.gbfs.validation.model.FileValidationResult;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -207,9 +207,8 @@ class GbfsV2LoaderTest {
 
     GBFSStationStatus stationStatus = loader.getFeed(GBFSStationStatus.class);
     assertNotNull(stationStatus);
-    List<org.mobilitydata.gbfs.v2_3.station_status.GBFSStation> stationStatuses = stationStatus
-      .getData()
-      .getStations();
+    List<org.mobilitydata.gbfs.v2_3.station_status.GBFSStation> stationStatuses =
+      stationStatus.getData().getStations();
     assertEquals(6, stationStatuses.size());
 
     assertNull(loader.getFeed(GBFSFreeBikeStatus.class));
@@ -286,9 +285,8 @@ class GbfsV2LoaderTest {
 
     GBFSStationStatus stationStatus = loader.getFeed(GBFSStationStatus.class);
     assertNotNull(stationStatus);
-    List<org.mobilitydata.gbfs.v2_3.station_status.GBFSStation> stationStatuses = stationStatus
-      .getData()
-      .getStations();
+    List<org.mobilitydata.gbfs.v2_3.station_status.GBFSStation> stationStatuses =
+      stationStatus.getData().getStations();
     assertEquals(10, stationStatuses.size());
     assertEquals(
       1,

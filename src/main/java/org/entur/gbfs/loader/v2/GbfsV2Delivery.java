@@ -18,6 +18,7 @@
 
 package org.entur.gbfs.loader.v2;
 
+import org.entur.gbfs.validation.model.ValidationResult;
 import org.mobilitydata.gbfs.v2_3.free_bike_status.GBFSFreeBikeStatus;
 import org.mobilitydata.gbfs.v2_3.gbfs.GBFS;
 import org.mobilitydata.gbfs.v2_3.gbfs_versions.GBFSGbfsVersions;
@@ -31,7 +32,6 @@ import org.mobilitydata.gbfs.v2_3.system_information.GBFSSystemInformation;
 import org.mobilitydata.gbfs.v2_3.system_pricing_plans.GBFSSystemPricingPlans;
 import org.mobilitydata.gbfs.v2_3.system_regions.GBFSSystemRegions;
 import org.mobilitydata.gbfs.v2_3.vehicle_types.GBFSVehicleTypes;
-import org.entur.gbfs.validation.model.ValidationResult;
 
 /**
  * This class holds the data for all the GBFS files
