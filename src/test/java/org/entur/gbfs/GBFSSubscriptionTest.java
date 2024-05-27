@@ -52,10 +52,7 @@ class GBFSSubscriptionTest {
   Consumer<GbfsV2Delivery> getTestConsumer() {
     return delivery -> {
       Assertions.assertNotNull(delivery);
-      Assertions.assertEquals(
-        0,
-        delivery.validationResult().getSummary().getErrorsCount()
-      );
+      Assertions.assertEquals(0, delivery.validationResult().summary().errorsCount());
       waiter.countDown();
     };
   }
@@ -89,10 +86,7 @@ class GBFSSubscriptionTest {
   Consumer<GbfsV3Delivery> getV3TestConsumer() {
     return delivery -> {
       Assertions.assertNotNull(delivery);
-      Assertions.assertEquals(
-        0,
-        delivery.validationResult().getSummary().getErrorsCount()
-      );
+      Assertions.assertEquals(0, delivery.validationResult().summary().errorsCount());
       waiter.countDown();
     };
   }
