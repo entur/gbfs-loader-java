@@ -84,6 +84,7 @@ public class GbfsV3Loader extends BaseGbfsLoader<GBFSFeed.Name, GBFSGbfs> {
 
     return feeds
       .stream()
+      .filter(feed -> !feed.getName().equals(GBFSFeed.Name.GBFS))
       .map(feed ->
         new GbfsFeed<>(
           feed.getName(),
