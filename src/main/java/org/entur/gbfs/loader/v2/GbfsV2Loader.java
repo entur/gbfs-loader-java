@@ -120,6 +120,7 @@ public class GbfsV2Loader extends BaseGbfsLoader<GBFSFeedName, GBFS> {
     return feeds
       .getFeeds()
       .stream()
+      .filter(feed -> !feed.getName().equals(GBFSFeedName.GBFS))
       .map(feed ->
         new GbfsFeed<>(feed.getName(), feed.getName().implementingClass(), feed.getUrl())
       )
