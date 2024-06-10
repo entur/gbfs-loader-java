@@ -46,7 +46,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <jdk.version>17</jdk.version>
 
-        <gbfs-java-model.version>1.0.6</gbfs-java-model.version>
+        <gbfs-java-model.version>1.0.7</gbfs-java-model.version>
         <gbfs-validator-java.version>2.0.2</gbfs-validator-java.version>
         <jackson-databind.version>2.17.1</jackson-databind.version>
         <slf4j.version>1.7.36</slf4j.version>
