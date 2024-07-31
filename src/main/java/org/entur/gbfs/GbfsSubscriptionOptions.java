@@ -45,6 +45,5 @@ public record GbfsSubscriptionOptions(
   @Nullable Map<String, String> headers,
   @Nullable RequestAuthenticator requestAuthenticator,
   @Nullable Long timeout,
-  @Nullable Boolean enableValidation,
-  @Nullable String systemId
+  @Nullable Boolean enableValidation
 ) {}

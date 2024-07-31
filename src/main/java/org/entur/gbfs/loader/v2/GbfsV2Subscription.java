@@ -25,6 +25,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
 import org.entur.gbfs.GbfsSubscriptionOptions;
+import org.entur.gbfs.SubscriptionUpdateInterceptor;
 import org.entur.gbfs.loader.GbfsSubscription;
 import org.entur.gbfs.validation.GbfsValidator;
 import org.entur.gbfs.validation.GbfsValidatorFactory;
@@ -51,6 +52,7 @@ public class GbfsV2Subscription implements GbfsSubscription {
 
   private final GbfsSubscriptionOptions subscriptionOptions;
   private final Consumer<GbfsV2Delivery> consumer;
+  private final SubscriptionUpdateInterceptor updateInterceptor;
   private GbfsV2Loader loader;
 
   public GbfsV2Subscription(
@@ -59,6 +61,17 @@ public class GbfsV2Subscription implements GbfsSubscription {
   ) {
     this.subscriptionOptions = subscriptionOptions;
     this.consumer = consumer;
+    this.updateInterceptor = null;
+  }
+
+  public GbfsV2Subscription(
+    GbfsSubscriptionOptions subscriptionOptions,
+    Consumer<GbfsV2Delivery> consumer,
+    SubscriptionUpdateInterceptor updateInterceptor
+  ) {
+    this.subscriptionOptions = subscriptionOptions;
+    this.consumer = consumer;
+    this.updateInterceptor = updateInterceptor;
   }
 
   /**
@@ -88,7 +101,10 @@ public class GbfsV2Subscription implements GbfsSubscription {
    * to the consumer if the update had changes
    */
   public void update() {
-    MDC.put("systemId", subscriptionOptions.systemId());
+    if (updateInterceptor != null) {
+      updateInterceptor.beforeUpdate();
+    }
+
     if (loader.update()) {
       GbfsV2Delivery delivery = new GbfsV2Delivery(
         loader.getDiscoveryFeed(),
@@ -110,7 +126,10 @@ public class GbfsV2Subscription implements GbfsSubscription {
       );
       consumer.accept(delivery);
     }
-    MDC.remove("systemId");
+
+    if (updateInterceptor != null) {
+      updateInterceptor.afterUpdate();
+    }
   }
 
   private ValidationResult validateFeeds() {

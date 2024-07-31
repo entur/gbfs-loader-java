@@ -67,6 +67,26 @@ public class GbfsSubscriptionManager {
   }
 
   /**
+   * Start a subscription on a GBFS v2.x feed
+   * <p>
+   * Since v2.x is backwards-compatible with v1.x, v1.x feeds can also be
+   * consumed with this subscription.
+   * </p>
+   *
+   * @param options Options
+   * @param consumer A consumer that will handle receiving updates from the loader
+   * @param updateInterceptor
+   * @return A string identifier
+   */
+  public String subscribeV2(
+    GbfsSubscriptionOptions options,
+    Consumer<GbfsV2Delivery> consumer,
+    SubscriptionUpdateInterceptor updateInterceptor
+  ) {
+    return subscribe(new GbfsV2Subscription(options, consumer, updateInterceptor));
+  }
+
+  /**
    * Start a subscription on a GBFS v3.x feed
    *
    * @param options Options
@@ -78,6 +98,22 @@ public class GbfsSubscriptionManager {
     Consumer<GbfsV3Delivery> consumer
   ) {
     return subscribe(new GbfsV3Subscription(options, consumer));
+  }
+
+  /**
+   * Start a subscription on a GBFS v3.x feed
+   *
+   * @param options Options
+   * @param consumer A consumer that will handle receiving updates from the loader}
+   * @param updateInterceptor
+   * @return A string identifier
+   */
+  public String subscribeV3(
+    GbfsSubscriptionOptions options,
+    Consumer<GbfsV3Delivery> consumer,
+    SubscriptionUpdateInterceptor updateInterceptor
+  ) {
+    return subscribe(new GbfsV3Subscription(options, consumer, updateInterceptor));
   }
 
   /**
