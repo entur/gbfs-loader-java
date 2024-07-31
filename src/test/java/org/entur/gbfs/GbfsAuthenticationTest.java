@@ -73,7 +73,8 @@ class GbfsAuthenticationTest {
       null,
       requestAuthenticator,
       null,
-      null
+      null,
+      "testSystem"
     );
   }
 

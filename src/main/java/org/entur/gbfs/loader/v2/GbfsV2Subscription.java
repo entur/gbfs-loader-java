@@ -42,6 +42,7 @@ import org.mobilitydata.gbfs.v2_3.system_information.GBFSSystemInformation;
 import org.mobilitydata.gbfs.v2_3.system_pricing_plans.GBFSSystemPricingPlans;
 import org.mobilitydata.gbfs.v2_3.system_regions.GBFSSystemRegions;
 import org.mobilitydata.gbfs.v2_3.vehicle_types.GBFSVehicleTypes;
+import org.slf4j.MDC;
 
 /**
  * Class to represent a subscription to GBFS feeds for a single system
@@ -87,6 +88,7 @@ public class GbfsV2Subscription implements GbfsSubscription {
    * to the consumer if the update had changes
    */
   public void update() {
+    MDC.put("systemId", subscriptionOptions.systemId());
     if (loader.update()) {
       GbfsV2Delivery delivery = new GbfsV2Delivery(
         loader.getDiscoveryFeed(),
@@ -108,6 +110,7 @@ public class GbfsV2Subscription implements GbfsSubscription {
       );
       consumer.accept(delivery);
     }
+    MDC.remove("systemId");
   }
 
   private ValidationResult validateFeeds() {
