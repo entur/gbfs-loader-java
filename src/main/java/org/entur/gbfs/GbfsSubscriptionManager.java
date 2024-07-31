@@ -84,12 +84,15 @@ public class GbfsSubscriptionManager {
    * Update all subscriptions
    */
   public void update() {
-    Optional
-      .ofNullable(customThreadPool)
-      .orElse(ForkJoinPool.commonPool())
-      .execute(() ->
-        subscriptions.values().parallelStream().forEach(GbfsSubscription::update)
-      );
+    subscriptions
+      .values()
+      .parallelStream()
+      .forEach(subscription -> {
+        Optional
+          .ofNullable(customThreadPool)
+          .orElse(ForkJoinPool.commonPool())
+          .execute(subscription::update);
+      });
   }
 
   /**
