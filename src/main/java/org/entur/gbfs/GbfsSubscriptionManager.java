@@ -75,7 +75,7 @@ public class GbfsSubscriptionManager {
    *
    * @param options Options
    * @param consumer A consumer that will handle receiving updates from the loader
-   * @param updateInterceptor
+   * @param updateInterceptor A subscription update interceptor
    * @return A string identifier
    */
   public String subscribeV2(
@@ -105,7 +105,7 @@ public class GbfsSubscriptionManager {
    *
    * @param options Options
    * @param consumer A consumer that will handle receiving updates from the loader}
-   * @param updateInterceptor
+   * @param updateInterceptor A subscription update interceptor
    * @return A string identifier
    */
   public String subscribeV3(
