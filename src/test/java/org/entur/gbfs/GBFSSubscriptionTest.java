@@ -29,6 +29,31 @@ class GBFSSubscriptionTest {
   }
 
   @Test
+  void testSubscriptionUpdateInterceptor()
+    throws URISyntaxException, InterruptedException {
+    waiter = new CountDownLatch(3);
+    GbfsSubscriptionManager loader = new GbfsSubscriptionManager();
+    String subscriber = loader.subscribeV2(
+      getTestOptions("file:src/test/resources/gbfs/lillestrombysykkel/gbfs.json", "nb"),
+      getTestConsumer(),
+      new SubscriptionUpdateInterceptor() {
+        @Override
+        public void beforeUpdate() {
+          waiter.countDown();
+        }
+
+        @Override
+        public void afterUpdate() {
+          waiter.countDown();
+        }
+      }
+    );
+    loader.update();
+    Assertions.assertTrue(waiter.await(1, TimeUnit.SECONDS));
+    loader.unsubscribe(subscriber);
+  }
+
+  @Test
   void testSubscriptionWithCustomThreadPool()
     throws URISyntaxException, InterruptedException {
     int parallellCount = 2;
@@ -85,7 +110,7 @@ class GBFSSubscriptionTest {
   }
 
   @Test
-  void testSubscriptionUpdateInterceptor()
+  void testV3SubscriptionUpdateInterceptor()
     throws URISyntaxException, InterruptedException {
     waiter = new CountDownLatch(3);
     GbfsSubscriptionManager loader = new GbfsSubscriptionManager();
