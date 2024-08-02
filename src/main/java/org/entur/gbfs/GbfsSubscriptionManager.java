@@ -123,12 +123,12 @@ public class GbfsSubscriptionManager {
     subscriptions
       .values()
       .parallelStream()
-      .forEach(subscription -> {
+      .forEach(subscription ->
         Optional
           .ofNullable(customThreadPool)
           .orElse(ForkJoinPool.commonPool())
-          .execute(subscription::update);
-      });
+          .execute(subscription::update)
+      );
   }
 
   /**
