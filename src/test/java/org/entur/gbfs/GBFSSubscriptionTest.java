@@ -4,6 +4,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 import org.entur.gbfs.loader.v2.GbfsV2Delivery;
 import org.entur.gbfs.loader.v3.GbfsV3Delivery;
@@ -80,6 +81,31 @@ class GBFSSubscriptionTest {
     );
     loader.update();
     waiter.await();
+    loader.unsubscribe(subscriber);
+  }
+
+  @Test
+  void testSubscriptionUpdateInterceptor()
+    throws URISyntaxException, InterruptedException {
+    waiter = new CountDownLatch(3);
+    GbfsSubscriptionManager loader = new GbfsSubscriptionManager();
+    String subscriber = loader.subscribeV3(
+      getV3TestOptions("file:src/test/resources/gbfs/v3/getaroundstavanger/gbfs.json"),
+      getV3TestConsumer(),
+      new SubscriptionUpdateInterceptor() {
+        @Override
+        public void beforeUpdate() {
+          waiter.countDown();
+        }
+
+        @Override
+        public void afterUpdate() {
+          waiter.countDown();
+        }
+      }
+    );
+    loader.update();
+    Assertions.assertTrue(waiter.await(500, TimeUnit.MILLISECONDS));
     loader.unsubscribe(subscriber);
   }
 
