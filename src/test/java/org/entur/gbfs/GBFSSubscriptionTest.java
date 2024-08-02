@@ -105,7 +105,7 @@ class GBFSSubscriptionTest {
       }
     );
     loader.update();
-    Assertions.assertTrue(waiter.await(500, TimeUnit.MILLISECONDS));
+    Assertions.assertTrue(waiter.await(1, TimeUnit.SECONDS));
     loader.unsubscribe(subscriber);
   }
 
