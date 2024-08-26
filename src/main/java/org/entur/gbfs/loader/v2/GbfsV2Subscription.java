@@ -104,30 +104,32 @@ public class GbfsV2Subscription implements GbfsSubscription {
       updateInterceptor.beforeUpdate();
     }
 
-    if (loader.update()) {
-      GbfsV2Delivery delivery = new GbfsV2Delivery(
-        loader.getDiscoveryFeed(),
-        loader.getFeed(GBFSGbfsVersions.class),
-        loader.getFeed(GBFSSystemInformation.class),
-        loader.getFeed(GBFSVehicleTypes.class),
-        loader.getFeed(GBFSStationInformation.class),
-        loader.getFeed(GBFSStationStatus.class),
-        loader.getFeed(GBFSFreeBikeStatus.class),
-        loader.getFeed(GBFSSystemHours.class),
-        loader.getFeed(GBFSSystemCalendar.class),
-        loader.getFeed(GBFSSystemRegions.class),
-        loader.getFeed(GBFSSystemPricingPlans.class),
-        loader.getFeed(GBFSSystemAlerts.class),
-        loader.getFeed(GBFSGeofencingZones.class),
-        Boolean.TRUE.equals(subscriptionOptions.enableValidation())
-          ? validateFeeds()
-          : null
-      );
-      consumer.accept(delivery);
-    }
-
-    if (updateInterceptor != null) {
-      updateInterceptor.afterUpdate();
+    try {
+      if (loader.update()) {
+        GbfsV2Delivery delivery = new GbfsV2Delivery(
+          loader.getDiscoveryFeed(),
+          loader.getFeed(GBFSGbfsVersions.class),
+          loader.getFeed(GBFSSystemInformation.class),
+          loader.getFeed(GBFSVehicleTypes.class),
+          loader.getFeed(GBFSStationInformation.class),
+          loader.getFeed(GBFSStationStatus.class),
+          loader.getFeed(GBFSFreeBikeStatus.class),
+          loader.getFeed(GBFSSystemHours.class),
+          loader.getFeed(GBFSSystemCalendar.class),
+          loader.getFeed(GBFSSystemRegions.class),
+          loader.getFeed(GBFSSystemPricingPlans.class),
+          loader.getFeed(GBFSSystemAlerts.class),
+          loader.getFeed(GBFSGeofencingZones.class),
+          Boolean.TRUE.equals(subscriptionOptions.enableValidation())
+            ? validateFeeds()
+            : null
+        );
+        consumer.accept(delivery);
+      }
+    } finally {
+      if (updateInterceptor != null) {
+        updateInterceptor.afterUpdate();
+      }
     }
   }
 
