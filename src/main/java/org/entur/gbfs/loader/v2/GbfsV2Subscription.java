@@ -43,11 +43,15 @@ import org.mobilitydata.gbfs.v2_3.system_information.GBFSSystemInformation;
 import org.mobilitydata.gbfs.v2_3.system_pricing_plans.GBFSSystemPricingPlans;
 import org.mobilitydata.gbfs.v2_3.system_regions.GBFSSystemRegions;
 import org.mobilitydata.gbfs.v2_3.vehicle_types.GBFSVehicleTypes;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Class to represent a subscription to GBFS feeds for a single system
  */
 public class GbfsV2Subscription implements GbfsSubscription {
+
+  private static final Logger LOG = LoggerFactory.getLogger(GbfsV2Subscription.class);
 
   private final GbfsSubscriptionOptions subscriptionOptions;
   private final Consumer<GbfsV2Delivery> consumer;
@@ -126,6 +130,9 @@ public class GbfsV2Subscription implements GbfsSubscription {
         );
         consumer.accept(delivery);
       }
+    } catch (RuntimeException e) {
+      LOG.error("Exception occurred during update", e);
+      throw e;
     } finally {
       if (updateInterceptor != null) {
         updateInterceptor.afterUpdate();
