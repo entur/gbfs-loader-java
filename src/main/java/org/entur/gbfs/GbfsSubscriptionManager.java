@@ -24,11 +24,14 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ForkJoinPool;
 import java.util.function.Consumer;
+import org.entur.gbfs.http.GBFSFeedUpdater;
 import org.entur.gbfs.loader.GbfsSubscription;
 import org.entur.gbfs.loader.v2.GbfsV2Delivery;
 import org.entur.gbfs.loader.v2.GbfsV2Subscription;
 import org.entur.gbfs.loader.v3.GbfsV3Delivery;
 import org.entur.gbfs.loader.v3.GbfsV3Subscription;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Manage a set of subscriptions for different GBFS feeds.
@@ -37,6 +40,10 @@ import org.entur.gbfs.loader.v3.GbfsV3Subscription;
  * The subscription manager has subscription methods for v2 and v3 GBFS feeds.
  */
 public class GbfsSubscriptionManager {
+
+  private static final Logger LOG = LoggerFactory.getLogger(
+    GbfsSubscriptionManager.class
+  );
 
   private final Map<String, GbfsSubscription> subscriptions = new ConcurrentHashMap<>();
 
@@ -127,8 +134,19 @@ public class GbfsSubscriptionManager {
         Optional
           .ofNullable(customThreadPool)
           .orElse(ForkJoinPool.commonPool())
-          .execute(subscription::update)
+          .execute(() -> this.update(subscription))
       );
+  }
+
+  public void update(GbfsSubscription subscription) {
+    try {
+      subscription.beforeUpdate();
+      subscription.update();
+    } catch (RuntimeException e) {
+      LOG.error("Error updating subscription", e);
+    } finally {
+      subscription.afterUpdate();
+    }
   }
 
   /**

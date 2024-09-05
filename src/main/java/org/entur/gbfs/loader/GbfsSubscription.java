@@ -5,5 +5,9 @@ public interface GbfsSubscription {
 
   boolean getSetupComplete();
 
+  void beforeUpdate();
+
   void update();
+
+  void afterUpdate();
 }

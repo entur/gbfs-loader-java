@@ -92,6 +92,12 @@ public class GbfsV3Subscription implements GbfsSubscription {
     return loader.getSetupComplete();
   }
 
+  public void beforeUpdate() {
+    if (updateInterceptor != null) {
+      updateInterceptor.beforeUpdate();
+    }
+  }
+
   /**
    * Update the subscription by updating the loader and push a new delivery
    * to the consumer if the update had changes
@@ -101,30 +107,30 @@ public class GbfsV3Subscription implements GbfsSubscription {
       updateInterceptor.beforeUpdate();
     }
 
-    try {
-      if (loader.update()) {
-        GbfsV3Delivery delivery = new GbfsV3Delivery(
-          loader.getDiscoveryFeed(),
-          loader.getFeed(GBFSGbfsVersions.class),
-          loader.getFeed(GBFSSystemInformation.class),
-          loader.getFeed(GBFSVehicleTypes.class),
-          loader.getFeed(GBFSStationInformation.class),
-          loader.getFeed(GBFSStationStatus.class),
-          loader.getFeed(GBFSVehicleStatus.class),
-          loader.getFeed(GBFSSystemRegions.class),
-          loader.getFeed(GBFSSystemPricingPlans.class),
-          loader.getFeed(GBFSSystemAlerts.class),
-          loader.getFeed(GBFSGeofencingZones.class),
-          Boolean.TRUE.equals(subscriptionOptions.enableValidation())
-            ? validateFeeds()
-            : null
-        );
-        consumer.accept(delivery);
-      }
-    } finally {
-      if (updateInterceptor != null) {
-        updateInterceptor.afterUpdate();
-      }
+    if (loader.update()) {
+      GbfsV3Delivery delivery = new GbfsV3Delivery(
+        loader.getDiscoveryFeed(),
+        loader.getFeed(GBFSGbfsVersions.class),
+        loader.getFeed(GBFSSystemInformation.class),
+        loader.getFeed(GBFSVehicleTypes.class),
+        loader.getFeed(GBFSStationInformation.class),
+        loader.getFeed(GBFSStationStatus.class),
+        loader.getFeed(GBFSVehicleStatus.class),
+        loader.getFeed(GBFSSystemRegions.class),
+        loader.getFeed(GBFSSystemPricingPlans.class),
+        loader.getFeed(GBFSSystemAlerts.class),
+        loader.getFeed(GBFSGeofencingZones.class),
+        Boolean.TRUE.equals(subscriptionOptions.enableValidation())
+          ? validateFeeds()
+          : null
+      );
+      consumer.accept(delivery);
+    }
+  }
+
+  public void afterUpdate() {
+    if (updateInterceptor != null) {
+      updateInterceptor.afterUpdate();
     }
   }
 
