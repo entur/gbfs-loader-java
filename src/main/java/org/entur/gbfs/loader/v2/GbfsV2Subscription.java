@@ -25,6 +25,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
 import org.entur.gbfs.GbfsSubscriptionOptions;
+import org.entur.gbfs.SubscriptionUpdateInterceptor;
 import org.entur.gbfs.loader.GbfsSubscription;
 import org.entur.gbfs.validation.GbfsValidator;
 import org.entur.gbfs.validation.GbfsValidatorFactory;
@@ -42,14 +43,19 @@ import org.mobilitydata.gbfs.v2_3.system_information.GBFSSystemInformation;
 import org.mobilitydata.gbfs.v2_3.system_pricing_plans.GBFSSystemPricingPlans;
 import org.mobilitydata.gbfs.v2_3.system_regions.GBFSSystemRegions;
 import org.mobilitydata.gbfs.v2_3.vehicle_types.GBFSVehicleTypes;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Class to represent a subscription to GBFS feeds for a single system
  */
 public class GbfsV2Subscription implements GbfsSubscription {
 
+  private static final Logger LOG = LoggerFactory.getLogger(GbfsV2Subscription.class);
+
   private final GbfsSubscriptionOptions subscriptionOptions;
   private final Consumer<GbfsV2Delivery> consumer;
+  private final SubscriptionUpdateInterceptor updateInterceptor;
   private GbfsV2Loader loader;
 
   public GbfsV2Subscription(
@@ -58,6 +64,17 @@ public class GbfsV2Subscription implements GbfsSubscription {
   ) {
     this.subscriptionOptions = subscriptionOptions;
     this.consumer = consumer;
+    this.updateInterceptor = null;
+  }
+
+  public GbfsV2Subscription(
+    GbfsSubscriptionOptions subscriptionOptions,
+    Consumer<GbfsV2Delivery> consumer,
+    SubscriptionUpdateInterceptor updateInterceptor
+  ) {
+    this.subscriptionOptions = subscriptionOptions;
+    this.consumer = consumer;
+    this.updateInterceptor = updateInterceptor;
   }
 
   /**
@@ -87,26 +104,39 @@ public class GbfsV2Subscription implements GbfsSubscription {
    * to the consumer if the update had changes
    */
   public void update() {
-    if (loader.update()) {
-      GbfsV2Delivery delivery = new GbfsV2Delivery(
-        loader.getDiscoveryFeed(),
-        loader.getFeed(GBFSGbfsVersions.class),
-        loader.getFeed(GBFSSystemInformation.class),
-        loader.getFeed(GBFSVehicleTypes.class),
-        loader.getFeed(GBFSStationInformation.class),
-        loader.getFeed(GBFSStationStatus.class),
-        loader.getFeed(GBFSFreeBikeStatus.class),
-        loader.getFeed(GBFSSystemHours.class),
-        loader.getFeed(GBFSSystemCalendar.class),
-        loader.getFeed(GBFSSystemRegions.class),
-        loader.getFeed(GBFSSystemPricingPlans.class),
-        loader.getFeed(GBFSSystemAlerts.class),
-        loader.getFeed(GBFSGeofencingZones.class),
-        Boolean.TRUE.equals(subscriptionOptions.enableValidation())
-          ? validateFeeds()
-          : null
-      );
-      consumer.accept(delivery);
+    if (updateInterceptor != null) {
+      updateInterceptor.beforeUpdate();
+    }
+
+    try {
+      if (loader.update()) {
+        GbfsV2Delivery delivery = new GbfsV2Delivery(
+          loader.getDiscoveryFeed(),
+          loader.getFeed(GBFSGbfsVersions.class),
+          loader.getFeed(GBFSSystemInformation.class),
+          loader.getFeed(GBFSVehicleTypes.class),
+          loader.getFeed(GBFSStationInformation.class),
+          loader.getFeed(GBFSStationStatus.class),
+          loader.getFeed(GBFSFreeBikeStatus.class),
+          loader.getFeed(GBFSSystemHours.class),
+          loader.getFeed(GBFSSystemCalendar.class),
+          loader.getFeed(GBFSSystemRegions.class),
+          loader.getFeed(GBFSSystemPricingPlans.class),
+          loader.getFeed(GBFSSystemAlerts.class),
+          loader.getFeed(GBFSGeofencingZones.class),
+          Boolean.TRUE.equals(subscriptionOptions.enableValidation())
+            ? validateFeeds()
+            : null
+        );
+        consumer.accept(delivery);
+      }
+    } catch (RuntimeException e) {
+      LOG.error("Exception occurred during update", e);
+      throw e;
+    } finally {
+      if (updateInterceptor != null) {
+        updateInterceptor.afterUpdate();
+      }
     }
   }
 
