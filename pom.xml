@@ -47,8 +47,8 @@
         <jdk.version>17</jdk.version>
 
         <gbfs-java-model.version>1.0.7</gbfs-java-model.version>
-        <gbfs-validator-java.version>2.0.7</gbfs-validator-java.version>
-        <jackson-databind.version>2.17.2</jackson-databind.version>
+        <gbfs-validator-java.version>2.0.8</gbfs-validator-java.version>
+        <jackson-databind.version>2.18.0</jackson-databind.version>
         <slf4j.version>1.7.36</slf4j.version>
         <httpclient-version>4.5.14</httpclient-version>
         <oauth2-essentials.version>0.22.1</oauth2-essentials.version>
@@ -84,7 +84,7 @@
 
         <!-- Unit test frameworks versions -->
         <assertj.core.version>3.26.3</assertj.core.version>
-        <junit.version>5.11.0</junit.version>
+        <junit.version>5.11.1</junit.version>
 
         <!-- GPG configuration for jar signing-->
         <gpg.executable>gpg</gpg.executable>
@@ -177,7 +177,7 @@
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
-            <version>5.13.0</version>
+            <version>5.14.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>
