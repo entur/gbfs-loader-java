@@ -120,15 +120,28 @@ public class GbfsSubscriptionManager {
    * Update all subscriptions
    */
   public void update() {
-    subscriptions
-      .values()
-      .parallelStream()
-      .forEach(subscription ->
-        Optional
-          .ofNullable(customThreadPool)
-          .orElse(ForkJoinPool.commonPool())
-          .execute(subscription::update)
-      );
+    subscriptions.values().parallelStream().forEach(subscription -> update(subscription));
+  }
+
+  /**
+   * Update single subscription
+   *
+   * @param identifier Identifier of subscription
+   */
+  public void update(String identifier) {
+    update(subscriptions.get(identifier));
+  }
+
+  /**
+   * Update single subscription
+   *
+   * @param subscription Subscription which should be updated
+   */
+  private void update(GbfsSubscription subscription) {
+    Optional
+      .ofNullable(customThreadPool)
+      .orElse(ForkJoinPool.commonPool())
+      .execute(subscription::update);
   }
 
   /**
