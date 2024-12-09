@@ -46,8 +46,8 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <jdk.version>17</jdk.version>
 
-        <gbfs-java-model.version>1.0.7</gbfs-java-model.version>
-        <gbfs-validator-java.version>2.0.13</gbfs-validator-java.version>
+        <gbfs-java-model.version>1.0.9</gbfs-java-model.version>
+        <gbfs-validator-java.version>2.0.14</gbfs-validator-java.version>
         <jackson-databind.version>2.18.2</jackson-databind.version>
         <slf4j.version>1.7.36</slf4j.version>
         <httpclient-version>4.5.14</httpclient-version>
@@ -59,7 +59,7 @@
         <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
         <maven-enforcer-plugin.version>3.5.0</maven-enforcer-plugin.version>
         <maven-source-plugin.version>3.3.1</maven-source-plugin.version>
-        <maven-javadoc-plugin.version>3.11.1</maven-javadoc-plugin.version>
+        <maven-javadoc-plugin.version>3.11.2</maven-javadoc-plugin.version>
         <maven-release-plugin.version>2.5.3</maven-release-plugin.version>
         <maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
         <maven-dependency-plugin.version>3.1.2</maven-dependency-plugin.version>
