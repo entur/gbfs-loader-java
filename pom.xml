@@ -47,7 +47,7 @@
         <jdk.version>17</jdk.version>
 
         <gbfs-java-model.version>1.0.9</gbfs-java-model.version>
-        <gbfs-validator-java.version>2.0.24</gbfs-validator-java.version>
+        <gbfs-validator-java.version>2.0.28</gbfs-validator-java.version>
         <jackson-databind.version>2.18.2</jackson-databind.version>
         <slf4j.version>1.7.36</slf4j.version>
         <httpclient-version>4.5.14</httpclient-version>
@@ -63,9 +63,9 @@
         <maven-release-plugin.version>2.5.3</maven-release-plugin.version>
         <maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
         <maven-dependency-plugin.version>3.1.2</maven-dependency-plugin.version>
-        <maven-compiler-plugin.version>3.13.0</maven-compiler-plugin.version>
+        <maven-compiler-plugin.version>3.14.0</maven-compiler-plugin.version>
         <maven-jar-plugin.version>3.4.2</maven-jar-plugin.version>
-        <maven-clean-plugin.version>3.4.0</maven-clean-plugin.version>
+        <maven-clean-plugin.version>3.4.1</maven-clean-plugin.version>
         <maven-install-plugin.version>2.5.2</maven-install-plugin.version>
         <maven-site-plugin.version>3.21.0</maven-site-plugin.version>
         <maven-resources-plugin.version>3.3.1</maven-resources-plugin.version>
@@ -84,7 +84,7 @@
 
         <!-- Unit test frameworks versions -->
         <assertj.core.version>3.27.3</assertj.core.version>
-        <junit.version>5.11.4</junit.version>
+        <junit.version>5.12.0</junit.version>
 
         <!-- GPG configuration for jar signing-->
         <gpg.executable>gpg</gpg.executable>
