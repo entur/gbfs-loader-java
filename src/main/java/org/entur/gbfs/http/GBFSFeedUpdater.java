@@ -102,6 +102,7 @@ public class GBFSFeedUpdater<T> {
 
   public boolean fetchOnce() {
     requestAuthenticator.authenticateRequest(httpHeaders);
+
     rawData = fetchFeed(url, httpHeaders).orElse(null);
 
     if (!validateRawData(rawData)) {
@@ -117,7 +118,14 @@ public class GBFSFeedUpdater<T> {
     }
 
     requestAuthenticator.authenticateRequest(httpHeaders);
-    rawData = fetchFeed(url, httpHeaders).orElse(null);
+    var fetchedData = fetchFeed(url, httpHeaders).orElse(null);
+
+    if (fetchedData == null && updateStrategy.getFailedAttemptsCount() < 3) {
+      updateStrategy.rescheduleAfterFailure();
+      return false;
+    }
+
+    rawData = fetchedData;
 
     if (!validateRawData(rawData)) {
       updateStrategy.rescheduleAfterFailure();
