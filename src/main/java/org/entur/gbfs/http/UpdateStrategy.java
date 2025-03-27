@@ -49,4 +49,8 @@ public class UpdateStrategy {
       nextUpdate = lastUpdated + ttl;
     }
   }
+
+  public int getFailedAttemptsCount() {
+    return failedAttemptsCount;
+  }
 }
