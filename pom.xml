@@ -74,7 +74,7 @@
         <maven-scm-provider-gitexe.version>1.13.0</maven-scm-provider-gitexe.version>
         <maven-scm-api.version>1.13.0</maven-scm-api.version>
         <jacoco-maven-plugin.version>0.8.13</jacoco-maven-plugin.version>
-        <jreleaser-maven-plugin.version>1.18.0</jreleaser-maven-plugin.version>
+        <jreleaser-maven-plugin.version>1.19.0</jreleaser-maven-plugin.version>
 
         <!-- empty argLine property, the value is set up by Jacoco during unit tests execution -->
         <argLine />
