@@ -47,7 +47,7 @@
         <jdk.version>17</jdk.version>
 
         <gbfs-java-model.version>1.0.9</gbfs-java-model.version>
-        <gbfs-validator-java.version>2.0.46</gbfs-validator-java.version>
+        <gbfs-validator-java.version>2.0.47</gbfs-validator-java.version>
         <jackson-databind.version>2.20.0</jackson-databind.version>
         <slf4j.version>1.7.36</slf4j.version>
         <httpclient-version>4.5.14</httpclient-version>
@@ -80,7 +80,7 @@
         <argLine />
 
         <!-- Unit test frameworks versions -->
-        <assertj.core.version>3.27.5</assertj.core.version>
+        <assertj.core.version>3.27.6</assertj.core.version>
         <junit.version>5.13.4</junit.version>
 
         <!-- GPG configuration for jar signing-->
