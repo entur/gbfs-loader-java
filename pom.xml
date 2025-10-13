@@ -47,7 +47,7 @@
         <jdk.version>17</jdk.version>
 
         <gbfs-java-model.version>1.0.9</gbfs-java-model.version>
-        <gbfs-validator-java.version>2.0.52</gbfs-validator-java.version>
+        <gbfs-validator-java.version>2.0.65</gbfs-validator-java.version>
         <jackson-databind.version>2.20.0</jackson-databind.version>
         <slf4j.version>1.7.36</slf4j.version>
         <httpclient-version>4.5.14</httpclient-version>
@@ -73,7 +73,7 @@
         <dependency-check-maven.version>5.3.2</dependency-check-maven.version>
         <maven-scm-provider-gitexe.version>1.13.0</maven-scm-provider-gitexe.version>
         <maven-scm-api.version>1.13.0</maven-scm-api.version>
-        <jacoco-maven-plugin.version>0.8.13</jacoco-maven-plugin.version>
+        <jacoco-maven-plugin.version>0.8.14</jacoco-maven-plugin.version>
         <jreleaser-maven-plugin.version>1.20.0</jreleaser-maven-plugin.version>
 
         <!-- empty argLine property, the value is set up by Jacoco during unit tests execution -->
