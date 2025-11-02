@@ -48,7 +48,7 @@
 
         <gbfs-java-model.version>1.0.9</gbfs-java-model.version>
         <gbfs-validator-java.version>2.0.66</gbfs-validator-java.version>
-        <jackson-databind.version>2.20.0</jackson-databind.version>
+        <jackson-databind.version>2.20.1</jackson-databind.version>
         <slf4j.version>1.7.36</slf4j.version>
         <httpclient-version>4.5.14</httpclient-version>
         <oauth2-essentials.version>0.22.1</oauth2-essentials.version>
@@ -74,14 +74,14 @@
         <maven-scm-provider-gitexe.version>1.13.0</maven-scm-provider-gitexe.version>
         <maven-scm-api.version>1.13.0</maven-scm-api.version>
         <jacoco-maven-plugin.version>0.8.14</jacoco-maven-plugin.version>
-        <jreleaser-maven-plugin.version>1.20.0</jreleaser-maven-plugin.version>
+        <jreleaser-maven-plugin.version>1.21.0</jreleaser-maven-plugin.version>
 
         <!-- empty argLine property, the value is set up by Jacoco during unit tests execution -->
         <argLine />
 
         <!-- Unit test frameworks versions -->
         <assertj.core.version>3.27.6</assertj.core.version>
-        <junit.version>5.14.0</junit.version>
+        <junit.version>5.14.1</junit.version>
 
         <!-- GPG configuration for jar signing-->
         <gpg.executable>gpg</gpg.executable>
