@@ -23,6 +23,7 @@ import java.io.InputStream;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 import org.entur.gbfs.GbfsSubscriptionOptions;
 import org.entur.gbfs.SubscriptionUpdateInterceptor;
@@ -55,6 +56,9 @@ public class GbfsV3Subscription implements GbfsSubscription {
   private final Consumer<GbfsV3Delivery> consumer;
   private final SubscriptionUpdateInterceptor updateInterceptor;
   private GbfsV3Loader loader;
+
+  // Track current update as a Future to enable waiting for in-flight updates during unsubscribe
+  private volatile CompletableFuture<Void> currentUpdate = null;
 
   public GbfsV3Subscription(
     GbfsSubscriptionOptions subscriptionOptions,
@@ -101,6 +105,10 @@ public class GbfsV3Subscription implements GbfsSubscription {
    * to the consumer if the update had changes
    */
   public void update() {
+    // Create a future for this update to enable waiting during unsubscribe
+    CompletableFuture<Void> updateFuture = new CompletableFuture<>();
+    currentUpdate = updateFuture;
+
     if (updateInterceptor != null) {
       updateInterceptor.beforeUpdate();
     }
@@ -125,13 +133,19 @@ public class GbfsV3Subscription implements GbfsSubscription {
         );
         consumer.accept(delivery);
       }
+      // Complete the future on success
+      updateFuture.complete(null);
     } catch (RuntimeException e) {
+      // Complete exceptionally on error
+      updateFuture.completeExceptionally(e);
       LOG.error("Exception occurred during update", e);
       throw e;
     } finally {
       if (updateInterceptor != null) {
         updateInterceptor.afterUpdate();
       }
+      // Clear the reference when done
+      currentUpdate = null;
     }
   }
 
@@ -148,5 +162,18 @@ public class GbfsV3Subscription implements GbfsSubscription {
       );
     GbfsValidator validator = GbfsValidatorFactory.getGbfsJsonValidator();
     return validator.validate(feeds);
+  }
+
+  /**
+   * Get the CompletableFuture for the currently executing update, if any.
+   * Returns a completed future if no update is in progress.
+   *
+   * @return CompletableFuture that completes when the current update finishes
+   */
+  @Override
+  public CompletableFuture<Void> getCurrentUpdate() {
+    CompletableFuture<Void> current = currentUpdate;
+    // Return current update future, or a completed future if none in progress
+    return current != null ? current : CompletableFuture.completedFuture(null);
   }
 }

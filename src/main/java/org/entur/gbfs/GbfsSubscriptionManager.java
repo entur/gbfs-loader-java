@@ -21,8 +21,11 @@ package org.entur.gbfs;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 import org.entur.gbfs.loader.GbfsSubscription;
 import org.entur.gbfs.loader.v2.GbfsV2Delivery;
@@ -41,6 +44,9 @@ public class GbfsSubscriptionManager {
   private final Map<String, GbfsSubscription> subscriptions = new ConcurrentHashMap<>();
 
   private ForkJoinPool customThreadPool;
+
+  // Default timeout for unsubscribe wait
+  private static final long DEFAULT_UNSUBSCRIBE_TIMEOUT_MS = 30_000; // 30 seconds
 
   public GbfsSubscriptionManager() {}
 
@@ -145,12 +151,66 @@ public class GbfsSubscriptionManager {
   }
 
   /**
-   * Stop a subscription on a GBFS feed
+   * Stop a subscription on a GBFS feed asynchronously.
+   * Returns a CompletableFuture that completes when any in-flight update finishes.
+   * Uses the default timeout of 30 seconds.
    *
-   * @param identifier An identifier returned by subscribe method.
+   * @param identifier An identifier returned by subscribe method
+   * @return CompletableFuture that completes when it's safe to clean up caches
    */
+  public CompletableFuture<Void> unsubscribeAsync(String identifier) {
+    return unsubscribeAsync(
+      identifier,
+      DEFAULT_UNSUBSCRIBE_TIMEOUT_MS,
+      TimeUnit.MILLISECONDS
+    );
+  }
+
+  /**
+   * Stop a subscription on a GBFS feed asynchronously with a custom timeout.
+   * Returns a CompletableFuture that completes when any in-flight update finishes.
+   * The future will complete exceptionally with TimeoutException if the timeout expires.
+   *
+   * @param identifier An identifier returned by subscribe method
+   * @param timeout Maximum time to wait for in-flight updates
+   * @param unit Time unit for the timeout
+   * @return CompletableFuture that completes when it's safe to clean up caches
+   */
+  public CompletableFuture<Void> unsubscribeAsync(
+    String identifier,
+    long timeout,
+    TimeUnit unit
+  ) {
+    // Remove from subscriptions map first to prevent new updates
+    GbfsSubscription subscription = subscriptions.remove(identifier);
+
+    if (subscription == null) {
+      // Already unsubscribed - return completed future
+      return CompletableFuture.completedFuture(null);
+    }
+
+    // Get the subscription's current update future and apply timeout
+    // This is the key insight: no polling needed, just wait on the subscription's future!
+    return subscription.getCurrentUpdate().orTimeout(timeout, unit);
+  }
+
+  /**
+   * Stop a subscription on a GBFS feed (blocking version).
+   * This method blocks until the subscription's in-flight update completes.
+   *
+   * @param identifier An identifier returned by subscribe method
+   * @deprecated Use {@link #unsubscribeAsync(String)} for better async composition
+   */
+  @Deprecated
   public void unsubscribe(String identifier) {
-    subscriptions.remove(identifier);
+    try {
+      unsubscribeAsync(identifier).get();
+    } catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new RuntimeException("Interrupted while unsubscribing", e);
+    } catch (ExecutionException e) {
+      throw new RuntimeException("Error while unsubscribing", e);
+    }
   }
 
   private String subscribe(GbfsSubscription subscription) {
