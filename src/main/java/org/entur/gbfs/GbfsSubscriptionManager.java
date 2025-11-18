@@ -144,6 +144,12 @@ public class GbfsSubscriptionManager {
    * @param subscription Subscription which should be updated
    */
   private void update(GbfsSubscription subscription) {
+    // Create the future BEFORE scheduling to avoid race condition where
+    // unsubscribe is called before the async task starts executing.
+    // This ensures getCurrentUpdate() will see it even if task hasn't started yet.
+    CompletableFuture<Void> updateFuture = new CompletableFuture<>();
+    subscription.setCurrentUpdate(updateFuture);
+
     Optional
       .ofNullable(customThreadPool)
       .orElse(ForkJoinPool.commonPool())
