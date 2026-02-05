@@ -23,6 +23,7 @@ import java.io.InputStream;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 import org.entur.gbfs.GbfsSubscriptionOptions;
 import org.entur.gbfs.SubscriptionUpdateInterceptor;
@@ -57,6 +58,19 @@ public class GbfsV2Subscription implements GbfsSubscription {
   private final Consumer<GbfsV2Delivery> consumer;
   private final SubscriptionUpdateInterceptor updateInterceptor;
   private GbfsV2Loader loader;
+
+  // Track current update as a Future to enable waiting for in-flight updates during unsubscribe
+  private volatile CompletableFuture<Void> currentUpdate = null;
+
+  /**
+   * Sets the future that will track the next update. This must be called before
+   * the update is scheduled to avoid race conditions where unsubscribe is called
+   * before the async update task starts.
+   */
+  @Override
+  public synchronized void setCurrentUpdate(CompletableFuture<Void> future) {
+    this.currentUpdate = future;
+  }
 
   public GbfsV2Subscription(
     GbfsSubscriptionOptions subscriptionOptions,
@@ -101,9 +115,18 @@ public class GbfsV2Subscription implements GbfsSubscription {
 
   /**
    * Update the subscription by updating the loader and push a new delivery
-   * to the consumer if the update had changes
+   * to the consumer if the update had changes.
+   *
+   * This method is thread-safe and ensures only one update runs at a time.
    */
-  public void update() {
+  public synchronized void update() {
+    // Use the future set by the manager, or create a new one if called directly
+    CompletableFuture<Void> updateFuture = currentUpdate;
+    if (updateFuture == null) {
+      updateFuture = new CompletableFuture<>();
+      currentUpdate = updateFuture;
+    }
+
     if (updateInterceptor != null) {
       updateInterceptor.beforeUpdate();
     }
@@ -130,13 +153,19 @@ public class GbfsV2Subscription implements GbfsSubscription {
         );
         consumer.accept(delivery);
       }
+      // Complete the future on success
+      updateFuture.complete(null);
     } catch (RuntimeException e) {
+      // Complete exceptionally on error
+      updateFuture.completeExceptionally(e);
       LOG.error("Exception occurred during update", e);
       throw e;
     } finally {
       if (updateInterceptor != null) {
         updateInterceptor.afterUpdate();
       }
+      // Clear the reference when done
+      currentUpdate = null;
     }
   }
 
@@ -153,5 +182,21 @@ public class GbfsV2Subscription implements GbfsSubscription {
       );
     GbfsValidator validator = GbfsValidatorFactory.getGbfsJsonValidator();
     return validator.validate(feeds);
+  }
+
+  /**
+   * Get the CompletableFuture for the currently executing update, if any.
+   * Returns a completed future if no update is in progress.
+   *
+   * This method is synchronized to ensure visibility of updates scheduled
+   * by the manager but not yet started on the ForkJoinPool.
+   *
+   * @return CompletableFuture that completes when the current update finishes
+   */
+  @Override
+  public synchronized CompletableFuture<Void> getCurrentUpdate() {
+    CompletableFuture<Void> current = currentUpdate;
+    // Return current update future, or a completed future if none in progress
+    return current != null ? current : CompletableFuture.completedFuture(null);
   }
 }
