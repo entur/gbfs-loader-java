@@ -4,9 +4,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.ByteArrayInputStream;
 import java.util.List;
-import org.entur.gbfs.validation.GbfsValidator;
-import org.entur.gbfs.validation.GbfsValidatorFactory;
-import org.entur.gbfs.validation.model.FileValidationResult;
 import org.junit.jupiter.api.Test;
 import org.mobilitydata.gbfs.v3_0.gbfs.GBFSFeed;
 import org.mobilitydata.gbfs.v3_0.geofencing_zones.GBFSGeofencingZones;
@@ -16,6 +13,9 @@ import org.mobilitydata.gbfs.v3_0.vehicle_status.GBFSVehicle;
 import org.mobilitydata.gbfs.v3_0.vehicle_status.GBFSVehicleStatus;
 import org.mobilitydata.gbfs.v3_0.vehicle_types.GBFSVehicleType;
 import org.mobilitydata.gbfs.v3_0.vehicle_types.GBFSVehicleTypes;
+import org.mobilitydata.gbfs.validation.GbfsValidator;
+import org.mobilitydata.gbfs.validation.GbfsValidatorFactory;
+import org.mobilitydata.gbfs.validation.model.FileValidationResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
