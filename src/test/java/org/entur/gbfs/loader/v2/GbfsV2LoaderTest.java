@@ -8,7 +8,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import org.entur.gbfs.http.GBFSHttpClient;
 import org.junit.jupiter.api.Disabled;
@@ -29,7 +31,6 @@ import org.mobilitydata.gbfs.v2_3.vehicle_types.GBFSVehicleType;
 import org.mobilitydata.gbfs.v2_3.vehicle_types.GBFSVehicleTypes;
 import org.mobilitydata.gbfs.validation.GbfsValidator;
 import org.mobilitydata.gbfs.validation.GbfsValidatorFactory;
-import org.mobilitydata.gbfs.validation.model.FileValidationResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -143,12 +144,7 @@ class GbfsV2LoaderTest {
   private void validateV22Feed(GbfsV2Loader loader) {
     assertTrue(loader.update());
 
-    GbfsValidator validator = GbfsValidatorFactory.getGbfsJsonValidator();
-    FileValidationResult validationResult = validator.validateFile(
-      "system_information",
-      new ByteArrayInputStream(loader.getRawFeed(GBFSFeedName.SystemInformation).get())
-    );
-    assertEquals(0, validationResult.errorsCount());
+    assertFeedValidates(loader);
 
     assertFalse(loader.getRawFeed(GBFSFeedName.GBFS).isEmpty());
 
@@ -164,13 +160,6 @@ class GbfsV2LoaderTest {
     assertNull(systemInformation.getData().getShortName());
     assertNull(systemInformation.getData().getUrl());
 
-    validationResult =
-      validator.validateFile(
-        "vehicle_types",
-        new ByteArrayInputStream(loader.getRawFeed(GBFSFeedName.VehicleTypes).get())
-      );
-    assertEquals(0, validationResult.errorsCount());
-
     GBFSVehicleTypes vehicleTypes = loader.getFeed(GBFSVehicleTypes.class);
     assertNotNull(vehicleTypes);
     assertEquals(1, vehicleTypes.getData().getVehicleTypes().size());
@@ -179,13 +168,6 @@ class GbfsV2LoaderTest {
     assertEquals(GBFSVehicleType.FormFactor.BICYCLE, vehicleType.getFormFactor());
     assertEquals(GBFSVehicleType.PropulsionType.HUMAN, vehicleType.getPropulsionType());
     assertNull(vehicleType.getMaxRangeMeters());
-
-    validationResult =
-      validator.validateFile(
-        "station_information",
-        new ByteArrayInputStream(loader.getRawFeed(GBFSFeedName.StationInformation).get())
-      );
-    assertEquals(0, validationResult.errorsCount());
 
     GBFSStationInformation stationInformation = loader.getFeed(
       GBFSStationInformation.class
@@ -197,13 +179,6 @@ class GbfsV2LoaderTest {
       stations.stream().anyMatch(gbfsStation -> gbfsStation.getName().equals("TORVGATA"))
     );
     assertEquals(21, stations.stream().mapToDouble(GBFSStation::getCapacity).sum());
-
-    validationResult =
-      validator.validateFile(
-        "station_status",
-        new ByteArrayInputStream(loader.getRawFeed(GBFSFeedName.StationStatus).get())
-      );
-    assertEquals(0, validationResult.errorsCount());
 
     GBFSStationStatus stationStatus = loader.getFeed(GBFSStationStatus.class);
     assertNotNull(stationStatus);
@@ -217,13 +192,6 @@ class GbfsV2LoaderTest {
     assertNull(loader.getFeed(GBFSSystemCalendar.class));
     assertNull(loader.getFeed(GBFSSystemRegions.class));
 
-    validationResult =
-      validator.validateFile(
-        "system_pricing_plans",
-        new ByteArrayInputStream(loader.getRawFeed(GBFSFeedName.SystemPricingPlans).get())
-      );
-    assertEquals(0, validationResult.errorsCount());
-
     GBFSSystemPricingPlans pricingPlans = loader.getFeed(GBFSSystemPricingPlans.class);
 
     assertNotNull(pricingPlans);
@@ -235,12 +203,7 @@ class GbfsV2LoaderTest {
   private void validateV10Feed(GbfsV2Loader loader) {
     assertTrue(loader.update());
 
-    GbfsValidator validator = GbfsValidatorFactory.getGbfsJsonValidator();
-    FileValidationResult validationResult = validator.validateFile(
-      "system_information",
-      new ByteArrayInputStream(loader.getRawFeed(GBFSFeedName.SystemInformation).get())
-    );
-    assertEquals(0, validationResult.errorsCount());
+    assertFeedValidates(loader);
 
     GBFSSystemInformation systemInformation = loader.getFeed(GBFSSystemInformation.class);
     assertNotNull(systemInformation);
@@ -256,13 +219,6 @@ class GbfsV2LoaderTest {
 
     assertNull(loader.getFeed(GBFSVehicleTypes.class));
 
-    validationResult =
-      validator.validateFile(
-        "station_information",
-        new ByteArrayInputStream(loader.getRawFeed(GBFSFeedName.StationInformation).get())
-      );
-    assertEquals(0, validationResult.errorsCount());
-
     GBFSStationInformation stationInformation = loader.getFeed(
       GBFSStationInformation.class
     );
@@ -275,13 +231,6 @@ class GbfsV2LoaderTest {
         .anyMatch(gbfsStation -> gbfsStation.getName().equals("Kaivopuisto"))
     );
     assertEquals(239, stations.stream().mapToDouble(GBFSStation::getCapacity).sum());
-
-    validationResult =
-      validator.validateFile(
-        "station_status",
-        new ByteArrayInputStream(loader.getRawFeed(GBFSFeedName.StationStatus).get())
-      );
-    assertEquals(0, validationResult.errorsCount());
 
     GBFSStationStatus stationStatus = loader.getFeed(GBFSStationStatus.class);
     assertNotNull(stationStatus);
@@ -306,5 +255,21 @@ class GbfsV2LoaderTest {
     assertNull(loader.getFeed(GBFSSystemRegions.class));
     assertNull(loader.getFeed(GBFSSystemPricingPlans.class));
     assertNull(loader.getFeed(GBFSGeofencingZones.class));
+  }
+
+  /**
+   * Validates the feed as a whole rather than file-by-file. The validator resolves
+   * cross-file references (e.g. vehicle_type_id, station_id), so validating individual
+   * files in isolation reports spurious "not a valid enum value" errors.
+   */
+  private void assertFeedValidates(GbfsV2Loader loader) {
+    Map<String, InputStream> feeds = new HashMap<>();
+    for (GBFSFeedName name : GBFSFeedName.values()) {
+      loader
+        .getRawFeed(name)
+        .ifPresent(bytes -> feeds.put(name.value(), new ByteArrayInputStream(bytes)));
+    }
+    GbfsValidator validator = GbfsValidatorFactory.getGbfsJsonValidator();
+    assertEquals(0, validator.validate(feeds).summary().errorsCount());
   }
 }

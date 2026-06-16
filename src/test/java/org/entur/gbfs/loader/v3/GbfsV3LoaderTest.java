@@ -3,7 +3,10 @@ package org.entur.gbfs.loader.v3;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import org.junit.jupiter.api.Test;
 import org.mobilitydata.gbfs.v3_0.gbfs.GBFSFeed;
 import org.mobilitydata.gbfs.v3_0.geofencing_zones.GBFSGeofencingZones;
@@ -15,7 +18,6 @@ import org.mobilitydata.gbfs.v3_0.vehicle_types.GBFSVehicleType;
 import org.mobilitydata.gbfs.v3_0.vehicle_types.GBFSVehicleTypes;
 import org.mobilitydata.gbfs.validation.GbfsValidator;
 import org.mobilitydata.gbfs.validation.GbfsValidatorFactory;
-import org.mobilitydata.gbfs.validation.model.FileValidationResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,12 +42,7 @@ class GbfsV3LoaderTest {
   private void validateV3Feed(GbfsV3Loader loader) {
     assertTrue(loader.update());
 
-    GbfsValidator validator = GbfsValidatorFactory.getGbfsJsonValidator();
-    FileValidationResult validationResult = validator.validateFile(
-      "system_information",
-      new ByteArrayInputStream(loader.getRawFeed(GBFSFeed.Name.SYSTEM_INFORMATION).get())
-    );
-    assertEquals(0, validationResult.errorsCount());
+    assertFeedValidates(loader);
 
     assertFalse(loader.getRawFeed(GBFSFeed.Name.GBFS).isEmpty());
 
@@ -64,13 +61,6 @@ class GbfsV3LoaderTest {
       systemInformation.getData().getUrl()
     );
 
-    validationResult =
-      validator.validateFile(
-        "vehicle_types",
-        new ByteArrayInputStream(loader.getRawFeed(GBFSFeed.Name.VEHICLE_TYPES).get())
-      );
-    assertEquals(0, validationResult.errorsCount());
-
     GBFSVehicleTypes vehicleTypes = loader.getFeed(GBFSVehicleTypes.class);
     assertNotNull(vehicleTypes);
     assertEquals(4, vehicleTypes.getData().getVehicleTypes().size());
@@ -86,13 +76,6 @@ class GbfsV3LoaderTest {
     );
     assertEquals(400000, vehicleType.getMaxRangeMeters());
 
-    validationResult =
-      validator.validateFile(
-        "vehicle_status",
-        new ByteArrayInputStream(loader.getRawFeed(GBFSFeed.Name.VEHICLE_STATUS).get())
-      );
-    assertEquals(0, validationResult.errorsCount());
-
     GBFSVehicleStatus vehicleStatus = loader.getFeed(GBFSVehicleStatus.class);
     assertNotNull(vehicleStatus);
     List<GBFSVehicle> vecicles = vehicleStatus.getData().getVehicles();
@@ -103,21 +86,28 @@ class GbfsV3LoaderTest {
         .anyMatch(vehicle -> vehicle.getVehicleId().equals("YGA:Vehicle:1218349"))
     );
 
-    validationResult =
-      validator.validateFile(
-        "system_pricing_plans",
-        new ByteArrayInputStream(
-          loader.getRawFeed(GBFSFeed.Name.SYSTEM_PRICING_PLANS).get()
-        )
-      );
-    assertEquals(0, validationResult.errorsCount());
-
     GBFSSystemPricingPlans pricingPlans = loader.getFeed(GBFSSystemPricingPlans.class);
 
     assertNotNull(pricingPlans);
     assertEquals(40, pricingPlans.getData().getPlans().size());
 
     assertNull(loader.getFeed(GBFSGeofencingZones.class));
+  }
+
+  /**
+   * Validates the feed as a whole rather than file-by-file. The validator resolves
+   * cross-file references (e.g. vehicle_type_id, pricing_plan_id), so validating
+   * individual files in isolation reports spurious "not a valid enum value" errors.
+   */
+  private void assertFeedValidates(GbfsV3Loader loader) {
+    Map<String, InputStream> feeds = new HashMap<>();
+    for (GBFSFeed.Name name : GBFSFeed.Name.values()) {
+      loader
+        .getRawFeed(name)
+        .ifPresent(bytes -> feeds.put(name.value(), new ByteArrayInputStream(bytes)));
+    }
+    GbfsValidator validator = GbfsValidatorFactory.getGbfsJsonValidator();
+    assertEquals(0, validator.validate(feeds).summary().errorsCount());
   }
 
   @Test
