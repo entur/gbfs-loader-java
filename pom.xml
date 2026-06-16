@@ -185,15 +185,6 @@
         </dependency>
     </dependencies>
     <build>
-        <extensions>
-            <!-- maven3 will need wagon-ssh extension in order to be able to release,
-            Using external variant in order to retain keys, etc -->
-            <extension>
-                <groupId>org.apache.maven.wagon</groupId>
-                <artifactId>wagon-ssh-external</artifactId>
-                <version>2.12</version>
-            </extension>
-        </extensions>
         <pluginManagement>
             <plugins>
                 <plugin>
