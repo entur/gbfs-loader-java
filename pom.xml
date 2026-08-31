@@ -48,7 +48,7 @@
 
         <gbfs-java-model.version>1.0.14</gbfs-java-model.version>
         <gbfs-validator-java.version>3.1.0</gbfs-validator-java.version>
-        <jackson-databind.version>2.22.1</jackson-databind.version>
+        <jackson-databind.version>2.22.2</jackson-databind.version>
         <slf4j.version>2.0.18</slf4j.version>
         <httpclient-version>4.5.14</httpclient-version>
         <oauth2-essentials.version>0.22.1</oauth2-essentials.version>
@@ -69,7 +69,7 @@
         <maven-resources-plugin.version>3.5.0</maven-resources-plugin.version>
         <maven-deploy-plugin.version>3.1.4</maven-deploy-plugin.version>
         <versions-maven-plugin.version>2.21.0</versions-maven-plugin.version>
-        <plexus-compiler-javac.version>2.16.2</plexus-compiler-javac.version>
+        <plexus-compiler-javac.version>2.17.0</plexus-compiler-javac.version>
         <maven-scm-provider-gitexe.version>1.13.0</maven-scm-provider-gitexe.version>
         <maven-scm-api.version>1.13.0</maven-scm-api.version>
         <jacoco-maven-plugin.version>0.8.15</jacoco-maven-plugin.version>
