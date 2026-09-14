@@ -1,0 +1,68 @@
+# publiccode.yml metadata, see https://yml.publiccode.tools/
+publiccodeYmlVersion: "0.7.0"
+
+name: gbfs-loader-java
+url: https://github.com/entur/gbfs-loader-java
+
+platforms:
+  - linux
+  - windows
+  - mac
+
+categories:
+  - it-development
+  - data-collection
+
+developmentStatus: stable
+softwareType: library
+
+organisation:
+  name: Entur AS
+  uri: https://entur.no
+
+usedBy:
+  - Norway (nationwide), Entur AS
+  - Germany (North Rhine-Westphalia), MOBIDROM
+  - Germany (Baden-Württemberg), MobiData BW
+
+intendedAudience:
+  scope:
+    - transportation
+  countries:
+    - "NO"
+
+description:
+  en:
+    localisedName: gbfs-loader-java
+    shortDescription: Java library that loads GBFS feeds and keeps them updated from ttl and last_updated.
+    longDescription: >
+      gbfs-loader-java handles the fetching side of consuming shared mobility data published as General Bikeshare
+      Feed Specification (GBFS) feeds. Given the URL of a system's discovery file, a loader resolves every other
+      file the system publishes, deserialises them into the generated types from gbfs-java-model, and refreshes
+      each file according to its own ttl and last_updated fields, so callers do not have to implement per-file
+      polling themselves.
+      Both GBFS v2 and v3 are supported through separate factory methods, with the language code required only
+      for v2. Feeds that require authentication are handled through a pluggable RequestAuthenticator, and request
+      timeouts can be overridden per loader.
+    documentation: https://github.com/entur/gbfs-loader-java/blob/master/README.md
+    features:
+      - Loads all feed files of a GBFS system from its discovery file
+      - Per-file refresh driven by ttl and last_updated
+      - Support for GBFS v2 and v3
+      - Deserialisation into the generated gbfs-java-model types
+      - Pluggable authentication for protected feeds
+
+legal:
+  license: EUPL-1.2
+  mainCopyrightOwner: Entur AS
+
+maintenance:
+  type: internal
+  contacts:
+    - name: Entur ROR (Open Data and Journey Planning)
+      email: kollektivdata@entur.org
+
+localisation:
+  localisationReady: false
+  availableLanguages:
+    - en
