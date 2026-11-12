@@ -1,7 +1,5 @@
 package org.entur.gbfs.http;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
@@ -15,6 +13,10 @@ import org.entur.gbfs.authentication.RequestAuthenticator;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.cfg.EnumFeature;
+import tools.jackson.databind.json.JsonMapper;
 
 public class GBFSFeedUpdater<T> {
 
@@ -42,11 +44,10 @@ public class GBFSFeedUpdater<T> {
 
   private Map<String, String> httpHeaders = new HashMap<>();
 
-  private static final ObjectMapper objectMapper = new ObjectMapper();
-
-  static {
-    objectMapper.configure(DeserializationFeature.READ_UNKNOWN_ENUM_VALUES_AS_NULL, true);
-  }
+  private static final ObjectMapper objectMapper = JsonMapper
+    .builder()
+    .enable(EnumFeature.READ_UNKNOWN_ENUM_VALUES_AS_NULL)
+    .build();
 
   private final Long timeout;
 
@@ -198,7 +199,7 @@ public class GBFSFeedUpdater<T> {
   private boolean deserializeData(byte[] rawData) {
     try {
       data = objectMapper.readValue(rawData, implementingClass);
-    } catch (IOException e) {
+    } catch (JacksonException e) {
       LOG.warn("Error unmarshalling feed", e);
       data = null;
     }
